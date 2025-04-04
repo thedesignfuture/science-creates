@@ -407,8 +407,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const swiperElement = el?.querySelector('.huse_mmbr_sldr');
             const fractionContainer = el?.querySelector('.sldr_pgntn');
 
+            const slidesPerView = parseInt(swiperElement?.getAttribute('data-comp-slider'), 10) || 6;
             const swiper = new Swiper(swiperElement, {
-                slidesPerView: 6,
+                slidesPerView: slidesPerView,
                 loop: true,
                 navigation: {
                     nextEl: el?.querySelector(".arrw_next"),
