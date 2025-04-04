@@ -1342,8 +1342,6 @@ document.addEventListener('DOMContentLoaded', function () {
             $(this).slick({
                 slidesToShow: 1,
                 slidesToScroll: 1,
-                centerMode: true,
-                centerPadding: '17.65rem',
                 prevArrow: $sliderParent.find('.sldr_custm_arrw .arrw_prev '),
                 nextArrow: $sliderParent.find('.sldr_custm_arrw .arrw_next'),
                 dots: false,
