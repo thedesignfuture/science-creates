@@ -1334,23 +1334,22 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-        // Eco Slider
-        if ($(".eco_sldr").length) {
-            var $slider = $('.eco_sldr');
-            $slider.each(function () {
-                var $sliderParent = $(this).parents(".eco_wrppr");
-                $(this).slick({
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                    centerMode: true,
-                    centerPadding: '17.65rem',
-                    prevArrow: $sliderParent.find('.sldr_custm_arrw .arrw_prev '),
-                    nextArrow: $sliderParent.find('.sldr_custm_arrw .arrw_next'),
-                    appendDots: slideControls,
-                    dots: false,
-                    infinite: true,
-                });
-    
+    // Eco Slider
+    if ($(".eco_sldr").length) {
+        var $slider = $('.eco_sldr');
+        $slider.each(function () {
+            var $sliderParent = $(this).parents(".eco_wrppr");
+            $(this).slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                centerMode: true,
+                centerPadding: '17.65rem',
+                prevArrow: $sliderParent.find('.sldr_custm_arrw .arrw_prev '),
+                nextArrow: $sliderParent.find('.sldr_custm_arrw .arrw_next'),
+                dots: false,
+                infinite: true,
             });
-        }
+
+        });
+    }
 })
