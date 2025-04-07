@@ -1390,4 +1390,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
         });
     }
+
+    // Programme Status With Progress
+    const upcomingDateElement = document.querySelector(".upcmng_dte");
+    const remainingDaysElement = document.querySelector(".stus_number");
+    const progressBar = document.querySelector(".dte_prgrss_br");
+    const isLeapYear = (year) => {
+        return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+    };
+
+    const updateProgress = () => {
+        const dateStr = upcomingDateElement.textContent.trim();
+        const [dd, mm, yy] = dateStr.split("/").map(Number);
+        const fullYear = yy < 100 ? 2000 + yy : yy;
+
+        const today = new Date();
+        const upcomingDate = new Date(`${fullYear}-${String(mm).padStart(2, "0")}-${String(dd).padStart(2, "0")}`);
+        const timeDiff = upcomingDate - today;
+        const remainingDays = Math.max(Math.ceil(timeDiff / (1000 * 60 * 60 * 24)), 0);
+        const maxDays = isLeapYear(today.getFullYear()) ? 366 : 365;
+        const progressPercent = Math.min((remainingDays / maxDays) * 100, 100);
+        remainingDaysElement.innerHTML = `${remainingDays} Days`;
+        progressBar.style.width = `${progressPercent}%`;
+    };
+
+    updateProgress();
 })
