@@ -1342,7 +1342,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const fractionContainer = el?.querySelector('.sldr_pgntn');
 
             const swiper3 = new Swiper(swiperElement, {
-                slidesPerView: 2,
+                slidesPerView: 6,
                 loop: true,
                 navigation: {
                     nextEl: el?.querySelector(".arrw_next"),
