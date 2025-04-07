@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function initializeMainSlidersAlt(wrapperSelector) {
-        initializeSlider('.mmbr_img_sldr', {
+        initializeSliderAlt('.mmbr_img_sldr', {
             slidesToShow: 1,
             slidesToScroll: 1,
             arrows: false,
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, wrapperSelector);
 
         // Slider 2 settings
-        initializeSlider('.mmbr_optn_txt_sldr', {
+        initializeSliderAlt('.mmbr_optn_txt_sldr', {
             slidesToShow: 1,
             slidesToScroll: 1,
             arrows: true,
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function initializeThumbnailSliderAlt(wrapperSelector) {
-        initializeSlider('.mmbr_sldr_tab_lstng', {
+        initializeSliderAlt('.mmbr_sldr_tab_lstng', {
             slidesToShow: 6,
             slidesToScroll: 1,
             arrows: false,
@@ -1343,6 +1343,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const swiper3 = new Swiper(swiperElement, {
                 slidesPerView: 6,
+
                 loop: true,
                 navigation: {
                     nextEl: el?.querySelector(".arrw_next"),
