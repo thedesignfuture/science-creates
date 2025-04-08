@@ -1395,20 +1395,31 @@ document.addEventListener('DOMContentLoaded', function () {
     const upcomingDateElement = document.querySelector(".upcmng_dte");
     const remainingDaysElement = document.querySelector(".stus_number");
     const progressBar = document.querySelector(".dte_prgrss_br");
+    
     const isLeapYear = (year) => {
         return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
     };
+    const normalizeDate = (dateStr) => {
+        dateStr = dateStr.replace(/[^\d\/\.\-]/g, '');
+        let separator = dateStr.includes('.') ? '.' : '/';
+        const [day, month, year] = dateStr.split(separator).map(Number);
+        let fullYear = year;
+        if (fullYear < 100) {
+            fullYear += 2000;
+        }
+        return { day, month, year: fullYear };
+    };
+
     const updateProgress = () => {
         const dateStr = upcomingDateElement.textContent.trim();
-        const [dd, mm, yy] = dateStr.split("/").map(Number);
-        const fullYear = yy < 100 ? 2000 + yy : yy;
+        const { day, month, year } = normalizeDate(dateStr);
+        const fullYear = year;
         const today = new Date();
         const todayUtc = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
-        const upcomingDate = new Date(Date.UTC(fullYear, mm - 1, dd));
+        const upcomingDate = new Date(Date.UTC(fullYear, month - 1, day));
         const timeDiff = upcomingDate - todayUtc;
         const remainingDays = Math.max(Math.ceil(timeDiff / (1000 * 60 * 60 * 24)), 0);
         const maxDays = isLeapYear(today.getUTCFullYear()) ? 366 : 365;
-
         let progressPercent = 0;
 
         if (timeDiff < 0) {
@@ -1418,7 +1429,7 @@ document.addEventListener('DOMContentLoaded', function () {
             progressPercent = Math.min((remainingDays / maxDays) * 100, 100);
             remainingDaysElement.innerHTML = `${remainingDays}`;
         }
-        progressBar.style.width = `${progressPercent}%`;
+        progressBar.style.width = `${progressPercent}%`; 
     };
     updateProgress();
 
