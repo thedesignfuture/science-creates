@@ -1393,8 +1393,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Programme Status With Progress
     if(document.querySelector('.prgrmme_bnnr_bttm_box')){
-        const upcomingDateElement = document.querySelector(".upcmng_dte");
-        const remainingDaysElement = document.querySelector(".stus_number");
+        const upcomingDateElement = document.querySelector(".given_date");
+        const remainingDaysElement = document.querySelector(".prdct_number");
         const progressBar = document.querySelector(".dte_prgrss_br");
     
         const isLeapYear = (year) => {
