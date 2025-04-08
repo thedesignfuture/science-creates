@@ -1393,42 +1393,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Programme Status With Progress
     const upcomingDateElement = document.querySelector(".upcmng_dte");
-const remainingDaysElement = document.querySelector(".stus_number");
-const progressBar = document.querySelector(".dte_prgrss_br");
+    const remainingDaysElement = document.querySelector(".stus_number");
+    const progressBar = document.querySelector(".dte_prgrss_br");
+    const isLeapYear = (year) => {
+        return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+    };
+    const updateProgress = () => {
+        const dateStr = upcomingDateElement.textContent.trim();
+        const [dd, mm, yy] = dateStr.split("/").map(Number);
+        const fullYear = yy < 100 ? 2000 + yy : yy;
+        const today = new Date();
+        const todayUtc = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+        const upcomingDate = new Date(Date.UTC(fullYear, mm - 1, dd));
+        const timeDiff = upcomingDate - todayUtc;
+        const remainingDays = Math.max(Math.ceil(timeDiff / (1000 * 60 * 60 * 24)), 0);
+        const maxDays = isLeapYear(today.getUTCFullYear()) ? 366 : 365;
 
-const isLeapYear = (year) => {
-    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
-};
+        let progressPercent = 0;
 
-const updateProgress = () => {
-    const dateStr = upcomingDateElement.textContent.trim();
-    const [dd, mm, yy] = dateStr.split("/").map(Number);
-    const fullYear = yy < 100 ? 2000 + yy : yy;
-
-    const today = new Date();
-    const upcomingDate = new Date(`${fullYear}-${String(mm).padStart(2, "0")}-${String(dd).padStart(2, "0")}`);
-
-    const timeDiff = upcomingDate - today;
-    const remainingDays = Math.max(Math.ceil(timeDiff / (1000 * 60 * 60 * 24)), 0);
-    const maxDays = isLeapYear(today.getFullYear()) ? 366 : 365;
-
-    let progressPercent = 0;
-
-    // If the date is in the past, fill the progress bar completely
-    if (timeDiff < 0) {
-        progressPercent = 100;
-        remainingDaysElement.innerHTML = "XXX"; // Display "XXX" for past dates
-    } else {
-        // Calculate progress percentage for future dates
-        progressPercent = Math.min((remainingDays / maxDays) * 100, 100);
-        remainingDaysElement.innerHTML = `${remainingDays}`; // Display remaining days
-    }
-
-    // Update the progress bar
-    progressBar.style.width = `${progressPercent}%`;
-};
-
-// Call the function to initialize
-updateProgress();
+        if (timeDiff < 0) {
+            progressPercent = 100;
+            remainingDaysElement.innerHTML = "XXX";
+        } else {
+            progressPercent = Math.min((remainingDays / maxDays) * 100, 100);
+            remainingDaysElement.innerHTML = `${remainingDays}`;
+        }
+        progressBar.style.width = `${progressPercent}%`;
+    };
+    document.addEventListener("DOMContentLoaded", updateProgress);
 
 })
