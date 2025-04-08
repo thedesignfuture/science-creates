@@ -1420,6 +1420,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         progressBar.style.width = `${progressPercent}%`;
     };
-    document.addEventListener("DOMContentLoaded", updateProgress);
+    updateProgress();
 
 })
