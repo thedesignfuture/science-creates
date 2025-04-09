@@ -1392,11 +1392,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Programme Status With Progress
-    if(document.querySelector('.prgrmme_predict')){
+    if (document.querySelector('.prgrmme_predict')) {
         const upcomingDateElement = document.querySelector(".given_date");
         const remainingDaysElement = document.querySelector(".prdct_number");
         const progressBar = document.querySelector(".dte_prgrss_br");
-    
+
         const isLeapYear = (year) => {
             return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
         };
@@ -1410,7 +1410,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             return { day, month, year: fullYear };
         };
-    
+
         const updateProgress = () => {
             const dateStr = upcomingDateElement.textContent.trim();
             const { day, month, year } = normalizeDate(dateStr);
@@ -1422,7 +1422,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const remainingDays = Math.max(Math.ceil(timeDiff / (1000 * 60 * 60 * 24)), 0);
             const maxDays = isLeapYear(today.getUTCFullYear()) ? 366 : 365;
             let progressPercent = 0;
-    
+
             if (timeDiff < 0) {
                 progressPercent = 100;
                 remainingDaysElement.innerHTML = "XXX";
@@ -1430,9 +1430,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 progressPercent = Math.min((remainingDays / maxDays) * 100, 100);
                 remainingDaysElement.innerHTML = `${remainingDays}`;
             }
-            progressBar.style.width = `${progressPercent}%`; 
+            progressBar.style.width = `${progressPercent}%`;
         };
         updateProgress();
     }
+
+    // Fund Progress
+    const raisedValue = document.querySelector('.raised_number').textContent;
+    const targetValue = document.querySelector('.prdct_number').textContent;
+    const raisedNumber = parseFloat(raisedValue.replace(/[^\d.-]/g, ''));
+    const targetNumber = parseFloat(targetValue.replace(/[^\d.-]/g, ''));
+    const percentage = (raisedNumber / targetNumber) * 100;
+    const validPercentage = Math.min(Math.max(percentage, 0), 100);
+    const progressBar = document.querySelector('.fund_prgrssbar');
+    progressBar.style.width = validPercentage + '%';
 
 })
