@@ -1392,7 +1392,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Programme Status With Progress
-    if(document.querySelector('.prgrmme_bnnr_bttm_box')){
+    if(document.querySelector('.prgrmme_predict')){
         const upcomingDateElement = document.querySelector(".given_date");
         const remainingDaysElement = document.querySelector(".prdct_number");
         const progressBar = document.querySelector(".dte_prgrss_br");
