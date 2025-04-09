@@ -1436,13 +1436,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Fund Progress
-    const raisedValue = document.querySelector('.raised_number').textContent;
-    const targetValue = document.querySelector('.prdct_number').textContent;
-    const raisedNumber = parseFloat(raisedValue.replace(/[^\d.-]/g, ''));
-    const targetNumber = parseFloat(targetValue.replace(/[^\d.-]/g, ''));
-    const percentage = (raisedNumber / targetNumber) * 100;
-    const validPercentage = Math.min(Math.max(percentage, 0), 100);
-    const progressBar = document.querySelector('.fund_prgrssbar');
-    progressBar.style.width = validPercentage + '%';
+    if(document.querySelector(".ourch_bnnr_bttm_box")){
+        const raisedValue = document.querySelector('.raised_number').textContent;
+        const targetValue = document.querySelector('.prdct_number').textContent;
+        const raisedNumber = parseFloat(raisedValue.replace(/[^\d.-]/g, ''));
+        const targetNumber = parseFloat(targetValue.replace(/[^\d.-]/g, ''));
+        const percentage = (raisedNumber / targetNumber) * 100;
+        const validPercentage = Math.min(Math.max(percentage, 0), 100);
+        const progressBar = document.querySelector('.fund_prgrssbar');
+        progressBar.style.width = validPercentage + '%';
+    }
 
 })
