@@ -923,6 +923,8 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }, 500);
     }
+    // Swiper Global Variable
+    let swiper3 = null;
 
     // Dynamic REM Value Calculate
     const baseFontPercentage = 1.2;  // Base font size as percentage of viewport width
@@ -949,6 +951,9 @@ document.addEventListener('DOMContentLoaded', function () {
         cancelAnimationFrame(resizeTimeout);
         resizeTimeout = requestAnimationFrame(() => {
             updateRootFontSize();
+            if (swiper3 && typeof swiper3.update === 'function') {
+                swiper3.update();
+            }
         });
     });
     window.addEventListener('scroll', () => {
@@ -1341,9 +1346,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const swiperElement = el?.querySelector('.prgrmme_dte_sldr');
             const fractionContainer = el?.querySelector('.sldr_pgntn');
 
-            const swiper3 = new Swiper(swiperElement, {
-                slidesPerView: 6,
-
+            swiper3 = new Swiper(swiperElement, {
+                slidesPerView: "auto",
                 loop: true,
                 navigation: {
                     nextEl: el?.querySelector(".arrw_next"),
@@ -1369,8 +1373,21 @@ document.addEventListener('DOMContentLoaded', function () {
                         const totalSlides = swiperElement?.querySelectorAll('.swiper-slide').length;
                         const currentSlide = this.realIndex + 1;
                         fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
+
+                        swiperElement.querySelectorAll('.swiper-slide').forEach(slide => {
+                            slide.classList.remove('is-active');
+                        });
+
+                        const activeSlide = swiperElement.querySelector('.swiper-slide-active');
+                        activeSlide?.classList.add('is-active');
                     }
                 },
+            });
+
+            swiperElement.querySelectorAll('.swiper-slide').forEach((slide, index) => {
+                slide.addEventListener('click', function () {
+                    swiper3.slideToLoop(index);
+                });
             });
         });
     }
@@ -1436,7 +1453,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Fund Progress
-    if(document.querySelector(".ourch_bnnr_bttm_box")){
+    if (document.querySelector(".ourch_bnnr_bttm_box")) {
         const raisedValue = document.querySelector('.raised_number').textContent;
         const targetValue = document.querySelector('.prdct_number').textContent;
         const raisedNumber = parseFloat(raisedValue.replace(/[^\d.-]/g, ''));
