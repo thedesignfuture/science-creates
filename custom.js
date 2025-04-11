@@ -1299,91 +1299,39 @@ document.addEventListener('DOMContentLoaded', function () {
         })
     })
 
-    // Programmes  Slider
-    let prgrmsSldrWrppr = document?.querySelectorAll('.prgrmms_sldr_wrppr');
-    if (prgrmsSldrWrppr.length > 0) {
-        prgrmsSldrWrppr.forEach((el) => {
-            const swiperElement = el?.querySelector('.prgrmss_sldr');
-            const fractionContainer = el?.querySelector('.sldr_pgntn');
 
-            const swiper2 = new Swiper(swiperElement, {
-                slidesPerView: 2,
-                loop: true,
-                navigation: {
-                    nextEl: el?.querySelector(".arrw_next"),
-                    prevEl: el?.querySelector(".arrw_prev"),
-                },
-                pagination: {
-                    el: el?.querySelector('.sldr_prgrss_bg'),
-                    type: 'progressbar',
-                },
-                on: {
-                    init: function () {
-                        const totalSlides = swiperElement?.querySelectorAll('.swiper-slide').length;
-                        const currentSlide = this.realIndex + 1;
-
-                        fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
-
-                        this.on('slideChange', function () {
-                            const currentSlide = this.realIndex + 1;
-                            fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
-                        });
-                    },
-                    slideChange: function () {
-                        const totalSlides = swiperElement?.querySelectorAll('.swiper-slide').length;
-                        const currentSlide = this.realIndex + 1;
-                        fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
-                    }
-                },
-            });
-        });
-    }
 
     // Programme Date  Slider
-    let prgrmsDteSldrWrppr = document?.querySelectorAll('.prgrmme_dte_sldr_wrppr');
+    const prgrmsDteSldrWrppr = document.querySelectorAll('.prgrmme_dte_sldr_wrppr');
     if (prgrmsDteSldrWrppr.length > 0) {
         prgrmsDteSldrWrppr.forEach((el) => {
-            const swiperElement = el?.querySelector('.prgrmme_dte_sldr');
-            const fractionContainer = el?.querySelector('.sldr_pgntn');
+            const swiperElement = el.querySelector('.prgrmme_dte_sldr');
+            const fractionContainer = el.querySelector('.sldr_pgntn');
 
             swiper3 = new Swiper(swiperElement, {
                 slidesPerView: "auto",
                 loop: true,
                 navigation: {
-                    nextEl: el?.querySelector(".arrw_next"),
-                    prevEl: el?.querySelector(".arrw_prev"),
+                    nextEl: el.querySelector(".arrw_next"),
+                    prevEl: el.querySelector(".arrw_prev"),
                 },
                 pagination: {
-                    el: el?.querySelector('.sldr_prgrss_bg'),
+                    el: el.querySelector('.sldr_prgrss_bg'),
                     type: 'progressbar',
                 },
                 on: {
                     init: function () {
-                        const totalSlides = swiperElement?.querySelectorAll('.swiper-slide').length;
-                        const currentSlide = this.realIndex + 1;
-
-                        fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
+                        const totalSlides = swiperElement.querySelectorAll('.swiper-slide').length;
+                        fractionContainer.innerHTML = `${this.realIndex + 1} / ${totalSlides}`;
 
                         this.on('slideChange', function () {
-                            const currentSlide = this.realIndex + 1;
-                            fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
+                            fractionContainer.innerHTML = `${this.realIndex + 1} / ${totalSlides}`;
                         });
                     },
-                    slideChange: function () {
-                        const totalSlides = swiperElement?.querySelectorAll('.swiper-slide').length;
-                        const currentSlide = this.realIndex + 1;
-                        fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
-
-                        swiperElement.querySelectorAll('.swiper-slide').forEach(slide => {
-                            slide.classList.remove('is-active');
-                        });
-
-                        const activeSlide = swiperElement.querySelector('.swiper-slide-active');
-                        activeSlide?.classList.add('is-active');
-                    }
                 },
             });
 
+            // Jump to clicked slide (keep this for interaction)
             swiperElement.querySelectorAll('.swiper-slide').forEach((slide, index) => {
                 slide.addEventListener('click', function () {
                     swiper3.slideToLoop(index);
