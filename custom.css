@@ -1752,7 +1752,7 @@ body.dark_mode .vlue_rch_txt li strong {
     opacity: 1;
 }
 
-.icon_rch_txt_indvdl figure {
+.icon_rch_txt_indvdl.w-richtext figure {
     width: 2.604rem;
     height: 2.604rem;
     border: 0.043rem solid var(--charcoal-black);
@@ -1769,7 +1769,7 @@ body.dark_mode .vlue_rch_txt li strong {
     margin: 0;
 }
 
-.icon_rch_txt_indvdl figure img {
+.icon_rch_txt_indvdl.w-richtext figure img {
     max-width: 1.331rem;
     max-height: 1.331rem;
     -o-object-fit: contain;
