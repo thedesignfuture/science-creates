@@ -1307,7 +1307,45 @@ document.addEventListener('DOMContentLoaded', function () {
             el.closest(".ply_txt_bttn").classList.toggle("play_active");
         })
     })
+    // Programmes  Slider
+    let prgrmsSldrWrppr = document?.querySelectorAll('.prgrmms_sldr_wrppr');
+    if (prgrmsSldrWrppr.length > 0) {
+        prgrmsSldrWrppr.forEach((el) => {
+            const swiperElement = el?.querySelector('.prgrmss_sldr');
+            const fractionContainer = el?.querySelector('.sldr_pgntn');
 
+            const swiper2 = new Swiper(swiperElement, {
+                slidesPerView: 2,
+                loop: true,
+                navigation: {
+                    nextEl: el?.querySelector(".arrw_next"),
+                    prevEl: el?.querySelector(".arrw_prev"),
+                },
+                pagination: {
+                    el: el?.querySelector('.sldr_prgrss_bg'),
+                    type: 'progressbar',
+                },
+                on: {
+                    init: function () {
+                        const totalSlides = swiperElement?.querySelectorAll('.swiper-slide').length;
+                        const currentSlide = this.realIndex + 1;
+
+                        fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
+
+                        this.on('slideChange', function () {
+                            const currentSlide = this.realIndex + 1;
+                            fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
+                        });
+                    },
+                    slideChange: function () {
+                        const totalSlides = swiperElement?.querySelectorAll('.swiper-slide').length;
+                        const currentSlide = this.realIndex + 1;
+                        fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
+                    }
+                },
+            });
+        });
+    }
 
 
     // Programme Date Slider
