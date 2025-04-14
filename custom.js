@@ -1321,7 +1321,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             swiper3 = new Swiper(swiperElement, {
                 slidesPerView: "auto",
-                speed: 1000,
                 effect: 'slide',
                 speed: 500,
                 loop: true,
@@ -1345,7 +1344,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         });
                         setTimeout(() => {
                             updateSwiperLayout(this);
-                        }, 100);
+                        }, 300);
                     },
                 },
             });
@@ -1356,19 +1355,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     swiper3.slideToLoop(index);
                     setTimeout(() => {
                         updateSwiperLayout(swiper3);
-                    }, 100);
+                    }, 300);
                 });
             });
             prevBtn?.addEventListener('click', () => {
                 setTimeout(() => {
                     updateSwiperLayout(swiper3);
-                }, 100);
+                }, 300);
             });
 
             nextBtn?.addEventListener('click', () => {
                 setTimeout(() => {
                     updateSwiperLayout(swiper3);
-                }, 100);
+                }, 300);
             });
         });
     }
