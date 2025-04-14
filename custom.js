@@ -944,6 +944,13 @@ document.addEventListener('DOMContentLoaded', function () {
         document.documentElement.style.fontSize = `${fontSize}px`;
     }
 
+    // Swiper Layout Update
+    function updateSwiperLayout(swiperInstance) {
+        if (swiperInstance && typeof swiperInstance.update === 'function') {
+            swiperInstance.update();
+        }
+    }
+
     updateRootFontSize();
 
     let resizeTimeout;
@@ -951,8 +958,10 @@ document.addEventListener('DOMContentLoaded', function () {
         cancelAnimationFrame(resizeTimeout);
         resizeTimeout = requestAnimationFrame(() => {
             updateRootFontSize();
-            if (swiper3 && typeof swiper3.update === 'function') {
-                swiper3.update();
+            if (swiper3) {
+                setTimeout(() => {
+                    updateSwiperLayout(swiper3);
+                }, 300);
             }
         });
     });
@@ -1301,19 +1310,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    // Programme Date  Slider
+    // Programme Date Slider
     const prgrmsDteSldrWrppr = document.querySelectorAll('.prgrmme_dte_sldr_wrppr');
     if (prgrmsDteSldrWrppr.length > 0) {
         prgrmsDteSldrWrppr.forEach((el) => {
             const swiperElement = el.querySelector('.prgrmme_dte_sldr');
             const fractionContainer = el.querySelector('.sldr_pgntn');
+            const prevBtn = el.querySelector(".arrw_prev");
+            const nextBtn = el.querySelector(".arrw_next");
 
             swiper3 = new Swiper(swiperElement, {
                 slidesPerView: "auto",
+                speed: 1000,
+                effect: 'slide',
+                speed: 500,
                 loop: true,
+                centeredSlides: false,
+                spaceBetween: 0,
                 navigation: {
-                    nextEl: el.querySelector(".arrw_next"),
-                    prevEl: el.querySelector(".arrw_prev"),
+                    nextEl: nextBtn,
+                    prevEl: prevBtn,
                 },
                 pagination: {
                     el: el.querySelector('.sldr_prgrss_bg'),
@@ -1324,92 +1340,94 @@ document.addEventListener('DOMContentLoaded', function () {
                         const totalSlides = swiperElement.querySelectorAll('.swiper-slide').length;
                         fractionContainer.innerHTML = `${this.realIndex + 1} / ${totalSlides}`;
 
-                        this.on('slideChange', function () {
+                        this.on('slideChange', () => {
                             fractionContainer.innerHTML = `${this.realIndex + 1} / ${totalSlides}`;
                         });
+                        setTimeout(() => {
+                            updateSwiperLayout(this);
+                        }, 300);
                     },
                 },
             });
 
-            // Jump to clicked slide (keep this for interaction)
+            // Handle clicking a slide — jump to it
             swiperElement.querySelectorAll('.swiper-slide').forEach((slide, index) => {
                 slide.addEventListener('click', function () {
                     swiper3.slideToLoop(index);
+                    setTimeout(() => {
+                        updateSwiperLayout(swiper3); // Trigger layout update
+                    }, 300); // Short delay for smoother layout updates
                 });
             });
-        });
-    }
-    // Eco Slider
-    if ($(".eco_sldr").length) {
-        var $slider = $('.eco_sldr');
-        $slider.each(function () {
-            var $sliderParent = $(this).parents(".eco_wrppr");
-            $(this).slick({
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                prevArrow: $sliderParent.find('.sldr_custm_arrw .arrw_prev '),
-                nextArrow: $sliderParent.find('.sldr_custm_arrw .arrw_next'),
-                dots: false,
-                infinite: true,
+            prevBtn?.addEventListener('click', () => {
+                setTimeout(() => {
+                    updateSwiperLayout(swiper3);
+                }, 50);
             });
 
+            nextBtn?.addEventListener('click', () => {
+                setTimeout(() => {
+                    updateSwiperLayout(swiper3);
+                }, 50);
+            });
         });
     }
+});
 
-    // Programme Status With Progress
-    if (document.querySelector('.prgrmme_predict')) {
-        const upcomingDateElement = document.querySelector(".given_date");
-        const remainingDaysElement = document.querySelector(".prdct_number");
-        const progressBar = document.querySelector(".dte_prgrss_br");
+// Programme Status With Progress
+if (document.querySelector('.prgrmme_predict')) {
+    const upcomingDateElement = document.querySelector(".given_date");
+    const remainingDaysElement = document.querySelector(".prdct_number");
+    const progressBar = document.querySelector(".dte_prgrss_br");
 
-        const isLeapYear = (year) => {
-            return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
-        };
-        const normalizeDate = (dateStr) => {
-            dateStr = dateStr.replace(/[^\d\/\.\-]/g, '');
-            let separator = dateStr.includes('.') ? '.' : '/';
-            const [day, month, year] = dateStr.split(separator).map(Number);
-            let fullYear = year;
-            if (fullYear < 100) {
-                fullYear += 2000;
-            }
-            return { day, month, year: fullYear };
-        };
+    const isLeapYear = (year) => {
+        return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+    };
+    const normalizeDate = (dateStr) => {
+        dateStr = dateStr.replace(/[^\d\/\.\-]/g, '');
+        let separator = dateStr.includes('.') ? '.' : '/';
+        const [day, month, year] = dateStr.split(separator).map(Number);
+        let fullYear = year;
+        if (fullYear < 100) {
+            fullYear += 2000;
+        }
+        return { day, month, year: fullYear };
+    };
 
-        const updateProgress = () => {
-            const dateStr = upcomingDateElement.textContent.trim();
-            const { day, month, year } = normalizeDate(dateStr);
-            const fullYear = year;
-            const today = new Date();
-            const todayUtc = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
-            const upcomingDate = new Date(Date.UTC(fullYear, month - 1, day));
-            const timeDiff = upcomingDate - todayUtc;
-            const remainingDays = Math.max(Math.ceil(timeDiff / (1000 * 60 * 60 * 24)), 0);
-            const maxDays = isLeapYear(today.getUTCFullYear()) ? 366 : 365;
-            let progressPercent = 0;
+    const updateProgress = () => {
+        const dateStr = upcomingDateElement.textContent.trim();
+        const { day, month, year } = normalizeDate(dateStr);
+        const fullYear = year;
+        const today = new Date();
+        const todayUtc = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+        const upcomingDate = new Date(Date.UTC(fullYear, month - 1, day));
+        const timeDiff = upcomingDate - todayUtc;
+        const remainingDays = Math.max(Math.ceil(timeDiff / (1000 * 60 * 60 * 24)), 0);
+        const maxDays = isLeapYear(today.getUTCFullYear()) ? 366 : 365;
+        let progressPercent = 0;
 
-            if (timeDiff < 0) {
-                progressPercent = 100;
-                remainingDaysElement.innerHTML = "XXX";
-            } else {
-                progressPercent = Math.min((remainingDays / maxDays) * 100, 100);
-                remainingDaysElement.innerHTML = `${remainingDays}`;
-            }
-            progressBar.style.width = `${progressPercent}%`;
-        };
-        updateProgress();
-    }
+        if (timeDiff < 0) {
+            progressPercent = 100;
+            remainingDaysElement.innerHTML = "XXX";
+        } else {
+            progressPercent = Math.min((remainingDays / maxDays) * 100, 100);
+            remainingDaysElement.innerHTML = `${remainingDays}`;
+        }
+        progressBar.style.width = `${progressPercent}%`;
+    };
+    updateProgress();
+}
 
-    // Fund Progress
-    if (document.querySelector(".ourch_bnnr_bttm_box")) {
-        const raisedValue = document.querySelector('.raised_number').textContent;
-        const targetValue = document.querySelector('.prdct_number').textContent;
-        const raisedNumber = parseFloat(raisedValue.replace(/[^\d.-]/g, ''));
-        const targetNumber = parseFloat(targetValue.replace(/[^\d.-]/g, ''));
-        const percentage = (raisedNumber / targetNumber) * 100;
-        const validPercentage = Math.min(Math.max(percentage, 0), 100);
-        const progressBar = document.querySelector('.fund_prgrssbar');
-        progressBar.style.width = validPercentage + '%';
-    }
+// Fund Progress
+if (document.querySelector(".ourch_bnnr_bttm_box")) {
+    const raisedValue = document.querySelector('.raised_number').textContent;
+    const targetValue = document.querySelector('.prdct_number').textContent;
+    const raisedNumber = parseFloat(raisedValue.replace(/[^\d.-]/g, ''));
+    const targetNumber = parseFloat(targetValue.replace(/[^\d.-]/g, ''));
+    const percentage = (raisedNumber / targetNumber) * 100;
+    const validPercentage = Math.min(Math.max(percentage, 0), 100);
+    const progressBar = document.querySelector('.fund_prgrssbar');
+    progressBar.style.width = validPercentage + '%';
+}
 
 })
