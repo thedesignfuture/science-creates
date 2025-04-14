@@ -1775,3 +1775,9 @@ body.dark_mode .vlue_rch_txt li strong {
     -o-object-fit: contain;
     object-fit: contain;
 }
+.icon_rch_txt_indvdl.w-richtext:last-child{
+    padding-right: 0;
+}
+.icon_rch_txt_indvdl.w-richtext p{
+    padding-left: 1.157rem;
+}
