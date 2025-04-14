@@ -1345,7 +1345,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         });
                         setTimeout(() => {
                             updateSwiperLayout(this);
-                        }, 300);
+                        }, 100);
                     },
                 },
             });
@@ -1355,20 +1355,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 slide.addEventListener('click', function () {
                     swiper3.slideToLoop(index);
                     setTimeout(() => {
-                        updateSwiperLayout(swiper3); // Trigger layout update
-                    }, 300); // Short delay for smoother layout updates
+                        updateSwiperLayout(swiper3);
+                    }, 100);
                 });
             });
             prevBtn?.addEventListener('click', () => {
                 setTimeout(() => {
                     updateSwiperLayout(swiper3);
-                }, 50);
+                }, 100);
             });
 
             nextBtn?.addEventListener('click', () => {
                 setTimeout(() => {
                     updateSwiperLayout(swiper3);
-                }, 50);
+                }, 100);
             });
         });
     }
