@@ -307,39 +307,12 @@ body.dark_mode .eco_logo_prt {
 body.dark_mode .main_header.sticky_header .header_top_nav {
     background: var(--dark-grey);
 }
-
-.submenu_drpdwn .hdr_info_bttn {
-    border-color: var(--charcoal-black);
-}
-
-.submenu_drpdwn .info_icon {
-    -webkit-filter: brightness(0) saturate(100%) invert(3%) sepia(4%) saturate(4145%) hue-rotate(298deg) brightness(92%) contrast(81%);
-    filter: brightness(0) saturate(100%) invert(3%) sepia(4%) saturate(4145%) hue-rotate(298deg) brightness(92%) contrast(81%);
-}
-
-.submenu_drpdwn .hdr_info_bttn:hover .info_icon {
-    -webkit-filter: invert(0);
-    filter: invert(0);
-}
-
-.submenu_drpdwn .basic_bttn.hdr_bttn {
-    background: var(--charcoal-black);
-    color: var(--pure-white);
-}
-
-.submenu_drpdwn .bttn_icon.bttn_icon_drk {
-    -webkit-filter: none;
-    filter: none;
-}
-
-.submenu_drpdwn .basic_bttn.hdr_bttn:hover,
 .main_header.sticky_header .basic_bttn.hdr_bttn:hover,
 .inner_header .basic_bttn.hdr_bttn:hover {
     background: rgba(35, 30, 31, 0.73);
     color: var(--pure-white);
 }
 
-.submenu_drpdwn .basic_bttn.hdr_bttn:hover .bttn_icon.bttn_icon_drk,
 .main_header.sticky_header .basic_bttn.hdr_bttn:hover .bttn_icon.bttn_icon_drk {
     -webkit-filter: invert(0);
     filter: invert(0);
