@@ -307,13 +307,14 @@ body.dark_mode .eco_logo_prt {
 body.dark_mode .main_header.sticky_header .header_top_nav {
     background: var(--dark-grey);
 }
+
 .main_header.sticky_header .basic_bttn.hdr_bttn:hover,
-.inner_header .basic_bttn.hdr_bttn:hover {
+.inner_header .basic_bttn.hdr_bttn:hover,.submenu_inner_hdr .basic_bttn.hdr_bttn:hover{
     background: rgba(35, 30, 31, 0.73);
     color: var(--pure-white);
 }
 
-.main_header.sticky_header .basic_bttn.hdr_bttn:hover .bttn_icon.bttn_icon_drk {
+.main_header.sticky_header .basic_bttn.hdr_bttn:hover .bttn_icon.bttn_icon_drk,.submenu_inner_hdr .basic_bttn.hdr_bttn:hover .bttn_icon.bttn_icon_drk{
     -webkit-filter: invert(0);
     filter: invert(0);
 }
