@@ -645,12 +645,12 @@ body.dark_mode .submenu_drpdwn .basic_bttn.hdr_bttn .bttn_icon {
 }
 
 .main_header.sticky_header .hdr_info_bttn:hover::before,
-.menu_dark.darkMenu_active_open .hdr_info_bttn:hover::before {
+.menu_dark.darkMenu_active_open .hdr_info_bttn:hover::before,.main_header .submenu_inner_hdr .hdr_info_bttn:hover::before{
     background: var(--pure-white);
 }
 
 .main_header.sticky_header .hdr_info_bttn:hover .info_icon,
-.menu_dark.darkMenu_active_open .hdr_info_bttn:hover .info_icon {
+.menu_dark.darkMenu_active_open .hdr_info_bttn:hover .info_icon,.main_header .submenu_inner_hdr .hdr_info_bttn:hover .info_icon {
     -webkit-filter: brightness(0) saturate(100%) invert(3%) sepia(4%) saturate(4145%) hue-rotate(298deg) brightness(92%) contrast(81%);
     filter: brightness(0) saturate(100%) invert(3%) sepia(4%) saturate(4145%) hue-rotate(298deg) brightness(92%) contrast(81%);
 }
