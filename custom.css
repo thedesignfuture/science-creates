@@ -603,10 +603,6 @@ body.darkMenu_active .main_header .submenu_drpdwn .hdr_info_bttn {
     color: var(--pure-white);
 }
 
-.main_header.sticky_header .submenu_drpdwn .basic_bttn.hdr_bttn:hover {
-    background: rgba(35, 30, 31, 0.73);
-}
-
 .main_header.sticky_header :not(.submenu_drpdwn) .basic_bttn.hdr_bttn:hover .bttn_icon.bttn_icon_drk {
     -webkit-filter: none;
     filter: none;
