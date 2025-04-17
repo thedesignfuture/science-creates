@@ -435,7 +435,7 @@ body.darkMenu_active .main_header .hdr_info_bttn {
 .main_header.sticky_header .basic_bttn.hdr_bttn:hover,
 body.darkMenu_active .main_header .basic_bttn.hdr_bttn:hover,
 .main_header.inner_header.sticky_header .basic_bttn.hdr_bttn.hdr_bttn_alt:hover,
-body.darkMenu_active .main_header.inner_header .basic_bttn.hdr_bttn.hdr_bttn_alt:hover,.submenu_inner_hdr .basic_bttn.hdr_bttn:hover {
+body.darkMenu_active .main_header.inner_header .basic_bttn.hdr_bttn.hdr_bttn_alt:hover{
     background: rgba(255, 255, 255, 0.27);
     color: var(--charcoal-black);
 }
@@ -958,7 +958,7 @@ body.dark_mode .load_mre_bttn {
     color: var(--charcoal-black);
 }
 
-body.dark_mode .load_mre_bttn:hover {
+body.dark_mode .load_mre_bttn:hover,.submenu_inner_hdr .basic_bttn.hdr_bttn:hover  {
     background: rgba(255, 255, 255, 0.27);
     color: var(--pure-white);
 }
