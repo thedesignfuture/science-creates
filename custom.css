@@ -655,15 +655,6 @@ body.dark_mode .submenu_drpdwn .basic_bttn.hdr_bttn .bttn_icon {
     filter: brightness(0) saturate(100%) invert(3%) sepia(4%) saturate(4145%) hue-rotate(298deg) brightness(92%) contrast(81%);
 }
 
-.submenu_drpdwn.submenu_active .hdr_info_bttn:hover::before {
-    background: var(--charcoal-black);
-}
-
-.submenu_drpdwn.submenu_active .hdr_info_bttn:hover .info_icon {
-    -webkit-filter: none;
-    filter: none;
-}
-
 .bnnr_txt h1>.word>.char_wrppr>* {
     color: var(--pure-white);
     font-style: normal;
