@@ -1389,7 +1389,7 @@ body.dark_mode [data-bg-color='charcoal-black'] .pge_sub_hdng.pge_sub_hdng_wrppr
     border-color: var(--charcoal-black);
 }
 
-body.dark_mode [data-bg-color=white] .mmbrs_sldr_txt_box,body.dark_mode [data-bg-color=white] {
+body.dark_mode [data-bg-color=white] .mmbrs_sldr_txt_box,body.dark_mode [data-bg-color=white] * {
     border-color: var(--pure-white);
 }
 
