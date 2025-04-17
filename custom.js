@@ -1538,9 +1538,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error loading posts:', error);
             }
         }
+        fetchGhostPosts();
     }
-
-
-    fetchGhostPosts();
-
 })
