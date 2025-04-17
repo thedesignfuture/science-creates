@@ -428,7 +428,7 @@ body.darkMenu_active .main_header .hdr_info_bttn .info_icon,.main_header .submen
 }
 
 .main_header.inner_header.sticky_header .hdr_info_bttn:not(.submenu_drpdwn .hdr_info_bttn),
-body.darkMenu_active .main_header .hdr_info_bttn,.main_header .submenu_inner_hdr .hdr_info_bttn.hdr_info_bttn_alt,body.dark_mode .icon_rch_txt_indvdl.w-richtext figure {
+body.darkMenu_active .main_header .hdr_info_bttn,.main_header .submenu_inner_hdr .hdr_info_bttn.hdr_info_bttn_alt,body.dark_mode .icon_rch_txt_indvdl.w-richtext figure,body.darkMenu_active .lctn_lstng_item.brder_chrcl,body.darkMenu_active .lctn_info_box.brdr_chrcol {
     border-color: var(--pure-white);
 }
 
@@ -1347,7 +1347,7 @@ body.dark_mode .cmnty_logo {
 
 .lab_dtls_section[data-available="Coming soon"] .lab_info_icon_img,
 body.dark_mode [data-bg-color=white] .mmbrs_sldr_txt_box .strtup_logo,
-body.dark_mode .accrd_item * img {
+body.dark_mode .accrd_item * img,body.dark_mode [data-bg-color=white] .lctn_icon_box {
     -webkit-filter: brightness(1000%);
     filter: brightness(1000%);
 }
@@ -1389,7 +1389,7 @@ body.dark_mode [data-bg-color='charcoal-black'] .pge_sub_hdng.pge_sub_hdng_wrppr
     border-color: var(--charcoal-black);
 }
 
-body.dark_mode [data-bg-color=white] .mmbrs_sldr_txt_box {
+body.dark_mode [data-bg-color=white] .mmbrs_sldr_txt_box,body.dark_mode [data-bg-color=white] {
     border-color: var(--pure-white);
 }
 
