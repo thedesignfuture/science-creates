@@ -422,13 +422,13 @@ body.darkMenu_active .main_header .header_top_nav {
 
 .main_header.inner_header.sticky_header .info_icon:not(.submenu_drpdwn .info_icon, .hdr_info_bttn:hover .info_icon),
 .hdr_info_bttn.innr_hdr_info_bttn:hover .info_icon,
-body.darkMenu_active .main_header .hdr_info_bttn .info_icon {
+body.darkMenu_active .main_header .hdr_info_bttn .info_icon,.main_header .hdr_info_bttn.hdr_info_bttn_alt .info_icon{
     -webkit-filter: brightness(0) invert(1);
     filter: brightness(0) invert(1);
 }
 
 .main_header.inner_header.sticky_header .hdr_info_bttn:not(.submenu_drpdwn .hdr_info_bttn),
-body.darkMenu_active .main_header .hdr_info_bttn {
+body.darkMenu_active .main_header .hdr_info_bttn,.main_header .hdr_info_bttn.hdr_info_bttn_alt {
     border-color: var(--pure-white);
 }
 
