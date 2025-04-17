@@ -1470,7 +1470,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
     const API_KEY = '969e9f32437ce35f25af6d1453';
     const container = document.getElementById('ghost-posts');
-    if (container.length) {
+    if (container) {
         async function fetchGhostPosts() {
             const url = `${API_URL}?key=${API_KEY}&limit=3&include=tags,authors`;
     
