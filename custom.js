@@ -531,6 +531,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         themeButton.addEventListener('click', () => {
+            window.webskitters.themeChnage();
             const allThemeButtons = document.querySelectorAll('.theme_bttn');
             allThemeButtons.forEach((btn) => {
                 btn.classList.toggle('dark_mode_active');
