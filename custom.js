@@ -1471,42 +1471,50 @@ document.addEventListener('DOMContentLoaded', function () {
     const parentSection = document?.querySelector('.invst_ntce_parent_section');
     let lastScrollTop = window.scrollY;
     let isScrolling = false;
+    
+    // Check if parentSection exists
     if (parentSection) {
         const childDiv = document.querySelector('.invst_ntce_section');
-
+    
         const checkScroll = () => {
             const scrollTop = window.scrollY;
-            const scrollingUp = scrollTop < lastScrollTop;
-            lastScrollTop = scrollTop;
-
-            const childRect = childDiv.getBoundingClientRect();
-            const parentRect = parentSection.getBoundingClientRect();
-            const viewportHeight = window.innerHeight;
+            const scrollingUp = scrollTop < lastScrollTop; // Determine if scrolling up
+            lastScrollTop = scrollTop; // Update the last scroll position
+    
+            const childRect = childDiv.getBoundingClientRect(); // Get the position of the child
+            const parentRect = parentSection.getBoundingClientRect(); // Get the position of the parent
+            const viewportHeight = window.innerHeight; // Height of the viewport
+    
+            // When scrolling up, check if the top of the childDiv is within the bottom of the viewport
             if (scrollingUp) {
                 if (childRect.top <= viewportHeight && childRect.top >= viewportHeight - 10) {
                     parentSection.classList.add('ntfctn_actve_onscroll_up');
                 }
-            }
-            if (!scrollingUp) {
+            } else {
+                // When scrolling down, check if the bottom of the parentSection touches the bottom of the viewport
                 if (parentRect.bottom <= viewportHeight && parentRect.bottom >= viewportHeight - 10) {
                     parentSection.classList.remove('ntfctn_actve_onscroll_up');
                 }
             }
         };
-
+    
+        // Event listener for scroll with debounce to avoid excessive execution
         window.addEventListener('scroll', () => {
             if (!isScrolling) {
                 isScrolling = true;
                 setTimeout(() => {
                     checkScroll();
                     isScrolling = false;
-                }, 50);
+                }, 50); // Delay of 50ms to debounce scroll event
             }
         });
+    
+        // Initial check on page load to handle edge cases (in case section is already in view)
         window.addEventListener('load', () => {
             checkScroll();
         });
     }
+    
 
     // Ghost Knowledge Hub Implementation
     const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
