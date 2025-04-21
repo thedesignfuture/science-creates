@@ -1507,34 +1507,35 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Ghost Knowledge Hub
-    const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
-    const API_KEY = '969e9f32437ce35f25af6d1453';
-    const container = document.getElementById('ghost-posts');
+    async function loadGhostPosts({ limit = 2, targetId }) {
+        const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
+        const API_KEY = '969e9f32437ce35f25af6d1453';
+        const container = document.getElementById(targetId);
 
-    if (container) {
-        async function fetchGhostPosts() {
-            const url = `${API_URL}?key=${API_KEY}&limit=2&include=tags,authors`;
+        if (!container) return;
 
-            try {
-                const response = await fetch(url, {
-                    headers: { 'Accept-Version': 'v5.0' }
+        const url = `${API_URL}?key=${API_KEY}&limit=${limit}&include=tags,authors`;
+
+        try {
+            const response = await fetch(url, {
+                headers: { 'Accept-Version': 'v5.0' }
+            });
+
+            const data = await response.json();
+            const posts = data.posts;
+
+            posts.forEach(post => {
+                const postDate = new Date(post.published_at);
+                const formattedDate = postDate.toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
                 });
 
-                const data = await response.json();
-                const posts = data.posts;
+                const primaryTag = post.primary_tag?.name || 'Article';
+                const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
 
-                posts.forEach(post => {
-                    const postDate = new Date(post.published_at);
-                    const formattedDate = postDate.toLocaleDateString('en-GB', {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric'
-                    });
-
-                    const primaryTag = post.primary_tag?.name || 'Article';
-                    const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
-
-                    container.innerHTML += `
+                container.innerHTML += `
               <div data-move="up" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
                 <div class="row knwldge_hub_row">
                   <div class="col col-3 knwldge_hub_img_col">
@@ -1571,12 +1572,11 @@ document.addEventListener('DOMContentLoaded', function () {
                   </div>
                 </div>
               </div>`;
-                });
-            } catch (error) {
-                console.error('Error loading posts:', error);
-            }
+            });
+        } catch (error) {
+            console.error('Error loading posts:', error);
         }
-
-        fetchGhostPosts();
     }
+    loadGhostPosts({ limit: 2, targetId: 'ghost-posts' });
+    loadGhostPosts({ limit: 'all', targetId: 'ghost-list' });
 });
