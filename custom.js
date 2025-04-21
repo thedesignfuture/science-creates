@@ -1469,9 +1469,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Sticky Bottom Box
     const parentSection = document.querySelector('.invst_ntce_parent_section');
-    const childDiv = document.querySelector('.invst_ntce_section');
+    // const childDiv = document.querySelector('.invst_ntce_section');
 
-    if (!parentSection || !childDiv) return;
+    if (!parentSection) return;
 
     let lastScrollY = window.scrollY;
     let ticking = false;
@@ -1481,17 +1481,16 @@ document.addEventListener('DOMContentLoaded', function () {
         const scrollingUp = currentScrollY < lastScrollY;
         lastScrollY = currentScrollY;
 
-        const childTop = childDiv.getBoundingClientRect().top;
         const parentTop = parentSection.getBoundingClientRect().top;
         const parentBottom = parentSection.getBoundingClientRect().bottom;
         const viewportHeight = window.innerHeight;
 
         if (scrollingUp) {
-            if (childTop <= viewportHeight && parentBottom > 0) {
+            if (parentTop <= viewportHeight && parentTop >= viewportHeight - 2) {
                 parentSection.classList.add('ntfctn_actve_onscroll_up');
             }
         } else {
-            if (parentTop < viewportHeight && parentBottom > 0) {
+            if (parentBottom > 0 && parentTop < viewportHeight) {
                 parentSection.classList.remove('ntfctn_actve_onscroll_up');
             }
         }
@@ -1499,7 +1498,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const onScroll = () => {
         if (!ticking) {
-            window.requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
                 updateClass();
                 ticking = false;
             });
@@ -1508,7 +1507,6 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     window.addEventListener('scroll', onScroll);
-    window.addEventListener('load', updateClass);
 
     // Ghost Knowledge Hub Implementation
     const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
