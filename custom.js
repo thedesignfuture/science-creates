@@ -1469,7 +1469,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Sticky Bottom Box
     const parentSection = document.querySelector('.invst_ntce_parent_section');
-    // const childDiv = document.querySelector('.invst_ntce_section');
 
     if (!parentSection) return;
 
@@ -1486,10 +1485,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const viewportHeight = window.innerHeight;
 
         if (scrollingUp) {
-            if (parentTop <= viewportHeight && parentTop >= viewportHeight - 2) {
+            // Add class when top of section enters bottom 100px of viewport
+            if (parentTop <= viewportHeight && parentTop >= viewportHeight - 100) {
                 parentSection.classList.add('ntfctn_actve_onscroll_up');
             }
         } else {
+            // Remove class when scrolling down and section is in viewport
             if (parentBottom > 0 && parentTop < viewportHeight) {
                 parentSection.classList.remove('ntfctn_actve_onscroll_up');
             }
