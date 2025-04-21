@@ -1505,6 +1505,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         window.addEventListener('scroll', onScroll);
     }
+
+    // Ghost Knowledge Hub
     const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
     const API_KEY = '969e9f32437ce35f25af6d1453';
     const container = document.getElementById('ghost-posts');
@@ -1557,10 +1559,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div class="knwldge_bttm_bttn_box">
                           <a href="${post.url}" class="shape_bttn w-inline-block">
                             <div class="shpe_cover_one">
-                              <img src="..." class="bttn_shape">
+                              <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
                             </div>
                             <div class="shpe_cover_two shpe_cover_one">
-                              <img src="..." class="bttn_shape">
+                              <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
                             </div>
                           </a>
                         </div>
