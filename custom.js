@@ -1467,6 +1467,31 @@ document.addEventListener('DOMContentLoaded', function () {
         progressBar.style.width = validPercentage + '%';
     }
 
+    // Sticky Bottom Box
+    const parentSection = document?.querySelector('.invst_ntce_parent_section');
+    if(parentSection){
+        const childDiv = document.querySelector('.invst_ntce_section');
+    
+        let lastScrollTop = window.scrollY;
+    
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const scrollingUp = scrollTop < lastScrollTop;
+            lastScrollTop = scrollTop;
+            const childRect = childDiv.getBoundingClientRect();
+            const parentRect = parentSection.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+    
+            if (scrollingUp) {
+                if (childRect.top <= viewportHeight && childRect.top >= viewportHeight - 10) {
+                    parentSection.classList.add('ntfctn_actve_onscroll_up');
+                }
+            }
+            if (parentRect.bottom <= viewportHeight && parentRect.bottom >= viewportHeight - 10) {
+                parentSection.classList.remove('ntfctn_actve_onscroll_up');
+            }
+        });
+    }
     // Ghost Knowledge Hub Implementation
     const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
     const API_KEY = '969e9f32437ce35f25af6d1453';
@@ -1474,18 +1499,18 @@ document.addEventListener('DOMContentLoaded', function () {
     if (container) {
         async function fetchGhostPosts() {
             const url = `${API_URL}?key=${API_KEY}&limit=3&include=tags,authors`;
-    
+
             try {
                 const response = await fetch(url, {
                     headers: {
                         'Accept-Version': 'v5.0'
                     }
                 });
-    
+
                 const data = await response.json();
                 const posts = data.posts;
-    
-    
+
+
                 posts.forEach(post => {
                     const postDate = new Date(post.published_at);
                     const formattedDate = postDate.toLocaleDateString('en-GB', {
@@ -1493,10 +1518,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         month: 'short',
                         year: 'numeric'
                     });
-    
+
                     const primaryTag = post.primary_tag ? post.primary_tag.name : 'Article';
                     const featureImage = post.feature_image ?? 'https://via.placeholder.com/600x400?text=No+Image';
-               
+
                     container.innerHTML += `
                         <div data-move="up" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
                             <div class="row knwldge_hub_row">
