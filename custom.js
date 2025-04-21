@@ -1471,13 +1471,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const parentSection = document?.querySelector('.invst_ntce_parent_section');
     let lastScrollTop = window.scrollY;
     let isScrolling = false;
-    if(parentSection){
+    if (parentSection) {
         const childDiv = document.querySelector('.invst_ntce_section');
+
         const checkScroll = () => {
             const scrollTop = window.scrollY;
             const scrollingUp = scrollTop < lastScrollTop;
             lastScrollTop = scrollTop;
-    
+
             const childRect = childDiv.getBoundingClientRect();
             const parentRect = parentSection.getBoundingClientRect();
             const viewportHeight = window.innerHeight;
@@ -1492,19 +1493,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         };
+
+        window.addEventListener('scroll', () => {
+            if (!isScrolling) {
+                isScrolling = true;
+                setTimeout(() => {
+                    checkScroll();
+                    isScrolling = false;
+                }, 50);
+            }
+        });
+        window.addEventListener('load', () => {
+            checkScroll();
+        });
     }
-    window.addEventListener('scroll', () => {
-        if (!isScrolling) {
-            isScrolling = true;
-            setTimeout(() => {
-                checkScroll();
-                isScrolling = false;
-            }, 50);
-        }
-    });
-    window.addEventListener('load', () => {
-        checkScroll();
-    });
+
     // Ghost Knowledge Hub Implementation
     const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
     const API_KEY = '969e9f32437ce35f25af6d1453';
