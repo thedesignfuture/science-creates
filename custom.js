@@ -1470,26 +1470,39 @@ document.addEventListener('DOMContentLoaded', function () {
     // Sticky Bottom Box
     const parentSection = document?.querySelector('.invst_ntce_parent_section');
     if(parentSection){
-        const childDiv = document.querySelector('.invst_ntce_section');
-    
+        const childDiv = document.querySelector('.child_div');
         let lastScrollTop = window.scrollY;
-    
-        window.addEventListener('scroll', () => {
+        let isScrolling = false;
+        const checkScroll = () => {
             const scrollTop = window.scrollY;
             const scrollingUp = scrollTop < lastScrollTop;
             lastScrollTop = scrollTop;
+    
             const childRect = childDiv.getBoundingClientRect();
             const parentRect = parentSection.getBoundingClientRect();
             const viewportHeight = window.innerHeight;
-    
             if (scrollingUp) {
                 if (childRect.top <= viewportHeight && childRect.top >= viewportHeight - 10) {
                     parentSection.classList.add('ntfctn_actve_onscroll_up');
                 }
             }
-            if (parentRect.bottom <= viewportHeight && parentRect.bottom >= viewportHeight - 10) {
-                parentSection.classList.remove('ntfctn_actve_onscroll_up');
+            if (!scrollingUp) {
+                if (parentRect.bottom <= viewportHeight && parentRect.bottom >= viewportHeight - 10) {
+                    parentSection.classList.remove('ntfctn_actve_onscroll_up');
+                }
             }
+        };
+        window.addEventListener('scroll', () => {
+            if (!isScrolling) {
+                isScrolling = true;
+                setTimeout(() => {
+                    checkScroll();
+                    isScrolling = false;
+                }, 50);
+            }
+        });
+        window.addEventListener('load', () => {
+            checkScroll();
         });
     }
     // Ghost Knowledge Hub Implementation
