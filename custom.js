@@ -1512,7 +1512,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const container = document.getElementById('ghost-posts');
     if (container) {
         async function fetchGhostPosts() {
-            const url = `${API_URL}?key=${API_KEY}&limit=2&include=tags,authors`;
+            const url = `${API_URL}?key=${API_KEY}&limit=3&include=tags,authors`;
 
             try {
                 const response = await fetch(url, {
