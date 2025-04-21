@@ -1733,3 +1733,9 @@ body.dark_mode .vlue_rch_txt li strong {
 .icon_rch_txt_indvdl.w-richtext p{
     padding-left: 0.868rem;
 }
+.invst_ntce_parent_section.ntfctn_actve_onscroll_up .invst_ntce_section{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
