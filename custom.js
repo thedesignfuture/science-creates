@@ -1469,50 +1469,46 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Sticky Bottom Box
     const parentSection = document.querySelector('.invst_ntce_parent_section');
-    let lastScrollTop = window.scrollY;
-    let isScrolling = false;
+    const childDiv = document.querySelector('.invst_ntce_section');
 
-    // Ensure parentSection exists
-    if (parentSection) {
-        const childDiv = document.querySelector('.invst_ntce_section');
+    if (!parentSection || !childDiv) return;
 
-        const checkScroll = () => {
-            const scrollTop = window.scrollY; // Get current scroll position
-            const scrollingUp = scrollTop < lastScrollTop; // Determine if scrolling up
-            lastScrollTop = scrollTop; // Update last scroll position
+    let lastScrollY = window.scrollY;
+    let ticking = false;
 
-            const childRect = childDiv.getBoundingClientRect(); // Get position of the child element
-            const parentRect = parentSection.getBoundingClientRect(); // Get position of the parent element
-            const viewportHeight = window.innerHeight; // Height of the viewport
+    const updateClass = () => {
+        const currentScrollY = window.scrollY;
+        const scrollingUp = currentScrollY < lastScrollY;
+        lastScrollY = currentScrollY;
 
-            // When scrolling up, check if the top of the childDiv is within the bottom of the viewport
-            if (scrollingUp) {
-                if (childRect.top <= viewportHeight && childRect.top >= viewportHeight - 10) {
-                    parentSection.classList.add('ntfctn_actve_onscroll_up');
-                }
-            } else {
-                // When scrolling down, check if the bottom of the parentSection touches the bottom of the viewport
-                if (parentRect.bottom <= viewportHeight && parentRect.bottom >= viewportHeight - 10) {
-                    parentSection.classList.remove('ntfctn_actve_onscroll_up');
-                }
+        const childTop = childDiv.getBoundingClientRect().top;
+        const parentTop = parentSection.getBoundingClientRect().top;
+        const parentBottom = parentSection.getBoundingClientRect().bottom;
+        const viewportHeight = window.innerHeight;
+
+        if (scrollingUp) {
+            if (childTop <= viewportHeight && parentBottom > 0) {
+                parentSection.classList.add('ntfctn_actve_onscroll_up');
             }
-        };
-
-        // Event listener for scroll with debounce to avoid excessive execution
-        window.addEventListener('scroll', () => {
-            if (!isScrolling) {
-                isScrolling = true;
-                setTimeout(() => {
-                    checkScroll();
-                    isScrolling = false;
-                }, 50); // Delay of 50ms to debounce scroll event
+        } else {
+            if (parentTop < viewportHeight && parentBottom > 0) {
+                parentSection.classList.remove('ntfctn_actve_onscroll_up');
             }
-        });
+        }
+    };
 
-        // Initial check on page load to handle edge cases (in case section is already in view)
-        checkScroll();
-    }
+    const onScroll = () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                updateClass();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    };
 
+    window.addEventListener('scroll', onScroll);
+    window.addEventListener('load', updateClass);
 
     // Ghost Knowledge Hub Implementation
     const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
