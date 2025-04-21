@@ -1578,5 +1578,5 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
     loadGhostPosts({ limit: 2, targetId: 'ghost-posts' });
-    loadGhostPosts({ limit: 'all', targetId: 'ghost-list' });
+    loadGhostPosts({ limit: 'all', targetId: 'ghost_list' });
 });
