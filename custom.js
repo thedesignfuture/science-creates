@@ -1470,7 +1470,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Sticky Bottom Box
     const parentSection = document?.querySelector('.invst_ntce_parent_section');
     if(parentSection){
-        const childDiv = document.querySelector('.child_div');
+        const childDiv = document.querySelector('.invst_ntce_section');
         let lastScrollTop = window.scrollY;
         let isScrolling = false;
         const checkScroll = () => {
