@@ -1468,23 +1468,23 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Sticky Bottom Box
-    const parentSection = document?.querySelector('.invst_ntce_parent_section');
+    const parentSection = document.querySelector('.invst_ntce_parent_section');
     let lastScrollTop = window.scrollY;
     let isScrolling = false;
-    
-    // Check if parentSection exists
+
+    // Ensure parentSection exists
     if (parentSection) {
         const childDiv = document.querySelector('.invst_ntce_section');
-    
+
         const checkScroll = () => {
-            const scrollTop = window.scrollY;
+            const scrollTop = window.scrollY; // Get current scroll position
             const scrollingUp = scrollTop < lastScrollTop; // Determine if scrolling up
-            lastScrollTop = scrollTop; // Update the last scroll position
-    
-            const childRect = childDiv.getBoundingClientRect(); // Get the position of the child
-            const parentRect = parentSection.getBoundingClientRect(); // Get the position of the parent
+            lastScrollTop = scrollTop; // Update last scroll position
+
+            const childRect = childDiv.getBoundingClientRect(); // Get position of the child element
+            const parentRect = parentSection.getBoundingClientRect(); // Get position of the parent element
             const viewportHeight = window.innerHeight; // Height of the viewport
-    
+
             // When scrolling up, check if the top of the childDiv is within the bottom of the viewport
             if (scrollingUp) {
                 if (childRect.top <= viewportHeight && childRect.top >= viewportHeight - 10) {
@@ -1497,7 +1497,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         };
-    
+
         // Event listener for scroll with debounce to avoid excessive execution
         window.addEventListener('scroll', () => {
             if (!isScrolling) {
@@ -1508,13 +1508,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 }, 50); // Delay of 50ms to debounce scroll event
             }
         });
-    
+
         // Initial check on page load to handle edge cases (in case section is already in view)
-        window.addEventListener('load', () => {
-            checkScroll();
-        });
+        checkScroll();
     }
-    
+
 
     // Ghost Knowledge Hub Implementation
     const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
