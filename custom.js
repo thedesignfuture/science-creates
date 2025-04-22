@@ -1593,6 +1593,8 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error loading Ghost posts:', error);
         }
     }
+
+    // Ghost Featured Post
     if (document.getElementById('ghost-posts')) {
         fetchAndRenderGhostPosts({
             targetId: 'ghost-posts',
@@ -1600,30 +1602,36 @@ document.addEventListener('DOMContentLoaded', function () {
             append: false
         });
     }
-    const limitPerClick = 3;
-    let offset = 0;
 
+    // Ghost Listing 
+    const limitPerClick = 3;
+    let currentOffset = 0;
+    
     if (document.getElementById('ghost_list')) {
         fetchAndRenderGhostPosts({
             targetId: 'ghost_list',
             limit: limitPerClick,
-            offset: 0,
+            offset: currentOffset,
             append: false
+        }).then(postsFetched => {
+            currentOffset += postsFetched || 0;
         });
-        const btn = document.getElementById('load_mre_bttn');
-        if (btn) {
-            btn.addEventListener('click', async () => {
-                const loaded = await fetchAndRenderGhostPosts({
+    
+        const loadMoreBtn = document.getElementById('load_mre_bttn');
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', async () => {
+                const postsFetched = await fetchAndRenderGhostPosts({
                     targetId: 'ghost_list',
                     limit: limitPerClick,
-                    offset: offset,
+                    offset: currentOffset,
                     append: true
                 });
-
-                offset += limitPerClick;
-
-                if (loaded < limitPerClick) {
-                    btn.style.display = 'none';
+    
+                if (postsFetched && postsFetched > 0) {
+                    currentOffset += postsFetched;
+                }
+                if (!postsFetched || postsFetched < limitPerClick) {
+                    loadMoreBtn.style.display = 'none';
                 }
             });
         }
