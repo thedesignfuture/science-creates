@@ -1541,7 +1541,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             cachedPosts = data.posts;
 
-            // Optional classification logic
             if (enableFilter && targetId === 'ghost_list') {
                 cachedPosts = cachedPosts.map(post => {
                     const tags = post.tags.map(t => t.name.toLowerCase());
@@ -1680,6 +1679,32 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             });
         }
+
+        // 🔥 Reset on clicking "All" or ".filter_clear.clear_close"
+        document.querySelectorAll(
+            '.filter_clear.clear_close, input[name="' + filterRadioName + '"][value="all"]'
+        ).forEach(elem => {
+            elem.addEventListener('click', () => {
+                activeTag = 'all';
+                activeSearch = '';
+                activeSort = 'latest';
+
+                if (searchInput) searchInput.value = '';
+
+                if (sortRadioName) {
+                    const latestSortRadio = document.querySelector(`input[name="${sortRadioName}"]`);
+                    if (latestSortRadio) latestSortRadio.checked = true;
+                }
+
+                if (filterRadioName) {
+                    const allFilterRadio = document.querySelector(`input[name="${filterRadioName}"][value="all"]`);
+                    if (allFilterRadio) allFilterRadio.checked = true;
+                }
+
+                resetAndRender();
+            });
+        });
+
     }
 
     // Usage
@@ -1706,5 +1731,6 @@ document.addEventListener('DOMContentLoaded', function () {
             enableFilter: false
         });
     }
+
 
 });
