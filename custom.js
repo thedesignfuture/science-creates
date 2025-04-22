@@ -1507,127 +1507,186 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Ghost Knowledge Hub
+    const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
+    const API_KEY = '969e9f32437ce35f25af6d1453';
+
     async function fetchAndRenderGhostPosts({
         targetId,
-        limit = 3,
-        page = 1,
-        append = false,
+        initialLimit = 3,
+        enableSearch = false,
+        searchInputId = null,
+        enableSort = false,
+        sortRadioName = null,
+        enableFilter = false,
+        filterRadioName = null,
+        loadMoreId = null
     }) {
-        const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
-        const API_KEY = '969e9f32437ce35f25af6d1453';
         const container = document.getElementById(targetId);
-        if (!container) return 0;
+        if (!container) return;
 
-        const url = `${API_URL}?key=${API_KEY}&limit=${limit}&page=${page}&include=tags,authors`;
+        const loadMoreBtn = loadMoreId ? document.getElementById(loadMoreId) : null;
+        const searchInput = searchInputId ? document.getElementById(searchInputId) : null;
 
-        try {
-            const response = await fetch(url, {
-                headers: { 'Accept-Version': 'v5.0' },
-            });
+        let activeSearch = '';
+        let activeTag = 'all';
+        let activeSort = 'latest';
+        let cachedPosts = [];
+        let currentVisibleCount = 0;
+        let postsToRender = [];
+
+        async function fetchAllPosts() {
+            const url = `${API_URL}?key=${API_KEY}&limit=100&include=tags,authors&order=published_at desc`;
+            const response = await fetch(url, { headers: { 'Accept-Version': 'v5.0' } });
             const data = await response.json();
-            const posts = data.posts;
+            cachedPosts = data.posts;
+        }
 
-            if (!append) container.innerHTML = ''; // clear if not appending
-
-            posts.forEach((post) => {
-                const postDate = new Date(post.published_at);
-                const formattedDate = postDate.toLocaleDateString('en-GB', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
+        function renderNextBatch() {
+            const postsToShow = postsToRender.slice(currentVisibleCount, currentVisibleCount + initialLimit);
+            postsToShow.forEach(post => {
+                const postDate = new Date(post.published_at).toLocaleDateString('en-GB', {
+                    day: 'numeric', month: 'short', year: 'numeric'
                 });
-
                 const primaryTag = post.primary_tag?.name || 'Article';
-                const featureImage =
-                    post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
+                const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
 
                 container.innerHTML += `
             <div data-move="up" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
-              <div class="row knwldge_hub_row">
-                <div class="col col-3 knwldge_hub_img_col">
-                  <div class="knwldge_hub_img_box">
-                    <a href="${post.url}" class="knwldge_hhub_lnk_box w-inline-block">
-                      <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
-                    </a>
-                  </div>
-                </div>
-                <div class="col col-9 knwldge_hub_info_col">
-                  <div class="knwldge_info_box pl_big">
-                    <div class="knwldge_info_box_innr">
-                      <div class="knwldge_info_hdr">
-                        <div class="knwldge_dte_box"><div>${formattedDate}</div></div>
-                        <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
-                      </div>
-                      <div class="knwldge_ttle_box pr_big">
-                        <a href="${post.url}" class="knwldge_ttle_lnk title_h2 w-inline-block">
-                          <div>${post.title}</div>
-                        </a>
-                      </div>
-                      <div class="knwldge_bttm_bttn_box">
-                        <a href="${post.url}" class="shape_bttn w-inline-block">
-                          <div class="shpe_cover_one">
-                            <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
-                          </div>
-                          <div class="shpe_cover_two shpe_cover_one">
-                            <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
-                          </div>
-                        </a>
-                      </div>
+                <div class="row knwldge_hub_row">
+                    <div class="col col-3 knwldge_hub_img_col">
+                        <div class="knwldge_hub_img_box">
+                            <a href="${post.url}" class="knwldge_hhub_lnk_box w-inline-block">
+                                <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
+                            </a>
+                        </div>
                     </div>
-                  </div>
+                    <div class="col col-9 knwldge_hub_info_col">
+                        <div class="knwldge_info_box pl_big">
+                            <div class="knwldge_info_box_innr">
+                                <div class="knwldge_info_hdr">
+                                    <div class="knwldge_dte_box"><div>${postDate}</div></div>
+                                    <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
+                                </div>
+                                <div class="knwldge_ttle_box pr_big">
+                                    <a href="${post.url}" class="knwldge_ttle_lnk title_h2 w-inline-block">
+                                        <div>${post.title}</div>
+                                    </a>
+                                </div>
+                                <div class="knwldge_bttm_bttn_box">
+                                    <a href="${post.url}" class="shape_bttn w-inline-block">
+                                        <div class="shpe_cover_one">
+                                            <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                                        </div>
+                                        <div class="shpe_cover_two shpe_cover_one">
+                                            <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>`;
             });
 
-            return posts.length;
-        } catch (error) {
-            console.error('Error loading posts:', error);
-            return 0;
+            currentVisibleCount += postsToShow.length;
+
+            if (loadMoreBtn) {
+                loadMoreBtn.style.display = currentVisibleCount < postsToRender.length ? 'block' : 'none';
+            }
+        }
+
+        function applyFilters() {
+            let filtered = [...cachedPosts];
+
+            if (enableSearch && activeSearch) {
+                filtered = filtered.filter(post =>
+                    post.title.toLowerCase().startsWith(activeSearch.toLowerCase())
+                );
+            }
+
+            if (enableFilter && activeTag !== 'all') {
+                filtered = filtered.filter(post =>
+                    post.tags.some(tag => tag.name.toLowerCase() === activeTag.toLowerCase())
+                );
+            }
+
+            if (enableSort) {
+                filtered.sort((a, b) => {
+                    return activeSort === 'oldest'
+                        ? new Date(a.published_at) - new Date(b.published_at)
+                        : new Date(b.published_at) - new Date(a.published_at);
+                });
+            }
+
+            return filtered;
+        }
+
+        function resetAndRender() {
+            container.innerHTML = '';
+            currentVisibleCount = 0;
+            postsToRender = applyFilters();
+            renderNextBatch();
+        }
+
+        await fetchAllPosts();
+        resetAndRender();
+
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', () => {
+                renderNextBatch();
+            });
+        }
+
+        if (enableFilter && filterRadioName) {
+            document.querySelectorAll(`input[name="${filterRadioName}"]`).forEach(radio => {
+                radio.addEventListener('change', () => {
+                    activeTag = radio.value.toLowerCase();
+                    resetAndRender();
+                });
+            });
+        }
+
+        if (enableSearch && searchInput) {
+            searchInput.addEventListener('input', () => {
+                activeSearch = searchInput.value.trim();
+                resetAndRender();
+            });
+        }
+
+        if (enableSort && sortRadioName) {
+            document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
+                radio.addEventListener('change', () => {
+                    const label = radio.closest('label')?.querySelector('.fltrs_label')?.textContent.trim().toLowerCase();
+                    activeSort = label === 'oldest' ? 'oldest' : 'latest';
+                    resetAndRender();
+                });
+            });
         }
     }
 
-    // Ghost Featured Post
+    // Usage
+    if (document.getElementById('ghost_list')) {
+        fetchAndRenderGhostPosts({
+            targetId: 'ghost_list',
+            initialLimit: 3,
+            enableSearch: true,
+            searchInputId: 'search_input',
+            enableSort: true,
+            sortRadioName: 'sort-by-filter',
+            enableFilter: true,
+            filterRadioName: 'category-filtering',
+            loadMoreId: 'load_mre_bttn'
+        });
+    }
+
     if (document.getElementById('ghost-posts')) {
         fetchAndRenderGhostPosts({
             targetId: 'ghost-posts',
-            limit: 2,
-            page: 1,
-            append: false,
+            initialLimit: 2,
+            enableSearch: false,
+            enableSort: false,
+            enableFilter: false
         });
-    }
-
-    // Ghost Listing 
-    let currentPage = 1;
-    const limitPerClick = 3;
-
-    if (document.getElementById('ghost_list')) {
-        const listContainerId = 'ghost_list';
-        const loadMoreBtn = document.getElementById('load_mre_bttn');
-
-        // First load
-        fetchAndRenderGhostPosts({
-            targetId: listContainerId,
-            limit: limitPerClick,
-            page: currentPage,
-            append: false,
-        });
-
-        if (loadMoreBtn) {
-            loadMoreBtn.addEventListener('click', async () => {
-                currentPage += 1;
-
-                const postsFetched = await fetchAndRenderGhostPosts({
-                    targetId: listContainerId,
-                    limit: limitPerClick,
-                    page: currentPage,
-                    append: true,
-                });
-
-                if (!postsFetched || postsFetched < limitPerClick) {
-                    loadMoreBtn.style.display = 'none';
-                }
-            });
-        }
     }
 });
