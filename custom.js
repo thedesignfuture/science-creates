@@ -1507,14 +1507,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Ghost Knowledge Hub
-    async function loadGhostPosts({ limit = 2, targetId }) {
+    async function fetchAndRenderGhostPosts({
+        targetId,
+        limit,
+        offset = 0,
+        append = true,
+        postLimitPerClick,
+        renderType = 'default'
+    }) {
         const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
         const API_KEY = '969e9f32437ce35f25af6d1453';
         const container = document.getElementById(targetId);
-
         if (!container) return;
 
-        const url = `${API_URL}?key=${API_KEY}&limit=${limit}&include=tags,authors`;
+        const url = new URL(API_URL);
+        url.searchParams.set('key', API_KEY);
+        url.searchParams.set('include', 'tags,authors');
+        if (limit) url.searchParams.set('limit', limit);
+        if (offset) url.searchParams.set('offset', offset);
 
         try {
             const response = await fetch(url, {
@@ -1524,59 +1534,98 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = await response.json();
             const posts = data.posts;
 
-            posts.forEach(post => {
-                const postDate = new Date(post.published_at);
-                const formattedDate = postDate.toLocaleDateString('en-GB', {
+            const html = posts.map(post => {
+                const postDate = new Date(post.published_at).toLocaleDateString('en-GB', {
                     day: 'numeric',
                     month: 'short',
                     year: 'numeric'
                 });
-
                 const primaryTag = post.primary_tag?.name || 'Article';
                 const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
 
-                container.innerHTML += `
-              <div data-move="up" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
-                <div class="row knwldge_hub_row">
-                  <div class="col col-3 knwldge_hub_img_col">
-                    <div class="knwldge_hub_img_box">
-                      <a href="${post.url}" class="knwldge_hhub_lnk_box w-inline-block">
-                        <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
-                      </a>
-                    </div>
-                  </div>
-                  <div class="col col-9 knwldge_hub_info_col">
-                    <div class="knwldge_info_box pl_big">
-                      <div class="knwldge_info_box_innr">
-                        <div class="knwldge_info_hdr">
-                          <div class="knwldge_dte_box"><div>${formattedDate}</div></div>
-                          <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
-                        </div>
-                        <div class="knwldge_ttle_box pr_big">
-                          <a href="${post.url}" class="knwldge_ttle_lnk title_h2 w-inline-block">
-                            <div>${post.title}</div>
-                          </a>
-                        </div>
-                        <div class="knwldge_bttm_bttn_box">
-                          <a href="${post.url}" class="shape_bttn w-inline-block">
-                            <div class="shpe_cover_one">
-                              <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                return `
+                    <div data-move="up" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
+                        <div class="row knwldge_hub_row">
+                            <div class="col col-3 knwldge_hub_img_col">
+                                <div class="knwldge_hub_img_box">
+                                    <a href="${post.url}" class="knwldge_hhub_lnk_box w-inline-block">
+                                        <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
+                                    </a>
+                                </div>
                             </div>
-                            <div class="shpe_cover_two shpe_cover_one">
-                              <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                            <div class="col col-9 knwldge_hub_info_col">
+                                <div class="knwldge_info_box pl_big">
+                                    <div class="knwldge_info_box_innr">
+                                        <div class="knwldge_info_hdr">
+                                            <div class="knwldge_dte_box"><div>${postDate}</div></div>
+                                            <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
+                                        </div>
+                                        <div class="knwldge_ttle_box pr_big">
+                                            <a href="${post.url}" class="knwldge_ttle_lnk title_h2 w-inline-block">
+                                                <div>${post.title}</div>
+                                            </a>
+                                        </div>
+                                        <div class="knwldge_bttm_bttn_box">
+                                            <a href="${post.url}" class="shape_bttn w-inline-block">
+                                                <div class="shpe_cover_one">
+                                                    <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                                                </div>
+                                                <div class="shpe_cover_two shpe_cover_one">
+                                                    <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </a>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>`;
-            });
+                    </div>`;
+            }).join('');
+
+            if (append) {
+                container.insertAdjacentHTML('beforeend', html);
+            } else {
+                container.innerHTML = html;
+            }
+            return posts.length;
+
         } catch (error) {
-            console.error('Error loading posts:', error);
+            console.error('Error loading Ghost posts:', error);
         }
     }
-    loadGhostPosts({ limit: 2, targetId: 'ghost-posts' });
-    loadGhostPosts({ limit: 'all', targetId: 'ghost_list' });
+    if (document.getElementById('ghost-posts')) {
+        fetchAndRenderGhostPosts({
+            targetId: 'ghost-posts',
+            limit: 2,
+            append: false
+        });
+    }
+    const limitPerClick = 3;
+    let offset = 0;
+
+    if (document.getElementById('ghost_list')) {
+        fetchAndRenderGhostPosts({
+            targetId: 'ghost_list',
+            limit: limitPerClick,
+            offset: 0,
+            append: false
+        });
+        const btn = document.getElementById('load_mre_bttn');
+        if (btn) {
+            btn.addEventListener('click', async () => {
+                const loaded = await fetchAndRenderGhostPosts({
+                    targetId: 'ghost_list',
+                    limit: limitPerClick,
+                    offset: offset,
+                    append: true
+                });
+
+                offset += limitPerClick;
+
+                if (loaded < limitPerClick) {
+                    btn.style.display = 'none';
+                }
+            });
+        }
+    }
 });
