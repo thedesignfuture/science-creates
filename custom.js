@@ -1602,34 +1602,32 @@ document.addEventListener('DOMContentLoaded', function () {
     const limitPerClick = 3;
 
     if (document.getElementById('ghost_list')) {
-        document.addEventListener('DOMContentLoaded', () => {
-            const listContainerId = 'ghost_list';
-            const loadMoreBtn = document.getElementById('load_mre_bttn');
+        const listContainerId = 'ghost_list';
+        const loadMoreBtn = document.getElementById('load_mre_bttn');
 
-            // First load
-            fetchAndRenderGhostPosts({
-                targetId: listContainerId,
-                limit: limitPerClick,
-                page: currentPage,
-                append: false,
-            });
-
-            if (loadMoreBtn) {
-                loadMoreBtn.addEventListener('click', async () => {
-                    currentPage += 1;
-
-                    const postsFetched = await fetchAndRenderGhostPosts({
-                        targetId: listContainerId,
-                        limit: limitPerClick,
-                        page: currentPage,
-                        append: true,
-                    });
-
-                    if (!postsFetched || postsFetched < limitPerClick) {
-                        loadMoreBtn.style.display = 'none';
-                    }
-                });
-            }
+        // First load
+        fetchAndRenderGhostPosts({
+            targetId: listContainerId,
+            limit: limitPerClick,
+            page: currentPage,
+            append: false,
         });
+
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', async () => {
+                currentPage += 1;
+
+                const postsFetched = await fetchAndRenderGhostPosts({
+                    targetId: listContainerId,
+                    limit: limitPerClick,
+                    page: currentPage,
+                    append: true,
+                });
+
+                if (!postsFetched || postsFetched < limitPerClick) {
+                    loadMoreBtn.style.display = 'none';
+                }
+            });
+        }
     }
 });
