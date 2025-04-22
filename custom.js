@@ -1564,42 +1564,42 @@ document.addEventListener('DOMContentLoaded', function () {
                 const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
 
                 container.innerHTML += `
-        <div data-move="up" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
-            <div class="row knwldge_hub_row">
-                <div class="col col-3 knwldge_hub_img_col">
-                    <div class="knwldge_hub_img_box">
-                        <a href="${post.url}" class="knwldge_hhub_lnk_box w-inline-block">
-                            <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
-                        </a>
-                    </div>
-                </div>
-                <div class="col col-9 knwldge_hub_info_col">
-                    <div class="knwldge_info_box pl_big">
-                        <div class="knwldge_info_box_innr">
-                            <div class="knwldge_info_hdr">
-                                <div class="knwldge_dte_box"><div>${postDate}</div></div>
-                                <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
+                    <div data-move="up" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
+                        <div class="row knwldge_hub_row">
+                            <div class="col col-3 knwldge_hub_img_col">
+                                <div class="knwldge_hub_img_box">
+                                    <a href="${post.url}" class="knwldge_hhub_lnk_box w-inline-block">
+                                        <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
+                                    </a>
+                                </div>
                             </div>
-                            <div class="knwldge_ttle_box pr_big">
-                                <a href="${post.url}" class="knwldge_ttle_lnk title_h2 w-inline-block">
-                                    <div>${post.title}</div>
-                                </a>
-                            </div>
-                            <div class="knwldge_bttm_bttn_box">
-                                <a href="${post.url}" class="shape_bttn w-inline-block">
-                                    <div class="shpe_cover_one">
-                                        <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                            <div class="col col-9 knwldge_hub_info_col">
+                                <div class="knwldge_info_box pl_big">
+                                    <div class="knwldge_info_box_innr">
+                                        <div class="knwldge_info_hdr">
+                                            <div class="knwldge_dte_box"><div>${postDate}</div></div>
+                                            <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
+                                        </div>
+                                        <div class="knwldge_ttle_box pr_big">
+                                            <a href="${post.url}" class="knwldge_ttle_lnk title_h2 w-inline-block">
+                                                <div>${post.title}</div>
+                                            </a>
+                                        </div>
+                                        <div class="knwldge_bttm_bttn_box">
+                                            <a href="${post.url}" class="shape_bttn w-inline-block">
+                                                <div class="shpe_cover_one">
+                                                    <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                                                </div>
+                                                <div class="shpe_cover_two shpe_cover_one">
+                                                    <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                                                </div>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div class="shpe_cover_two shpe_cover_one">
-                                        <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
-                                    </div>
-                                </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>`;
+                    </div>`;
             });
 
             currentVisibleCount += postsToShow.length;
@@ -1645,7 +1645,39 @@ document.addEventListener('DOMContentLoaded', function () {
             renderNextBatch();
         }
 
+        function clearAllFilters() {
+            activeSearch = '';
+            activeTag = 'all';
+            activeSort = 'latest';
+
+            if (searchInput) searchInput.value = '';
+
+            // Reset radio buttons
+            if (enableFilter && filterRadioName) {
+                const allFilter = document.querySelector(`input[name="${filterRadioName}"][value="all"]`);
+                if (allFilter) allFilter.checked = true;
+            }
+
+            if (enableSort && sortRadioName) {
+                const latestSort = document.querySelector(`input[name="${sortRadioName}"]`);
+                if (latestSort) latestSort.checked = true;
+            }
+
+            resetAndRender();
+        }
+
         await fetchAllPosts();
+
+        // ✅ Set default checked radios
+        if (enableFilter && filterRadioName) {
+            const allFilter = document.querySelector(`input[name="${filterRadioName}"][value="all"]`);
+            if (allFilter) allFilter.checked = true;
+        }
+        if (enableSort && sortRadioName) {
+            const latestSort = document.querySelector(`input[name="${sortRadioName}"]`);
+            if (latestSort) latestSort.checked = true;
+        }
+
         resetAndRender();
 
         if (loadMoreBtn) {
@@ -1680,34 +1712,13 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // 🔥 Reset on clicking "All" or ".filter_clear.clear_close"
-        document.querySelectorAll(
-            '.filter_clear.clear_close, input[name="' + filterRadioName + '"][value="all"]'
-        ).forEach(elem => {
-            elem.addEventListener('click', () => {
-                activeTag = 'all';
-                activeSearch = '';
-                activeSort = 'latest';
-
-                if (searchInput) searchInput.value = '';
-
-                if (sortRadioName) {
-                    const latestSortRadio = document.querySelector(`input[name="${sortRadioName}"]`);
-                    if (latestSortRadio) latestSortRadio.checked = true;
-                }
-
-                if (filterRadioName) {
-                    const allFilterRadio = document.querySelector(`input[name="${filterRadioName}"][value="all"]`);
-                    if (allFilterRadio) allFilterRadio.checked = true;
-                }
-
-                resetAndRender();
-            });
+        // ✅ Reset on "All" or Clear Button Click
+        document.querySelectorAll(`input[name="${filterRadioName}"][value="all"], .filter_clear.clear_close`).forEach(el => {
+            el.addEventListener('click', clearAllFilters);
         });
-
     }
 
-    // Usage
+    // Init
     if (document.getElementById('ghost_list')) {
         fetchAndRenderGhostPosts({
             targetId: 'ghost_list',
@@ -1731,6 +1742,5 @@ document.addEventListener('DOMContentLoaded', function () {
             enableFilter: false
         });
     }
-
 
 });
