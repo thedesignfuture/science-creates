@@ -1509,7 +1509,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Ghost Knowledge Hub
     const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
     const API_KEY = '969e9f32437ce35f25af6d1453';
-    
+
     async function fetchAndRenderGhostPosts({
         targetId,
         initialLimit = 3,
@@ -1523,24 +1523,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }) {
         const container = document.getElementById(targetId);
         if (!container) return;
-    
+
         const loadMoreBtn = loadMoreId ? document.getElementById(loadMoreId) : null;
         const searchInput = searchInputId ? document.getElementById(searchInputId) : null;
-    
+
         let activeSearch = '';
         let activeTag = 'all';
         let activeSort = 'latest';
         let cachedPosts = [];
         let currentVisibleCount = 0;
         let postsToRender = [];
-    
+
         async function fetchAllPosts() {
             const url = `${API_URL}?key=${API_KEY}&limit=100&include=tags,authors&order=published_at desc`;
             const response = await fetch(url, { headers: { 'Accept-Version': 'v5.0' } });
             const data = await response.json();
-    
+
             cachedPosts = data.posts;
-    
+
             if (enableFilter && targetId === 'ghost_list') {
                 cachedPosts = cachedPosts.map(post => {
                     const tags = post.tags.map(t => t.name.toLowerCase());
@@ -1550,7 +1550,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
         }
-    
+
         function renderNextBatch() {
             const postsToShow = postsToRender.slice(currentVisibleCount, currentVisibleCount + initialLimit);
             postsToShow.forEach(post => {
@@ -1559,7 +1559,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
                 const primaryTag = post.primary_tag?.name || 'Article';
                 const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
-    
+
                 container.innerHTML += `
                 <div data-move="up" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
                     <div class="row knwldge_hub_row">
@@ -1598,22 +1598,22 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                 </div>`;
             });
-    
+
             currentVisibleCount += postsToShow.length;
             if (loadMoreBtn) {
                 loadMoreBtn.style.display = currentVisibleCount < postsToRender.length ? 'flex' : 'none';
             }
         }
-    
+
         function applyFilters() {
             let filtered = [...cachedPosts];
-    
+
             if (enableSearch && activeSearch) {
                 filtered = filtered.filter(post =>
                     post.title.toLowerCase().startsWith(activeSearch.toLowerCase())
                 );
             }
-    
+
             if (enableFilter && activeTag !== 'all') {
                 filtered = filtered.filter(post => {
                     if (targetId === 'ghost_list') {
@@ -1622,7 +1622,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     return post.tags.some(tag => tag.name.toLowerCase() === activeTag);
                 });
             }
-    
+
             if (enableSort) {
                 filtered.sort((a, b) => {
                     return activeSort === 'oldest'
@@ -1630,40 +1630,47 @@ document.addEventListener('DOMContentLoaded', function () {
                         : new Date(b.published_at) - new Date(a.published_at);
                 });
             }
-    
+
             return filtered;
         }
-    
+
         function resetAndRender() {
             container.innerHTML = '';
             currentVisibleCount = 0;
             postsToRender = applyFilters();
             renderNextBatch();
         }
-    
+
         await fetchAllPosts();
         resetAndRender();
-    
+
         if (loadMoreBtn) {
             loadMoreBtn.addEventListener('click', () => renderNextBatch());
         }
-    
+
         if (enableFilter && filterRadioName) {
             document.querySelectorAll(`input[name="${filterRadioName}"]`).forEach(radio => {
                 radio.addEventListener('change', () => {
+                    document.querySelectorAll('.cat_filter_bttn').forEach(label => {
+                        label.classList.remove('w--redirected-checked');
+                    });
+
+                    const label = radio.closest('.cat_filter_bttn');
+                    if (label) label.classList.add('w--redirected-checked');
+
                     activeTag = radio.value.toLowerCase();
                     resetAndRender();
                 });
             });
         }
-    
+
         if (enableSearch && searchInput) {
             searchInput.addEventListener('input', () => {
                 activeSearch = searchInput.value.trim();
                 resetAndRender();
             });
         }
-    
+
         if (enableSort && sortRadioName) {
             document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
                 radio.addEventListener('change', () => {
@@ -1673,29 +1680,26 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             });
         }
-    
-        // ✅ Reset filters & search on `.filter_clear.clear_close` or #all_button
         document.querySelectorAll('.filter_clear.clear_close, #all_button').forEach(el => {
             el.addEventListener('click', () => {
                 activeSearch = '';
                 activeTag = 'all';
                 activeSort = 'latest';
-    
+
                 if (searchInput) searchInput.value = '';
                 const allRadio = document.querySelector(`input[name="${filterRadioName}"][value="all"]`);
-                if (allRadio) allRadio.click(); // Webflow-friendly
-    
+                if (allRadio) allRadio.click(); 
+
                 resetAndRender();
             });
         });
-    
-        // ✅ Trigger "All" filter radio on load (Webflow behavior)
+
         if (enableFilter && filterRadioName) {
             const allFilter = document.querySelector(`input[name="${filterRadioName}"][value="all"]`);
             if (allFilter) allFilter.click();
         }
     }
-    
+
     // Usage
     if (document.getElementById('ghost_list')) {
         fetchAndRenderGhostPosts({
@@ -1710,7 +1714,7 @@ document.addEventListener('DOMContentLoaded', function () {
             loadMoreId: 'load_mre_bttn'
         });
     }
-    
+
     if (document.getElementById('ghost-posts')) {
         fetchAndRenderGhostPosts({
             targetId: 'ghost-posts',
@@ -1720,5 +1724,6 @@ document.addEventListener('DOMContentLoaded', function () {
             enableFilter: false
         });
     }
-    
+
+
 });
