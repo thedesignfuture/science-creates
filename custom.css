@@ -1739,3 +1739,9 @@ body.dark_mode .vlue_rch_txt li strong {
     right: 0;
     bottom: 0;
 }
+/* body.dark_mode .fltrng_bttn.has_active {
+    background: var(--dark-grey)
+} */
+.evnt_dtls_bnnr_lft::before,.evnt_dtls_bnnr_rght::before {
+    background: var(--grey);
+}
