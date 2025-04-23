@@ -1751,3 +1751,7 @@ body.dark_mode .vlue_rch_txt li strong {
 .prgrmme_dte_item.swiper-slide.swiper-slide-active .ftrd_dte_box.evnt_tme_box {
     opacity: 1;
 }
+
+.sldr_prgrss_hldr[data-pagination-bg=dark-grey] .swiper-pagination-progressbar-fill {
+    background: var(--dark-grey);
+}
