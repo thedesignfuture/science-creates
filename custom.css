@@ -1745,3 +1745,8 @@ body.dark_mode .vlue_rch_txt li strong {
 .evnt_dtls_bnnr_lft::before,.evnt_dtls_bnnr_rght::before {
     background: var(--grey);
 }
+.prgrmme_dte_item.swiper-slide.swiper-slide-active .evnt_prgrmme_box{
+    opacity: 1;
+    color: var(--pure-white);
+    background: var(--charcoal-black);
+}
