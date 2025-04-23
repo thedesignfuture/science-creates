@@ -541,7 +541,7 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem('darkMode', darkModeStatus);
         });
     }
-    if (Document.getElementById("event_post")) {
+    if (document.getElementById("event_post")) {
         themeButton.addEventListener('click', () => {
             window.webskitters.themeChnage();
         });
