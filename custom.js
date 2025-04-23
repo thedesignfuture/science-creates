@@ -531,7 +531,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         themeButton.addEventListener('click', () => {
-            window.webskitters.themeChnage();
+            if (window.webskitters && typeof window.webskitters.themeChnage === 'function') {
+                window.webskitters.themeChnage();
+            }
             const allThemeButtons = document.querySelectorAll('.theme_bttn');
             allThemeButtons.forEach((btn) => {
                 btn.classList.toggle('dark_mode_active');
@@ -558,11 +560,7 @@ document.addEventListener('DOMContentLoaded', function () {
             removeDropdownOpenClasses();
         });
     }
-    if (document.getElementById("event_post")) {
-        themeButton.addEventListener('click', () => {
-            window.webskitters.themeChnage();
-        });
-    }
+
     function removeDropdownOpenClasses() {
         document.querySelectorAll('.menu_drpdwn .w-dropdown-toggle.w--open').forEach((element) => {
             element.classList.remove('w--open');
