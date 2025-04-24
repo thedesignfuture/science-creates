@@ -119,6 +119,24 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+
+    // Eco Slider
+      if ($(".eco_sldr").length) {
+        var $slider = $('.eco_sldr');
+        $slider.each(function () {
+            var $sliderParent = $(this).parents(".mmbr_lft_sldr_wrppr");
+            $(this).slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                prevArrow: $sliderParent.find('.sldr_custm_arrw .arrw_prev '),
+                nextArrow: $sliderParent.find('.sldr_custm_arrw .arrw_next'),
+                dots: false,
+                infinite: true,
+            });
+
+        });
+    }
+
     //  Members Slider
     function initializeSliderAlt(sliderSelector, options, wrapperSelector) {
         let slider = $(wrapperSelector).find(sliderSelector);
