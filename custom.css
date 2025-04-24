@@ -1739,11 +1739,15 @@ body.dark_mode .vlue_rch_txt li strong {
     right: 0;
     bottom: 0;
 }
-/* body.dark_mode .fltrng_bttn.has_active {
-    background: var(--dark-grey)
-} */
 .evnt_dtls_bnnr_lft::before,.evnt_dtls_bnnr_rght::before {
     background: var(--grey);
+}
+.cat_filter_bttn.w--redirected-checked{
+    background: var(--charcoal-black);
+    color: var(--pure-white);
+}
+body.dark_mode .cat_filter_bttn.w--redirected-checked{
+    background: var(--dark-grey);
 }
 .prgrmme_dte_item.swiper-slide.swiper-slide-active .evnt_prgrmme_box{
     opacity: 0;
