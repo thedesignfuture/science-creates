@@ -1745,13 +1745,11 @@ document.addEventListener('DOMContentLoaded', function () {
     //     });
     // }
 
-    // Class update on load and change
-    const radios = document.querySelectorAll('input[type="radio"][name="category-filtering"]');
-
-    function updateCheckedClass() {
+    // === CLASS TOGGLE FOR RADIO BUTTONS ===
+    function updateCheckedState(radioName) {
+        const radios = document.querySelectorAll(`input[type="radio"][name="${radioName}"]`);
         radios.forEach(radio => {
             const parent = radio.parentElement;
-
             if (radio.checked) {
                 parent.classList.add('w--redirected-checked');
             } else {
@@ -1759,14 +1757,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    if (radios.length > 0) {
-        radios[0].checked = true;
-        updateCheckedClass();
-    }
-    radios.forEach(radio => {
-        radio.addEventListener('change', updateCheckedClass);
-    });
-    // Ghost Knowledge Hub
+
+    // === INIT GHOST CMS POST FETCHING ===
     const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
     const API_KEY = '969e9f32437ce35f25af6d1453';
 
@@ -1911,11 +1903,17 @@ document.addEventListener('DOMContentLoaded', function () {
         if (enableFilter && filterRadioName) {
             document.querySelectorAll(`input[name="${filterRadioName}"]`).forEach(radio => {
                 radio.addEventListener('change', () => {
-                    updateCheckedState();
                     activeTag = radio.value.toLowerCase();
+                    updateCheckedState(filterRadioName);
                     resetAndRender();
                 });
             });
+
+            const defaultFilter = document.querySelector(`input[name="${filterRadioName}"][value="all"]`);
+            if (defaultFilter) {
+                defaultFilter.checked = true;
+                updateCheckedState(filterRadioName);
+            }
         }
 
         if (enableSearch && searchInput) {
@@ -1943,19 +1941,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (searchInput) searchInput.value = '';
                 const allRadio = document.querySelector(`input[name="${filterRadioName}"][value="all"]`);
-                if (allRadio) allRadio.click();
+                if (allRadio) {
+                    allRadio.checked = true;
+                    allRadio.dispatchEvent(new Event('change'));
+                }
 
                 resetAndRender();
             });
         });
-
-        if (enableFilter && filterRadioName) {
-            const allFilter = document.querySelector(`input[name="${filterRadioName}"][value="all"]`);
-            if (allFilter) allFilter.click();
-        }
     }
 
-    // Init calls
     if (document.getElementById('ghost_list')) {
         fetchAndRenderGhostPosts({
             targetId: 'ghost_list',
