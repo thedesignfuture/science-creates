@@ -1746,17 +1746,21 @@ document.addEventListener('DOMContentLoaded', function () {
     // }
 
     // === CLASS TOGGLE FOR RADIO BUTTONS ===
-    function updateCheckedState(radioName) {
-        const radios = document.querySelectorAll(`input[type="radio"][name="${radioName}"]`);
-        radios.forEach(radio => {
-            const parent = radio.parentElement;
-            if (radio.checked) {
-                parent.classList.add('w--redirected-checked');
-            } else {
-                parent.classList.remove('w--redirected-checked');
-            }
-        });
+    // Trigger the click of the 'all' radio button on page load
+    const allRadioButton = document.querySelector('input[name="category-filtering"][value="all"]');
+    if (allRadioButton) {
+        allRadioButton.checked = true; // Make sure it's checked
+        allRadioButton.dispatchEvent(new Event('change')); // Trigger the change event
     }
+
+    // Add event listeners to handle category filtering
+    const radios = document.querySelectorAll('input[name="category-filtering"]');
+    radios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            // You can add any custom logic for filtering here
+            console.log(`Category filter changed to: ${radio.value}`);
+        });
+    });
 
     // === INIT GHOST CMS POST FETCHING ===
     const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
@@ -1813,42 +1817,42 @@ document.addEventListener('DOMContentLoaded', function () {
                 const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
 
                 container.innerHTML += `
-                   <div data-move="up" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
-                       <div class="row knwldge_hub_row">
-                           <div class="col col-3 knwldge_hub_img_col">
-                               <div class="knwldge_hub_img_box">
-                                   <a href="${post.url}" class="knwldge_hhub_lnk_box w-inline-block">
-                                       <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
-                                   </a>
+                       <div data-move="up" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
+                           <div class="row knwldge_hub_row">
+                               <div class="col col-3 knwldge_hub_img_col">
+                                   <div class="knwldge_hub_img_box">
+                                       <a href="${post.url}" class="knwldge_hhub_lnk_box w-inline-block">
+                                           <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
+                                       </a>
+                                   </div>
                                </div>
-                           </div>
-                           <div class="col col-9 knwldge_hub_info_col">
-                               <div class="knwldge_info_box pl_big">
-                                   <div class="knwldge_info_box_innr">
-                                       <div class="knwldge_info_hdr">
-                                           <div class="knwldge_dte_box"><div>${postDate}</div></div>
-                                           <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
-                                       </div>
-                                       <div class="knwldge_ttle_box pr_big">
-                                           <a href="${post.url}" class="knwldge_ttle_lnk title_h2 w-inline-block">
-                                               <div>${post.title}</div>
-                                           </a>
-                                       </div>
-                                       <div class="knwldge_bttm_bttn_box">
-                                           <a href="${post.url}" class="shape_bttn w-inline-block">
-                                               <div class="shpe_cover_one">
-                                                   <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
-                                               </div>
-                                               <div class="shpe_cover_two shpe_cover_one">
-                                                   <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
-                                               </div>
-                                           </a>
+                               <div class="col col-9 knwldge_hub_info_col">
+                                   <div class="knwldge_info_box pl_big">
+                                       <div class="knwldge_info_box_innr">
+                                           <div class="knwldge_info_hdr">
+                                               <div class="knwldge_dte_box"><div>${postDate}</div></div>
+                                               <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
+                                           </div>
+                                           <div class="knwldge_ttle_box pr_big">
+                                               <a href="${post.url}" class="knwldge_ttle_lnk title_h2 w-inline-block">
+                                                   <div>${post.title}</div>
+                                               </a>
+                                           </div>
+                                           <div class="knwldge_bttm_bttn_box">
+                                               <a href="${post.url}" class="shape_bttn w-inline-block">
+                                                   <div class="shpe_cover_one">
+                                                       <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                                                   </div>
+                                                   <div class="shpe_cover_two shpe_cover_one">
+                                                       <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                                                   </div>
+                                               </a>
+                                           </div>
                                        </div>
                                    </div>
                                </div>
                            </div>
-                       </div>
-                   </div>`;
+                       </div>`;
             });
 
             currentVisibleCount += postsToShow.length;
@@ -1904,15 +1908,15 @@ document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll(`input[name="${filterRadioName}"]`).forEach(radio => {
                 radio.addEventListener('change', () => {
                     activeTag = radio.value.toLowerCase();
-                    updateCheckedState(filterRadioName);
                     resetAndRender();
                 });
             });
 
+            // Trigger default selection
             const defaultFilter = document.querySelector(`input[name="${filterRadioName}"][value="all"]`);
             if (defaultFilter) {
                 defaultFilter.checked = true;
-                updateCheckedState(filterRadioName);
+                defaultFilter.dispatchEvent(new Event('change'));
             }
         }
 
@@ -1951,6 +1955,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // === INIT FOR ghost_list ===
     if (document.getElementById('ghost_list')) {
         fetchAndRenderGhostPosts({
             targetId: 'ghost_list',
@@ -1965,6 +1970,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // === INIT FOR ghost-posts ===
     if (document.getElementById('ghost-posts')) {
         fetchAndRenderGhostPosts({
             targetId: 'ghost-posts',
@@ -1974,4 +1980,5 @@ document.addEventListener('DOMContentLoaded', function () {
             enableFilter: false
         });
     }
+
 });
