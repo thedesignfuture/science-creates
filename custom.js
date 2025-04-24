@@ -1746,31 +1746,26 @@ document.addEventListener('DOMContentLoaded', function () {
     // }
 
     // Class update on load and change
-    const radios = document.querySelectorAll('.cat_filter_bttn');
+    const radios = document.querySelectorAll('input[type="radio"][name="category-filtering"]');
 
-    function updateCheckedState() {
-        document.querySelectorAll('.cat_filter_bttn').forEach(btn => {
-            btn.classList.remove('w--redirected-checked');
-        });
+    function updateCheckedClass() {
+        radios.forEach(radio => {
+            const parent = radio.parentElement;
 
-        radios.forEach((radio) => {
             if (radio.checked) {
-                const wrapper = radio.closest('.w-radio');
-                const catBtn = wrapper?.closest('.cat_filter_bttn');
-                if (catBtn) catBtn.classList.add('w--redirected-checked');
+                parent.classList.add('w--redirected-checked');
+            } else {
+                parent.classList.remove('w--redirected-checked');
             }
         });
     }
-
-    // Ensure checked state is recognized after DOM paint
-    requestAnimationFrame(() => {
-        updateCheckedState();
+    if (radios.length > 0) {
+        radios[0].checked = true;
+        updateCheckedClass();
+    }
+    radios.forEach(radio => {
+        radio.addEventListener('change', updateCheckedClass);
     });
-
-    radios.forEach((radio) => {
-        radio.addEventListener('change', updateCheckedState);
-    });
-
     // Ghost Knowledge Hub
     const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
     const API_KEY = '969e9f32437ce35f25af6d1453';
@@ -1826,42 +1821,42 @@ document.addEventListener('DOMContentLoaded', function () {
                 const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
 
                 container.innerHTML += `
-                 <div data-move="up" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
-                     <div class="row knwldge_hub_row">
-                         <div class="col col-3 knwldge_hub_img_col">
-                             <div class="knwldge_hub_img_box">
-                                 <a href="${post.url}" class="knwldge_hhub_lnk_box w-inline-block">
-                                     <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
-                                 </a>
-                             </div>
-                         </div>
-                         <div class="col col-9 knwldge_hub_info_col">
-                             <div class="knwldge_info_box pl_big">
-                                 <div class="knwldge_info_box_innr">
-                                     <div class="knwldge_info_hdr">
-                                         <div class="knwldge_dte_box"><div>${postDate}</div></div>
-                                         <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
-                                     </div>
-                                     <div class="knwldge_ttle_box pr_big">
-                                         <a href="${post.url}" class="knwldge_ttle_lnk title_h2 w-inline-block">
-                                             <div>${post.title}</div>
-                                         </a>
-                                     </div>
-                                     <div class="knwldge_bttm_bttn_box">
-                                         <a href="${post.url}" class="shape_bttn w-inline-block">
-                                             <div class="shpe_cover_one">
-                                                 <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
-                                             </div>
-                                             <div class="shpe_cover_two shpe_cover_one">
-                                                 <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
-                                             </div>
-                                         </a>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                 </div>`;
+                   <div data-move="up" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
+                       <div class="row knwldge_hub_row">
+                           <div class="col col-3 knwldge_hub_img_col">
+                               <div class="knwldge_hub_img_box">
+                                   <a href="${post.url}" class="knwldge_hhub_lnk_box w-inline-block">
+                                       <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
+                                   </a>
+                               </div>
+                           </div>
+                           <div class="col col-9 knwldge_hub_info_col">
+                               <div class="knwldge_info_box pl_big">
+                                   <div class="knwldge_info_box_innr">
+                                       <div class="knwldge_info_hdr">
+                                           <div class="knwldge_dte_box"><div>${postDate}</div></div>
+                                           <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
+                                       </div>
+                                       <div class="knwldge_ttle_box pr_big">
+                                           <a href="${post.url}" class="knwldge_ttle_lnk title_h2 w-inline-block">
+                                               <div>${post.title}</div>
+                                           </a>
+                                       </div>
+                                       <div class="knwldge_bttm_bttn_box">
+                                           <a href="${post.url}" class="shape_bttn w-inline-block">
+                                               <div class="shpe_cover_one">
+                                                   <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                                               </div>
+                                               <div class="shpe_cover_two shpe_cover_one">
+                                                   <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                                               </div>
+                                           </a>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>`;
             });
 
             currentVisibleCount += postsToShow.length;
