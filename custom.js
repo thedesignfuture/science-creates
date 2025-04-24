@@ -2001,6 +2001,5 @@ document.addEventListener('DOMContentLoaded', function () {
              enableFilter: false
          });
      }
- });
 
 });
