@@ -1737,6 +1737,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 filterButtons.forEach(b => b.classList.remove('has_active'));
                 const defaultBtn = document.querySelector('.cat_filter_bttn[data-filter="all"]');
                 if (defaultBtn) defaultBtn.classList.add('has_active');
+                document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
+                    radio.checked = false;
+                });
 
                 resetAndRender();
             });
