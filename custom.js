@@ -1772,8 +1772,7 @@ document.addEventListener('DOMContentLoaded', function () {
             targetId: 'ghost_box',
             initialLimit: 1,
             renderPostHTML: post => `
-            <div class="sptlght_bttm_box"><div class="sptlght_img_box"><a href="${post.url}" class="sptlght_img_lnk w-inline-block"><img src="${featureImage}" loading="lazy" alt="${post.title}"  class="sptlght_img"></a></div><div class="sptlght_ttle_box"><a href="${post.url}" class="sptlght_ttle_lnk">${post.title}</a></div></div>
-        `
+            <div class="sptlght_img_box"><a href="${post.url}" class="sptlght_img_lnk w-inline-block"><img src="${featureImage}" loading="lazy" alt="${post.title}"  class="sptlght_img"></a></div><div class="sptlght_ttle_box"><a href="${post.url}" class="sptlght_ttle_lnk">${post.title}</a></div>`
         });
     }
 });
