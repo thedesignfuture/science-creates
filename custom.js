@@ -1539,7 +1539,8 @@ document.addEventListener('DOMContentLoaded', function () {
         sortRadioName = null,
         enableFilter = false,
         loadMoreId = null,
-        filterContainerSelector = null
+        filterContainerSelector = null,
+        renderPostHTML = null
     }) {
         const container = document.getElementById(targetId);
         if (!container) return;
@@ -1560,10 +1561,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const response = await fetch(url, { headers: { 'Accept-Version': 'v5.0' } });
             const data = await response.json();
 
-            cachedPosts = data.posts;
-
-            // Assign filterType for filtering
-            cachedPosts = cachedPosts.map(post => {
+            cachedPosts = data.posts.map(post => {
                 const tags = post.tags.map(tag => tag.name.toLowerCase());
                 return {
                     ...post,
@@ -1571,7 +1569,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 };
             });
 
-            // Dynamically render filter buttons
             if (enableFilter && filterContainerSelector) {
                 const filterContainer = document.querySelector(filterContainerSelector);
                 if (filterContainer) {
@@ -1581,62 +1578,65 @@ document.addEventListener('DOMContentLoaded', function () {
                             <a href="javascript:void(0);" class="cat_filter_bttn fltrng_bttn ${tag === 'all' ? 'has_active' : ''}" data-filter="${tag}">
                                 ${tag.charAt(0).toUpperCase() + tag.slice(1)}
                             </a>
-                        </div>`).join('');
-
+                        </div>`
+                    ).join('');
                     filterContainer.innerHTML = buttonsHTML;
-
-                    // Update buttons list
                     filterButtons = document.querySelectorAll('.cat_filter_bttn');
                 }
             }
         }
 
-        function renderNextBatch() {
-            const postsToShow = postsToRender.slice(currentVisibleCount, currentVisibleCount + initialLimit);
-            postsToShow.forEach(post => {
-                const postDate = new Date(post.published_at).toLocaleDateString('en-GB', {
-                    day: 'numeric', month: 'short', year: 'numeric'
-                });
-                const primaryTag = post.primary_tag?.name || 'Article';
-                const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
+        function defaultRenderHTML(post) {
+            const postDate = new Date(post.published_at).toLocaleDateString('en-GB', {
+                day: 'numeric', month: 'short', year: 'numeric'
+            });
+            const primaryTag = post.primary_tag?.name || 'Article';
+            const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
 
-                container.innerHTML += `
-                    <div data-move="up" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
-                        <div class="row knwldge_hub_row">
-                            <div class="col col-3 knwldge_hub_img_col">
-                                <div class="knwldge_hub_img_box">
-                                    <a href="${post.url}" class="knwldge_hhub_lnk_box w-inline-block">
-                                        <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
-                                    </a>
-                                </div>
+            return `
+                <div data-move="up" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
+                    <div class="row knwldge_hub_row">
+                        <div class="col col-3 knwldge_hub_img_col">
+                            <div class="knwldge_hub_img_box">
+                                <a href="${post.url}" class="knwldge_hhub_lnk_box w-inline-block">
+                                    <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
+                                </a>
                             </div>
-                            <div class="col col-9 knwldge_hub_info_col">
-                                <div class="knwldge_info_box pl_big">
-                                    <div class="knwldge_info_box_innr">
-                                        <div class="knwldge_info_hdr">
-                                            <div class="knwldge_dte_box"><div>${postDate}</div></div>
-                                            <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
-                                        </div>
-                                        <div class="knwldge_ttle_box pr_big">
-                                            <a href="${post.url}" class="knwldge_ttle_lnk title_h2 w-inline-block">
-                                                <div>${post.title}</div>
-                                            </a>
-                                        </div>
-                                        <div class="knwldge_bttm_bttn_box">
-                                            <a href="${post.url}" class="shape_bttn w-inline-block">
-                                                <div class="shpe_cover_one">
-                                                    <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
-                                                </div>
-                                                <div class="shpe_cover_two shpe_cover_one">
-                                                    <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
-                                                </div>
-                                            </a>
-                                        </div>
+                        </div>
+                        <div class="col col-9 knwldge_hub_info_col">
+                            <div class="knwldge_info_box pl_big">
+                                <div class="knwldge_info_box_innr">
+                                    <div class="knwldge_info_hdr">
+                                        <div class="knwldge_dte_box"><div>${postDate}</div></div>
+                                        <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
+                                    </div>
+                                    <div class="knwldge_ttle_box pr_big">
+                                        <a href="${post.url}" class="knwldge_ttle_lnk title_h2 w-inline-block">
+                                            <div>${post.title}</div>
+                                        </a>
+                                    </div>
+                                    <div class="knwldge_bttm_bttn_box">
+                                        <a href="${post.url}" class="shape_bttn w-inline-block">
+                                            <div class="shpe_cover_one">
+                                                <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                                            </div>
+                                            <div class="shpe_cover_two shpe_cover_one">
+                                                <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                                            </div>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>`;
+                    </div>
+                </div>`;
+        }
+
+        function renderNextBatch() {
+            const postsToShow = postsToRender.slice(currentVisibleCount, currentVisibleCount + initialLimit);
+            postsToShow.forEach(post => {
+                const html = renderPostHTML ? renderPostHTML(post) : defaultRenderHTML(post);
+                container.innerHTML += html;
             });
 
             currentVisibleCount += postsToShow.length;
@@ -1745,6 +1745,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+
     fetchAndRenderGhostPosts({
         targetId: 'ghost_list',
         initialLimit: 3,
@@ -1764,6 +1765,15 @@ document.addEventListener('DOMContentLoaded', function () {
             enableSearch: false,
             enableSort: false,
             enableFilter: false
+        });
+    }
+    if (document.getElementById('ghost_box')) {
+        fetchAndRenderGhostPosts({
+            targetId: 'ghost_box',
+            initialLimit: 1,
+            renderPostHTML: post => `
+            <div class="sptlght_bttm_box"><div class="sptlght_img_box"><a href="${post.url}" class="sptlght_img_lnk w-inline-block"><img src="${featureImage}" loading="lazy" alt="${post.title}"  class="sptlght_img"></a></div><div class="sptlght_ttle_box"><a href="${post.url}" class="sptlght_ttle_lnk">${post.title}</a></div></div>
+        `
         });
     }
 });
