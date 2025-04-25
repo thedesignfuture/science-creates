@@ -549,8 +549,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         themeButton.addEventListener('click', () => {
-            if (window.webskitters && typeof window.webskitters.themeChnage === 'function') {
-                window.webskitters.themeChnage();
+            if (window.sc && typeof window.sc.themeChnage === 'function') {
+                window.sc.themeChnage();
             }
             const allThemeButtons = document.querySelectorAll('.theme_bttn');
             allThemeButtons.forEach((btn) => {
