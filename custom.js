@@ -1641,7 +1641,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             currentVisibleCount += postsToShow.length;
             if (loadMoreBtn) {
-                loadMoreBtn.style.display = currentVisibleCount < postsToRender.length ? 'flex' : 'none';
+                loadMoreBtn.style.display = currentVisibleCount < postsToRender.length ? 'inline-flex' : 'none';
             }
         }
 
