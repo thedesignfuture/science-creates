@@ -1316,7 +1316,7 @@ body.dark_mode .cmnty_logo {
     background: var(--pure-white);
 }
 
-.lab_supprt_rch_txt li {
+.lab_supprt_rch_txt li,.lab_supprt_rch_txt_alt li {
     background-position: top 0.463rem left 0rem;
 }
 
