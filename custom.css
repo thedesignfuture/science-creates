@@ -3071,14 +3071,16 @@ body.dark_mode .cmnty_logo {
     border-radius: 100%;
     background: var(--charcoal-black);
 }
-
+body.dark_mode [data-bg-color='white'] .mmbr_sldr_tab_item .sldr_tab_bttn{
+    color: rgba(255, 255, 255, 0.25);
+}
 .sldr_tab_bttn.spprt_tab_bttn::before,
-.mmbr_sldr_tab_item .sldr_tab_bttn.sldr_whte_bttn::before {
+.mmbr_sldr_tab_item .sldr_tab_bttn.sldr_whte_bttn::before,body.dark_mode [data-bg-color='white'] .mmbr_sldr_tab_item .sldr_tab_bttn::before  {
     background: rgba(255, 255, 255, 0.25);
 }
 
 .mmbr_sldr_tab_item.active .sldr_tab_bttn.spprt_tab_bttn,
-.mmbr_sldr_tab_item.active .sldr_tab_bttn.sldr_whte_bttn {
+.mmbr_sldr_tab_item.active .sldr_tab_bttn.sldr_whte_bttn,body.dark_mode [data-bg-color='white'] .mmbr_sldr_tab_item.active .sldr_tab_bttn {
     color: var(--pure-white);
 }
 
