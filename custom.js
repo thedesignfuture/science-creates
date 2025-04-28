@@ -1194,8 +1194,8 @@ document.addEventListener('DOMContentLoaded', function () {
     //     });
     // }
 
-    if (!document.querySelector('.event_filter')) return;
-
+    // if (!document.querySelector('.event_filter')) return;
+    if (document.querySelector('.event_filter') !== null) {
     // ─── your existing Event Filtering code ────────────────────────────────────
     let selectedGroups = new Set();
     let serchSelect = document.querySelectorAll('.srch_slct');
@@ -1305,7 +1305,7 @@ document.addEventListener('DOMContentLoaded', function () {
     sortByDate(getCurrentOrder());
     // ──────────────────────────────────────────────────────────────────────────────
 
-
+    }
     //Floor Accordion Mode
     const accrdWrppr = document.querySelectorAll('.floor_tab_wrppr');
 
