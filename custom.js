@@ -1923,9 +1923,7 @@ document.addEventListener('DOMContentLoaded', function () {
         enableFilter: true,
         loadMoreId: 'load_mre_bttn',
         filterContainerSelector: '.cmnty_fltr_bttn_lstng'
-    }).then(() => {
-        initSearchSelects();
-    });
+    })
 }
     if (document.getElementById('ghost-posts')) {
         fetchAndRenderGhostPosts({
