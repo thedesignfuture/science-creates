@@ -1910,12 +1910,32 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
+        // document.querySelectorAll('.filter_clear.clear_close').forEach(el => {
+        //     el.addEventListener('click', () => {
+        //         activeSearch = '';
+        //         activeTag = 'all';
+        //         activeSort = 'latest';
+
+        //         if (searchInput) searchInput.value = '';
+        //         filterButtons.forEach(b => b.classList.remove('has_active'));
+        //         const defaultBtn = document.querySelector('.cat_filter_bttn[data-filter="all"]');
+        //         if (defaultBtn) defaultBtn.classList.add('has_active');
+        //         document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
+        //             radio.checked = false;
+        //         });
+
+        //         resetAndRender();
+        //     });
+        // });
+    }
+
+    function initClearButtonListeners() {
         document.querySelectorAll('.filter_clear.clear_close').forEach(el => {
             el.addEventListener('click', () => {
                 activeSearch = '';
                 activeTag = 'all';
                 activeSort = 'latest';
-
+    
                 if (searchInput) searchInput.value = '';
                 filterButtons.forEach(b => b.classList.remove('has_active'));
                 const defaultBtn = document.querySelector('.cat_filter_bttn[data-filter="all"]');
@@ -1923,7 +1943,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
                     radio.checked = false;
                 });
-
+    
                 resetAndRender();
             });
         });
@@ -1939,7 +1959,10 @@ document.addEventListener('DOMContentLoaded', function () {
         enableFilter: true,
         loadMoreId: 'load_mre_bttn',
         filterContainerSelector: '.cmnty_fltr_bttn_lstng'
-    }).then(() => initSearchSelects());
+    }).then(() => {
+        initSearchSelects();
+        initClearButtonListeners();
+    });
 }
     if (document.getElementById('ghost-posts')) {
         fetchAndRenderGhostPosts({
