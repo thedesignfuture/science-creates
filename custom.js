@@ -1119,80 +1119,192 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
     })
 
-    // Event Filtering
-    if (document.querySelector('.event_filter') !== null) {
+    // // Event Filtering
+    // if (document.querySelector('.event_filter') !== null) {
 
-        let selectedGroups = new Set();
-        let serchSelect = document?.querySelectorAll('.srch_slct');
-        let displayElement = document?.querySelector('.srch_txt_block');
-        let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
-        let initialDisplayText = displayElement?.textContent;
+    //     let selectedGroups = new Set();
+    //     let serchSelect = document?.querySelectorAll('.srch_slct');
+    //     let displayElement = document?.querySelector('.srch_txt_block');
+    //     let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    //     let initialDisplayText = displayElement?.textContent;
 
-        function updateDisplayText() {
-            if (displayElement) {
-                displayElement.textContent = `Filters selected (${selectedGroups.size})`;
-                displayElement.parentNode.classList.add('filters_selected');
-            }
+    //     function updateDisplayText() {
+    //         if (displayElement) {
+    //             displayElement.textContent = `Filters selected (${selectedGroups.size})`;
+    //             displayElement.parentNode.classList.add('filters_selected');
+    //         }
+    //     }
+
+    //     serchSelect.forEach((el) => {
+    //         let selectDropToggle = el.querySelector('.srch_slct_tggle');
+    //         let selectDrop = el.querySelector('.slct_lst_drp');
+    //         let dropMaxHeight = selectDrop.scrollHeight;
+
+    //         function slideDown() {
+    //             selectDrop.style.maxHeight = `${dropMaxHeight / remVal}rem`;
+    //         }
+    //         function slideUp() {
+    //             selectDrop.style.maxHeight = `0rem`;
+    //         }
+
+    //         if (selectDropToggle.classList.contains('srch_slct_active')) {
+    //             slideDown();
+    //         } else {
+    //             slideUp();
+    //         }
+    //         selectDropToggle.addEventListener('click', () => {
+    //             selectDropToggle.classList.toggle('srch_slct_active');
+    //             selectDrop.classList.toggle('srch_slct_drop_active');
+    //             if (selectDropToggle.classList.contains('srch_slct_active')) {
+    //                 slideDown();
+    //             } else {
+    //                 slideUp();
+    //             }
+    //         });
+    //         let dropListing = el.querySelectorAll('.drop_flte_lstng');
+    //         dropListing.forEach((elem, index) => {
+    //             let customRadio = elem.querySelectorAll('.custom_lnk input[type=radio]');
+    //             customRadio.forEach((radio) => {
+    //                 radio.addEventListener('click', function () {
+    //                     selectedGroups.add(index);
+    //                     updateDisplayText();
+    //                 });
+    //             });
+    //         });
+    //     });
+    //     // Clear Filter
+    //     let clearFilter = document.querySelectorAll('[fs-cmsfilter-element="clear"]');
+    //     clearFilter.forEach((elem) => {
+    //         let clickTimeout = null;
+
+    //         elem.addEventListener('click', (event) => {
+    //             event.stopPropagation();
+    //             if (clickTimeout) {
+    //                 clearTimeout(clickTimeout);
+    //             }
+    //             clickTimeout = setTimeout(() => {
+    //                 selectedGroups.clear();
+    //                 if (displayElement) {
+    //                     displayElement.textContent = initialDisplayText;
+    //                     displayElement.parentNode.classList.remove('filters_selected');
+    //                     document.querySelector('.all_bttn_hlder [fs-cmsfilter-element="clear"]').classList.add('has_active')
+    //                 }
+    //             }, 300);
+    //         });
+    //     });
+    // }
+
+    if (!document.querySelector('.event_filter')) return;
+
+    // ─── your existing Event Filtering code ────────────────────────────────────
+    let selectedGroups = new Set();
+    let serchSelect = document.querySelectorAll('.srch_slct');
+    let displayElement = document.querySelector('.srch_txt_block');
+    let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    let initialDisplayText = displayElement?.textContent;
+
+    function updateDisplayText() {
+        if (displayElement) {
+            displayElement.textContent = `Filters selected (${selectedGroups.size})`;
+            displayElement.parentNode.classList.add('filters_selected');
         }
+    }
 
-        serchSelect.forEach((el) => {
-            let selectDropToggle = el.querySelector('.srch_slct_tggle');
-            let selectDrop = el.querySelector('.slct_lst_drp');
-            let dropMaxHeight = selectDrop.scrollHeight;
+    serchSelect.forEach(el => {
+        let toggle = el.querySelector('.srch_slct_tggle');
+        let drop = el.querySelector('.slct_lst_drp');
+        let maxH = drop.scrollHeight;
+        function down() { drop.style.maxHeight = `${maxH / remVal}rem`; }
+        function up() { drop.style.maxHeight = `0rem`; }
 
-            function slideDown() {
-                selectDrop.style.maxHeight = `${dropMaxHeight / remVal}rem`;
-            }
-            function slideUp() {
-                selectDrop.style.maxHeight = `0rem`;
-            }
+        toggle.classList.contains('srch_slct_active') ? down() : up();
+        toggle.addEventListener('click', () => {
+            toggle.classList.toggle('srch_slct_active');
+            drop.classList.toggle('srch_slct_drop_active');
+            toggle.classList.contains('srch_slct_active') ? down() : up();
+        });
 
-            if (selectDropToggle.classList.contains('srch_slct_active')) {
-                slideDown();
-            } else {
-                slideUp();
-            }
-            selectDropToggle.addEventListener('click', () => {
-                selectDropToggle.classList.toggle('srch_slct_active');
-                selectDrop.classList.toggle('srch_slct_drop_active');
-                if (selectDropToggle.classList.contains('srch_slct_active')) {
-                    slideDown();
-                } else {
-                    slideUp();
-                }
-            });
-            let dropListing = el.querySelectorAll('.drop_flte_lstng');
-            dropListing.forEach((elem, index) => {
-                let customRadio = elem.querySelectorAll('.custom_lnk input[type=radio]');
-                customRadio.forEach((radio) => {
-                    radio.addEventListener('click', function () {
-                        selectedGroups.add(index);
-                        updateDisplayText();
-                    });
+        el.querySelectorAll('.drop_flte_lstng').forEach((lst, i) => {
+            lst.querySelectorAll('.custom_lnk input[type=radio]').forEach(radio => {
+                radio.addEventListener('click', () => {
+                    selectedGroups.add(i);
+                    updateDisplayText();
                 });
             });
         });
-        // Clear Filter
-        let clearFilter = document.querySelectorAll('[fs-cmsfilter-element="clear"]');
-        clearFilter.forEach((elem) => {
-            let clickTimeout = null;
+    });
 
-            elem.addEventListener('click', (event) => {
-                event.stopPropagation();
-                if (clickTimeout) {
-                    clearTimeout(clickTimeout);
+    let clearFilter = document.querySelectorAll('[fs-cmsfilter-element="clear"]');
+    clearFilter.forEach(btn => {
+        let t = null;
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            clearTimeout(t);
+            t = setTimeout(() => {
+                selectedGroups.clear();
+                if (displayElement) {
+                    displayElement.textContent = initialDisplayText;
+                    displayElement.parentNode.classList.remove('filters_selected');
+                    document.querySelector('.all_bttn_hlder [fs-cmsfilter-element="clear"]')
+                        .classList.add('has_active');
                 }
-                clickTimeout = setTimeout(() => {
-                    selectedGroups.clear();
-                    if (displayElement) {
-                        displayElement.textContent = initialDisplayText;
-                        displayElement.parentNode.classList.remove('filters_selected');
-                        document.querySelector('.all_bttn_hlder [fs-cmsfilter-element="clear"]').classList.add('has_active')
-                    }
-                }, 300);
-            });
+                // clear sort radios & UI class
+                document.querySelectorAll('input[name="date-sort"]').forEach(r => {
+                    r.checked = false;
+                    r.closest('label')?.classList.remove('w--redirected-checked');
+                });
+                // default resort
+                sortByDate('desc');
+            }, 300);
+        });
+    });
+    // ──────────────────────────────────────────────────────────────────────────────
+
+
+    // ─── pure-JS date-sorting functions ─────────────────────────────────────────
+    const listWrapper = document.querySelector('.all_cmunty_box [fs-cmsnest-element="list"]');
+    if (!listWrapper) return;
+
+    function parseDMY(s) {
+        let [d, m, y] = s.split('/').map(Number);
+        return new Date(y, m - 1, d);
+    }
+    function getCurrentOrder() {
+        let sel = document.querySelector('input[name="date-sort"]:checked');
+        return (sel && sel.id === 'Oldest') ? 'asc' : 'desc';
+    }
+    function sortByDate(order = 'desc') {
+        let cards = Array.from(listWrapper.querySelectorAll('.w-dyn-item'));
+        cards.sort((a, b) => {
+            let da = parseDMY(a.querySelector('.rsurce_dte').textContent.trim());
+            let db = parseDMY(b.querySelector('.rsurce_dte').textContent.trim());
+            return order === 'desc' ? db - da : da - db;
+        });
+        cards.forEach(c => listWrapper.appendChild(c));
+    }
+
+    // wire Latest/Oldest (you already have this, but ensure it's here)
+    document.querySelectorAll('input[name="date-sort"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+            document.querySelectorAll('label.w-radio').forEach(lbl => lbl.classList.remove('w--redirected-checked'));
+            radio.closest('label')?.classList.add('w--redirected-checked');
+            sortByDate(radio.id === 'Oldest' ? 'asc' : 'desc');
+        });
+    });
+
+    // ─── re-sort on Load more click instead of MutationObserver ─────────────────
+    const loadMoreBtn = document.querySelector('.load_mre_bttn');
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', () => {
+            // wait for Finsweet to append new items
+            setTimeout(() => sortByDate(getCurrentOrder()), 400);
         });
     }
+
+    // ─── initial sort on first load ─────────────────────────────────────────────
+    sortByDate(getCurrentOrder());
+    // ──────────────────────────────────────────────────────────────────────────────
+
 
     //Floor Accordion Mode
     const accrdWrppr = document.querySelectorAll('.floor_tab_wrppr');
