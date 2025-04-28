@@ -1170,7 +1170,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
         // Clear Filter
-        let clearFilter = document.querySelectorAll('[fs-cmsfilter-element="clear"]');
+        let clearFilter = document.querySelectorAll('[fs-cmsfilter-element="clear"]') || document.querySelectorAll('.all_clr_bttn');
         clearFilter.forEach((elem) => {
             let clickTimeout = null;
 
