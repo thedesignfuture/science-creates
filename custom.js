@@ -1070,10 +1070,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (displayElement) {
                         displayElement.textContent = initialDisplayText;
                         displayElement.parentNode.classList.remove('filters_selected');
-                        let allClearButton = document.querySelector('.all_bttn_hlder [fs-cmsfilter-element="clear"]');
-                        if (allClearButton) {
-                            allClearButton.classList.add('has_active');
-                        }
+                        document.querySelector('.all_bttn_hlder [fs-cmsfilter-element="clear"]').classList.add('has_active')
                     }
                 }, 300);
             });
@@ -1119,86 +1116,12 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
     })
 
-    // // Event Filtering
-    // if (document.querySelector('.event_filter') !== null) {
-
-    //     let selectedGroups = new Set();
-    //     let serchSelect = document?.querySelectorAll('.srch_slct');
-    //     let displayElement = document?.querySelector('.srch_txt_block');
-    //     let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
-    //     let initialDisplayText = displayElement?.textContent;
-
-    //     function updateDisplayText() {
-    //         if (displayElement) {
-    //             displayElement.textContent = `Filters selected (${selectedGroups.size})`;
-    //             displayElement.parentNode.classList.add('filters_selected');
-    //         }
-    //     }
-
-    //     serchSelect.forEach((el) => {
-    //         let selectDropToggle = el.querySelector('.srch_slct_tggle');
-    //         let selectDrop = el.querySelector('.slct_lst_drp');
-    //         let dropMaxHeight = selectDrop.scrollHeight;
-
-    //         function slideDown() {
-    //             selectDrop.style.maxHeight = `${dropMaxHeight / remVal}rem`;
-    //         }
-    //         function slideUp() {
-    //             selectDrop.style.maxHeight = `0rem`;
-    //         }
-
-    //         if (selectDropToggle.classList.contains('srch_slct_active')) {
-    //             slideDown();
-    //         } else {
-    //             slideUp();
-    //         }
-    //         selectDropToggle.addEventListener('click', () => {
-    //             selectDropToggle.classList.toggle('srch_slct_active');
-    //             selectDrop.classList.toggle('srch_slct_drop_active');
-    //             if (selectDropToggle.classList.contains('srch_slct_active')) {
-    //                 slideDown();
-    //             } else {
-    //                 slideUp();
-    //             }
-    //         });
-    //         let dropListing = el.querySelectorAll('.drop_flte_lstng');
-    //         dropListing.forEach((elem, index) => {
-    //             let customRadio = elem.querySelectorAll('.custom_lnk input[type=radio]');
-    //             customRadio.forEach((radio) => {
-    //                 radio.addEventListener('click', function () {
-    //                     selectedGroups.add(index);
-    //                     updateDisplayText();
-    //                 });
-    //             });
-    //         });
-    //     });
-    //     // Clear Filter
-    //     let clearFilter = document.querySelectorAll('[fs-cmsfilter-element="clear"]');
-    //     clearFilter.forEach((elem) => {
-    //         let clickTimeout = null;
-
-    //         elem.addEventListener('click', (event) => {
-    //             event.stopPropagation();
-    //             if (clickTimeout) {
-    //                 clearTimeout(clickTimeout);
-    //             }
-    //             clickTimeout = setTimeout(() => {
-    //                 selectedGroups.clear();
-    //                 if (displayElement) {
-    //                     displayElement.textContent = initialDisplayText;
-    //                     displayElement.parentNode.classList.remove('filters_selected');
-    //                     document.querySelector('.all_bttn_hlder [fs-cmsfilter-element="clear"]').classList.add('has_active')
-    //                 }
-    //             }, 300);
-    //         });
-    //     });
-    // }
-   
-
+    // Event Filtering
     if (document.querySelector('.event_filter') !== null) {
+
         let selectedGroups = new Set();
-        let serchSelect = document.querySelectorAll('.srch_slct');
-        let displayElement = document.querySelector('.srch_txt_block');
+        let serchSelect = document?.querySelectorAll('.srch_slct');
+        let displayElement = document?.querySelector('.srch_txt_block');
         let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
         let initialDisplayText = displayElement?.textContent;
 
@@ -1209,92 +1132,65 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        serchSelect.forEach(el => {
-            let toggle = el.querySelector('.srch_slct_tggle');
-            let drop = el.querySelector('.slct_lst_drp');
-            let maxH = drop.scrollHeight;
-            function down() { drop.style.maxHeight = `${maxH / remVal}rem`; }
-            function up() { drop.style.maxHeight = `0rem`; }
+        serchSelect.forEach((el) => {
+            let selectDropToggle = el.querySelector('.srch_slct_tggle');
+            let selectDrop = el.querySelector('.slct_lst_drp');
+            let dropMaxHeight = selectDrop.scrollHeight;
 
-            toggle.classList.contains('srch_slct_active') ? down() : up();
-            toggle.addEventListener('click', () => {
-                toggle.classList.toggle('srch_slct_active');
-                drop.classList.toggle('srch_slct_drop_active');
-                toggle.classList.contains('srch_slct_active') ? down() : up();
+            function slideDown() {
+                selectDrop.style.maxHeight = `${dropMaxHeight / remVal}rem`;
+            }
+            function slideUp() {
+                selectDrop.style.maxHeight = `0rem`;
+            }
+
+            if (selectDropToggle.classList.contains('srch_slct_active')) {
+                slideDown();
+            } else {
+                slideUp();
+            }
+            selectDropToggle.addEventListener('click', () => {
+                selectDropToggle.classList.toggle('srch_slct_active');
+                selectDrop.classList.toggle('srch_slct_drop_active');
+                if (selectDropToggle.classList.contains('srch_slct_active')) {
+                    slideDown();
+                } else {
+                    slideUp();
+                }
             });
-
-            el.querySelectorAll('.drop_flte_lstng').forEach((lst, i) => {
-                lst.querySelectorAll('.custom_lnk input[type=radio]').forEach(radio => {
-                    radio.addEventListener('click', () => {
-                        selectedGroups.add(i);
+            let dropListing = el.querySelectorAll('.drop_flte_lstng');
+            dropListing.forEach((elem, index) => {
+                let customRadio = elem.querySelectorAll('.custom_lnk input[type=radio]');
+                customRadio.forEach((radio) => {
+                    radio.addEventListener('click', function () {
+                        selectedGroups.add(index);
                         updateDisplayText();
                     });
                 });
             });
         });
-
+        // Clear Filter
         let clearFilter = document.querySelectorAll('[fs-cmsfilter-element="clear"]');
-        clearFilter.forEach(btn => {
-            let t = null;
-            btn.addEventListener('click', e => {
-                e.stopPropagation();
-                clearTimeout(t);
-                t = setTimeout(() => {
+        clearFilter.forEach((elem) => {
+            let clickTimeout = null;
+
+            elem.addEventListener('click', (event) => {
+                event.stopPropagation();
+                if (clickTimeout) {
+                    clearTimeout(clickTimeout);
+                }
+                clickTimeout = setTimeout(() => {
                     selectedGroups.clear();
                     if (displayElement) {
                         displayElement.textContent = initialDisplayText;
                         displayElement.parentNode.classList.remove('filters_selected');
-                        document.querySelector('.all_bttn_hlder [fs-cmsfilter-element="clear"]')
-                            .classList.add('has_active');
+                        document.querySelector('.all_bttn_hlder [fs-cmsfilter-element="clear"]').classList.add('has_active')
                     }
-                    document.querySelectorAll('input[name="date-sort"]').forEach(r => {
-                        r.checked = false;
-                        r.closest('label')?.classList.remove('w--redirected-checked');
-                    });
-                    sortByDate('desc');
                 }, 300);
             });
         });
-        const listWrapper = document.querySelector('.all_cmunty_box [fs-cmsnest-element="list"]');
-        if (!listWrapper) return;
-
-        function parseDMY(s) {
-            let [d, m, y] = s.split('/').map(Number);
-            return new Date(y, m - 1, d);
-        }
-        function getCurrentOrder() {
-            let sel = document.querySelector('input[name="date-sort"]:checked');
-            return (sel && sel.id === 'Oldest') ? 'asc' : 'desc';
-        }
-        function sortByDate(order = 'desc') {
-            let cards = Array.from(listWrapper.querySelectorAll('.w-dyn-item'));
-            cards.sort((a, b) => {
-                let da = parseDMY(a.querySelector('.rsurce_dte').textContent.trim());
-                let db = parseDMY(b.querySelector('.rsurce_dte').textContent.trim());
-                return order === 'desc' ? db - da : da - db;
-            });
-            cards.forEach(c => listWrapper.appendChild(c));
-        }
-
-        // wire Latest/Oldest (you already have this, but ensure it's here)
-        document.querySelectorAll('input[name="date-sort"]').forEach(radio => {
-            radio.addEventListener('change', () => {
-                document.querySelectorAll('label.w-radio').forEach(lbl => lbl.classList.remove('w--redirected-checked'));
-                radio.closest('label')?.classList.add('w--redirected-checked');
-                sortByDate(radio.id === 'Oldest' ? 'asc' : 'desc');
-            });
-        });
-
-
-        const loadMoreBtn = document.querySelector('.load_mre_bttn');
-        if (loadMoreBtn) {
-            loadMoreBtn.addEventListener('click', () => {
-                setTimeout(() => sortByDate(getCurrentOrder()), 400);
-            });
-        }
-        sortByDate(getCurrentOrder());
-
     }
+
     //Floor Accordion Mode
     const accrdWrppr = document.querySelectorAll('.floor_tab_wrppr');
 
@@ -1788,42 +1684,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (loadMoreBtn) {
             loadMoreBtn.addEventListener('click', () => renderNextBatch());
         }
-        let selectedGroups = new Set();
-        let serchSelect = document.querySelectorAll('.srch_slct');
-        let displayElement = document.querySelector('.srch_txt_block');
-        let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
-        let initialDisplayText = displayElement?.textContent;
-
-        function updateDisplayText() {
-            if (displayElement) {
-                displayElement.textContent = `Filters selected (${selectedGroups.size})`;
-                displayElement.parentNode.classList.add('filters_selected');
-            }
-        }
-
-        serchSelect.forEach(el => {
-            let toggle = el.querySelector('.srch_slct_tggle');
-            let drop = el.querySelector('.slct_lst_drp');
-            let maxH = drop.scrollHeight;
-            function down() { drop.style.maxHeight = `${maxH / remVal}rem`; }
-            function up() { drop.style.maxHeight = `0rem`; }
-
-            toggle.classList.contains('srch_slct_active') ? down() : up();
-            toggle.addEventListener('click', () => {
-                toggle.classList.toggle('srch_slct_active');
-                drop.classList.toggle('srch_slct_drop_active');
-                toggle.classList.contains('srch_slct_active') ? down() : up();
-            });
-
-            el.querySelectorAll('.drop_flte_lstng').forEach((lst, i) => {
-                lst.querySelectorAll('.custom_lnk input[type=radio]').forEach(radio => {
-                    radio.addEventListener('click', () => {
-                        selectedGroups.add(i);
-                        updateDisplayText();
-                    });
-                });
-            });
-        });
 
         if (enableFilter) {
             document.addEventListener('click', function (e) {
@@ -1866,10 +1726,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 resetAndRender();
             });
         }
-       
+
         document.querySelectorAll('.all_clr_bttn').forEach(el => {
             el.addEventListener('click', () => {
-                e.stopPropagation();
                 activeSearch = '';
                 activeTag = 'all';
                 activeSort = 'latest';
@@ -1881,38 +1740,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
                     radio.checked = false;
                 });
-                t = setTimeout(() => {
-                    selectedGroups.clear();
-                    if (displayElement) {
-                        displayElement.textContent = initialDisplayText;
-                        displayElement.parentNode.classList.remove('filters_selected');
-                    }
-                }, 300);
+
                 resetAndRender();
             });
         });
     }
 
-    // function initClearButtonListeners() {
-    //     document.querySelectorAll('.filter_clear.clear_close').forEach(el => {
-    //         el.addEventListener('click', () => {
-    //             activeSearch = '';
-    //             activeTag = 'all';
-    //             activeSort = 'latest';
-    
-    //             if (searchInput) searchInput.value = '';
-    //             filterButtons.forEach(b => b.classList.remove('has_active'));
-    //             const defaultBtn = document.querySelector('.cat_filter_bttn[data-filter="all"]');
-    //             if (defaultBtn) defaultBtn.classList.add('has_active');
-    //             document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
-    //                 radio.checked = false;
-    //             });
-    
-    //             resetAndRender();
-    //         });
-    //     });
-    // }
-    if (document.getElementById('ghost_list')) {
     fetchAndRenderGhostPosts({
         targetId: 'ghost_list',
         initialLimit: 3,
@@ -1923,8 +1756,8 @@ document.addEventListener('DOMContentLoaded', function () {
         enableFilter: true,
         loadMoreId: 'load_mre_bttn',
         filterContainerSelector: '.cmnty_fltr_bttn_lstng'
-    })
-}
+    });
+
     if (document.getElementById('ghost-posts')) {
         fetchAndRenderGhostPosts({
             targetId: 'ghost-posts',
