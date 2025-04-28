@@ -3545,6 +3545,6 @@ body.dark_mode [data-bg-color=white] .lab_info_icon_img{
 body.dark_mode [data-bg-color=white] .avlblty_box.lab_avlble_box{
     border-color: var(--charcoal-black);
 }
-body.dark_mode div[data-bg-color=white] .lab_supprt_rch_txt_alt li{
+body.dark_mode [data-bg-color=white] .lab_supprt_rch_txt_alt li{
     background: url(https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67dd58742de83a3893ac94ae_bllt_icon.svg);
 }
