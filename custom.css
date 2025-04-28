@@ -1762,3 +1762,6 @@ body.dark_mode .cat_filter_bttn.w--redirected-checked{
 body.dark_mode [data-bg-color=white] .evnt_dtls_bnnr_lft::before,body.dark_mode [data-bg-color=white] .evnt_dtls_bnnr_rght::before {
     background: var(--dark-grey);
 }
+body.dark_mode [data-bg-color=white] .lab_bg_color.evnt_dtls_bnnr_bg {
+    background: var(--dark-grey);
+}
