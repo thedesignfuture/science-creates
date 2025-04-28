@@ -998,85 +998,87 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.querySelector('.directory_filter') !== null) {
 
         let selectedGroups = new Set();
-        let serchSelect = document.querySelectorAll('.srch_slct');
-        let displayElement = document.querySelector('.srch_txt_block');
-        let initialDisplayText = displayElement?.textContent ?? '';
+        let serchSelect = document?.querySelectorAll('.srch_slct');
+        let displayElement = document?.querySelector('.srch_txt_block');
+        let initialDisplayText = displayElement?.textContent;
         let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
 
         function updateSelectedCount() {
-            if (!displayElement) return;
-            let count = selectedGroups.size;
-            if (count > 0) {
-                displayElement.textContent = `Filters selected (${count})`;
-                displayElement.parentNode?.classList.add('filters_selected');
+            let checkedCount = selectedGroups.size;
+            if (checkedCount > 0) {
+                displayElement.textContent = `Filters selected (${checkedCount})`;
+                displayElement.parentNode.classList.add('filters_selected');
             } else {
                 displayElement.textContent = initialDisplayText;
-                displayElement.parentNode?.classList.remove('filters_selected');
+                displayElement.parentNode.classList.remove('filters_selected');
             }
         }
 
         serchSelect.forEach((el) => {
             let selectDropToggle = el.querySelector('.srch_slct_tggle');
             let selectDrop = el.querySelector('.slct_lst_drp');
-            if (!selectDropToggle || !selectDrop) return;
-
             let dropMaxHeight = selectDrop.scrollHeight;
 
-            function slideDown() { selectDrop.style.maxHeight = `${dropMaxHeight / remVal}rem`; }
-            function slideUp() { selectDrop.style.maxHeight = `0rem`; }
+            function slideDown() {
+                selectDrop.style.maxHeight = `${dropMaxHeight / remVal}rem`;
+            }
+            function slideUp() {
+                selectDrop.style.maxHeight = `0rem`;
+            }
 
-            // initial state
             if (selectDropToggle.classList.contains('srch_slct_active')) {
                 slideDown();
             } else {
                 slideUp();
             }
-
             selectDropToggle.addEventListener('click', () => {
                 selectDropToggle.classList.toggle('srch_slct_active');
                 selectDrop.classList.toggle('srch_slct_drop_active');
-                selectDropToggle.classList.contains('srch_slct_active') ? slideDown() : slideUp();
+                if (selectDropToggle.classList.contains('srch_slct_active')) {
+                    slideDown();
+                } else {
+                    slideUp();
+                }
             });
-
             let dropListing = el.querySelectorAll('.drop_flte_lstng');
-            dropListing.forEach((elem) => {
+            dropListing.forEach((elem, index) => {
                 let checkboxes = elem.querySelectorAll('.custom_lnk input[type=checkbox]');
                 checkboxes.forEach((checkbox) => {
-                    checkbox.addEventListener('change', () => {
-                        checkbox.checked ? selectedGroups.add(checkbox.name)
-                            : selectedGroups.delete(checkbox.name);
+                    checkbox.addEventListener('change', function () {
+                        if (checkbox.checked) {
+                            selectedGroups.add(checkbox.name);
+                        } else {
+                            selectedGroups.delete(checkbox.name);
+                        }
                         updateSelectedCount();
                     });
                 });
             });
         });
-
         // Clear Filter
-        let clearFilterBtns = document.querySelectorAll('[fs-cmsfilter-element="clear"]');
-        clearFilterBtns.forEach((btn) => {
+        let clearFilter = document.querySelectorAll('[fs-cmsfilter-element="clear"]');
+        clearFilter.forEach((elem) => {
             let clickTimeout = null;
 
-            btn.addEventListener('click', (event) => {
+            elem.addEventListener('click', (event) => {
                 event.stopPropagation();
-                clearTimeout(clickTimeout);
-
+                if (clickTimeout) {
+                    clearTimeout(clickTimeout);
+                }
                 clickTimeout = setTimeout(() => {
                     selectedGroups.clear();
                     if (displayElement) {
                         displayElement.textContent = initialDisplayText;
-                        displayElement.parentNode?.classList.remove('filters_selected');
+                        displayElement.parentNode.classList.remove('filters_selected');
+                        let allClearButton = document.querySelector('.all_bttn_hlder [fs-cmsfilter-element="clear"]');
+                        if (allClearButton) {
+                            allClearButton.classList.add('has_active');
+                        }
                     }
-
-                    document
-                        .querySelector('.all_bttn_hlder [fs-cmsfilter-element="clear"]')
-                        ?.classList.add('has_active');
-
                 }, 300);
             });
         });
-
     }
-
 
     // Checkbox Name Attribute
     if ('[data-name]' !== null) {
