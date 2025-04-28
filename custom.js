@@ -1194,7 +1194,8 @@ document.addEventListener('DOMContentLoaded', function () {
     //     });
     // }
     // Search Select Radio
-    function selctRadioDrop() {
+    if (document.querySelector('.event_filter') !== null) {
+
         let selectedGroups = new Set();
         let serchSelect = document.querySelectorAll('.srch_slct');
         let displayElement = document.querySelector('.srch_txt_block');
@@ -1231,45 +1232,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             });
         });
-    }
-    if (document.querySelector('.event_filter') !== null) {
-        selctRadioDrop();
-        // let selectedGroups = new Set();
-        // let serchSelect = document.querySelectorAll('.srch_slct');
-        // let displayElement = document.querySelector('.srch_txt_block');
-        // let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
-        // let initialDisplayText = displayElement?.textContent;
-
-        // function updateDisplayText() {
-        //     if (displayElement) {
-        //         displayElement.textContent = `Filters selected (${selectedGroups.size})`;
-        //         displayElement.parentNode.classList.add('filters_selected');
-        //     }
-        // }
-
-        // serchSelect.forEach(el => {
-        //     let toggle = el.querySelector('.srch_slct_tggle');
-        //     let drop = el.querySelector('.slct_lst_drp');
-        //     let maxH = drop.scrollHeight;
-        //     function down() { drop.style.maxHeight = `${maxH / remVal}rem`; }
-        //     function up() { drop.style.maxHeight = `0rem`; }
-
-        //     toggle.classList.contains('srch_slct_active') ? down() : up();
-        //     toggle.addEventListener('click', () => {
-        //         toggle.classList.toggle('srch_slct_active');
-        //         drop.classList.toggle('srch_slct_drop_active');
-        //         toggle.classList.contains('srch_slct_active') ? down() : up();
-        //     });
-
-        //     el.querySelectorAll('.drop_flte_lstng').forEach((lst, i) => {
-        //         lst.querySelectorAll('.custom_lnk input[type=radio]').forEach(radio => {
-        //             radio.addEventListener('click', () => {
-        //                 selectedGroups.add(i);
-        //                 updateDisplayText();
-        //             });
-        //         });
-        //     });
-        // });
 
         let clearFilter = document.querySelectorAll('[fs-cmsfilter-element="clear"]');
         clearFilter.forEach(btn => {
@@ -1868,7 +1830,43 @@ document.addEventListener('DOMContentLoaded', function () {
                 resetAndRender();
             });
         }
-        selctRadioDrop();
+        
+        let selectedGroups = new Set();
+        let serchSelect = document.querySelectorAll('.srch_slct');
+        let displayElement = document.querySelector('.srch_txt_block');
+        let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
+        let initialDisplayText = displayElement?.textContent;
+
+        function updateDisplayText() {
+            if (displayElement) {
+                displayElement.textContent = `Filters selected (${selectedGroups.size})`;
+                displayElement.parentNode.classList.add('filters_selected');
+            }
+        }
+
+        serchSelect.forEach(el => {
+            let toggle = el.querySelector('.srch_slct_tggle');
+            let drop = el.querySelector('.slct_lst_drp');
+            let maxH = drop.scrollHeight;
+            function down() { drop.style.maxHeight = `${maxH / remVal}rem`; }
+            function up() { drop.style.maxHeight = `0rem`; }
+
+            toggle.classList.contains('srch_slct_active') ? down() : up();
+            toggle.addEventListener('click', () => {
+                toggle.classList.toggle('srch_slct_active');
+                drop.classList.toggle('srch_slct_drop_active');
+                toggle.classList.contains('srch_slct_active') ? down() : up();
+            });
+
+            el.querySelectorAll('.drop_flte_lstng').forEach((lst, i) => {
+                lst.querySelectorAll('.custom_lnk input[type=radio]').forEach(radio => {
+                    radio.addEventListener('click', () => {
+                        selectedGroups.add(i);
+                        updateDisplayText();
+                    });
+                });
+            });
+        });
 
         document.querySelectorAll('.filter_clear.clear_close').forEach(el => {
             el.addEventListener('click', () => {
