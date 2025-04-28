@@ -1070,7 +1070,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (displayElement) {
                         displayElement.textContent = initialDisplayText;
                         displayElement.parentNode.classList.remove('filters_selected');
-                        document.querySelector('.all_bttn_hlder [fs-cmsfilter-element="clear"]').classList.add('has_active')
+                        document.querySelector('.all_bttn_hlder [fs-cmsfilter-element="clear"]')?.classList.add('has_active')
                     }
                 }, 300);
             });
