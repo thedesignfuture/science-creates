@@ -1642,459 +1642,176 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // // Ghost Knowledge Hub
-    // const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
-    // const API_KEY = '969e9f32437ce35f25af6d1453';
-
-    // async function fetchAndRenderGhostPosts({
-    //     targetId,
-    //     initialLimit = 3,
-    //     enableSearch = false,
-    //     searchInputId = null,
-    //     enableSort = false,
-    //     sortRadioName = null,
-    //     enableFilter = false,
-    //     loadMoreId = null,
-    //     filterContainerSelector = null,
-    //     renderPostHTML = null
-    // }) {
-    //     const container = document.getElementById(targetId);
-    //     if (!container) return;
-
-    //     const loadMoreBtn = loadMoreId ? document.getElementById(loadMoreId) : null;
-    //     const searchInput = searchInputId ? document.getElementById(searchInputId) : null;
-    //     let filterButtons = [];
-
-    //     let activeSearch = '';
-    //     let activeTag = 'all';
-    //     let activeSort = 'latest';
-    //     let cachedPosts = [];
-    //     let currentVisibleCount = 0;
-    //     let postsToRender = [];
-
-    //     async function fetchAllPosts() {
-    //         const url = `${API_URL}?key=${API_KEY}&limit=100&include=tags,authors&order=published_at desc`;
-    //         const response = await fetch(url, { headers: { 'Accept-Version': 'v5.0' } });
-    //         const data = await response.json();
-
-    //         cachedPosts = data.posts.map(post => {
-    //             const tags = post.tags.map(tag => tag.name.toLowerCase());
-    //             return {
-    //                 ...post,
-    //                 filterType: tags.length > 0 ? tags[0] : 'uncategorized'
-    //             };
-    //         });
-
-    //         if (enableFilter && filterContainerSelector) {
-    //             const filterContainer = document.querySelector(filterContainerSelector);
-    //             if (filterContainer) {
-    //                 const uniqueTags = Array.from(new Set(cachedPosts.flatMap(post => post.tags.map(tag => tag.name.toLowerCase()))));
-    //                 const buttonsHTML = ['all', ...uniqueTags].map(tag =>
-    //                     `<div class="cmnty_fltr_bttn_item">
-    //                         <a href="javascript:void(0);" class="cat_filter_bttn fltrng_bttn ${tag === 'all' ? 'has_active' : ''}" data-filter="${tag}">
-    //                             ${tag.charAt(0).toUpperCase() + tag.slice(1)}
-    //                         </a>
-    //                     </div>`
-    //                 ).join('');
-    //                 filterContainer.innerHTML = buttonsHTML;
-    //                 filterButtons = document.querySelectorAll('.cat_filter_bttn');
-    //             }
-    //         }
-    //     }
-
-    //     function defaultRenderHTML(post) {
-    //         const postDate = new Date(post.published_at).toLocaleDateString('en-GB', {
-    //             day: 'numeric', month: 'short', year: 'numeric'
-    //         });
-    //         const primaryTag = post.primary_tag?.name || 'Article';
-    //         const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
-
-    //         return `
-    //             <div data-move="up" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
-    //                 <div class="row knwldge_hub_row">
-    //                     <div class="col col-3 knwldge_hub_img_col">
-    //                         <div class="knwldge_hub_img_box">
-    //                             <a href="${post.url}" class="knwldge_hhub_lnk_box w-inline-block">
-    //                                 <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
-    //                             </a>
-    //                         </div>
-    //                     </div>
-    //                     <div class="col col-9 knwldge_hub_info_col">
-    //                         <div class="knwldge_info_box pl_big">
-    //                             <div class="knwldge_info_box_innr">
-    //                                 <div class="knwldge_info_hdr">
-    //                                     <div class="knwldge_dte_box"><div>${postDate}</div></div>
-    //                                     <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
-    //                                 </div>
-    //                                 <div class="knwldge_ttle_box pr_big">
-    //                                     <a href="${post.url}" class="knwldge_ttle_lnk title_h2 w-inline-block">
-    //                                         <div>${post.title}</div>
-    //                                     </a>
-    //                                 </div>
-    //                                 <div class="knwldge_bttm_bttn_box">
-    //                                     <a href="${post.url}" class="shape_bttn w-inline-block">
-    //                                         <div class="shpe_cover_one">
-    //                                             <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
-    //                                         </div>
-    //                                         <div class="shpe_cover_two shpe_cover_one">
-    //                                             <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
-    //                                         </div>
-    //                                     </a>
-    //                                 </div>
-    //                             </div>
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //             </div>`;
-    //     }
-
-    //     function renderNextBatch() {
-    //         const postsToShow = postsToRender.slice(currentVisibleCount, currentVisibleCount + initialLimit);
-    //         postsToShow.forEach(post => {
-    //             const html = renderPostHTML ? renderPostHTML(post) : defaultRenderHTML(post);
-    //             container.innerHTML += html;
-    //         });
-
-    //         currentVisibleCount += postsToShow.length;
-    //         if (loadMoreBtn) {
-    //             loadMoreBtn.style.display = currentVisibleCount < postsToRender.length ? 'inline-flex' : 'none';
-    //         }
-    //     }
-
-    //     function applyFilters() {
-    //         let filtered = [...cachedPosts];
-
-    //         if (enableSearch && activeSearch) {
-    //             filtered = filtered.filter(post =>
-    //                 post.title.toLowerCase().includes(activeSearch.toLowerCase())
-    //             );
-    //         }
-
-    //         if (enableFilter && activeTag !== 'all') {
-    //             filtered = filtered.filter(post =>
-    //                 post.tags.some(tag => tag.name.toLowerCase() === activeTag)
-    //             );
-    //         }
-
-    //         if (enableSort) {
-    //             filtered.sort((a, b) => {
-    //                 return activeSort === 'oldest'
-    //                     ? new Date(a.published_at) - new Date(b.published_at)
-    //                     : new Date(b.published_at) - new Date(a.published_at);
-    //             });
-    //         }
-
-    //         return filtered;
-    //     }
-
-    //     function resetAndRender() {
-    //         container.innerHTML = '';
-    //         currentVisibleCount = 0;
-    //         postsToRender = applyFilters();
-    //         renderNextBatch();
-    //     }
-
-    //     await fetchAllPosts();
-    //     resetAndRender();
-
-    //     if (loadMoreBtn) {
-    //         loadMoreBtn.addEventListener('click', () => renderNextBatch());
-    //     }
-
-    //     if (enableFilter) {
-    //         document.addEventListener('click', function (e) {
-    //             if (e.target.matches('.cat_filter_bttn')) {
-    //                 e.preventDefault();
-    //                 const selected = e.target.getAttribute('data-filter');
-    //                 if (!selected) return;
-
-    //                 activeTag = selected;
-    //                 filterButtons.forEach(b => b.classList.remove('has_active'));
-    //                 e.target.classList.add('has_active');
-
-    //                 resetAndRender();
-    //             }
-    //         });
-    //     }
-
-    //     if (enableSearch && searchInput) {
-    //         searchInput.addEventListener('input', () => {
-    //             activeSearch = searchInput.value.trim();
-    //             resetAndRender();
-    //         });
-    //     }
-
-    //     if (enableSort && sortRadioName) {
-    //         document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
-    //             radio.addEventListener('change', () => {
-    //                 const label = radio.closest('label')?.querySelector('.fltrs_label')?.textContent.trim().toLowerCase();
-    //                 activeSort = label === 'oldest' ? 'oldest' : 'latest';
-    //                 resetAndRender();
-    //             });
-    //         });
-    //     }
-
-    //     const searchClearButton = document.getElementById('srch_clear_bttn');
-    //     if (searchClearButton) {
-    //         searchClearButton.addEventListener('click', () => {
-    //             activeSearch = '';
-    //             if (searchInput) searchInput.value = '';
-    //             resetAndRender();
-    //         });
-    //     }
-
-    //     document.querySelectorAll('.filter_clear.clear_close').forEach(el => {
-    //         el.addEventListener('click', () => {
-    //             activeSearch = '';
-    //             activeTag = 'all';
-    //             activeSort = 'latest';
-
-    //             if (searchInput) searchInput.value = '';
-    //             filterButtons.forEach(b => b.classList.remove('has_active'));
-    //             const defaultBtn = document.querySelector('.cat_filter_bttn[data-filter="all"]');
-    //             if (defaultBtn) defaultBtn.classList.add('has_active');
-    //             document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
-    //                 radio.checked = false;
-    //             });
-
-    //             resetAndRender();
-    //         });
-    //     });
-    // }
-
-    // fetchAndRenderGhostPosts({
-    //     targetId: 'ghost_list',
-    //     initialLimit: 3,
-    //     enableSearch: true,
-    //     searchInputId: 'search_input',
-    //     enableSort: true,
-    //     sortRadioName: 'sort-by-filter',
-    //     enableFilter: true,
-    //     loadMoreId: 'load_mre_bttn',
-    //     filterContainerSelector: '.cmnty_fltr_bttn_lstng'
-    // });
-
-    // if (document.getElementById('ghost-posts')) {
-    //     fetchAndRenderGhostPosts({
-    //         targetId: 'ghost-posts',
-    //         initialLimit: 2,
-    //         enableSearch: false,
-    //         enableSort: false,
-    //         enableFilter: false
-    //     });
-    // }
-    // if (document.getElementById('ghost_box')) {
-    //     fetchAndRenderGhostPosts({
-    //         targetId: 'ghost_box',
-    //         initialLimit: 1,
-    //         renderPostHTML: post => {
-    //             const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
-    //             return `
-    //                 <div class="sptlght_img_box">
-    //                     <a href="${post.url}" class="sptlght_img_lnk w-inline-block">
-    //                         <img src="${featureImage}" loading="lazy" alt="${post.title}" class="sptlght_img">
-    //                     </a>
-    //                 </div>
-    //                 <div class="sptlght_ttle_box">
-    //                     <a href="${post.url}" class="sptlght_ttle_lnk">${post.title}</a>
-    //                 </div>`;
-    //         }
-    //     });
-    // }
     const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
     const API_KEY = '969e9f32437ce35f25af6d1453';
 
-    // 1) Filter + Date-Sort initializer
-    function initEventFilterAndDateSort() {
-        if (!document.querySelector('.event_filter')) return;
-
-        // — wire filters & clear ONCE —
-        if (!initEventFilterAndDateSort._wired) {
-            initEventFilterAndDateSort._wired = true;
-            let selected = new Set();
-            const disp = document.querySelector('.srch_txt_block');
-            const initTxt = disp?.textContent;
-            const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-
-            // dropdown toggle & filter-count
-            document.querySelectorAll('.srch_slct').forEach(el => {
-                const tgl = el.querySelector('.srch_slct_tggle');
-                const drp = el.querySelector('.slct_lst_drp');
-                const maxH = drp.scrollHeight;
-                const down = () => drp.style.maxHeight = `${maxH / rem}rem`;
-                const up = () => drp.style.maxHeight = '0rem';
-                tgl.classList.contains('srch_slct_active') ? down() : up();
-                tgl.addEventListener('click', () => {
-                    tgl.classList.toggle('srch_slct_active');
-                    drp.classList.toggle('srch_slct_drop_active');
-                    tgl.classList.contains('srch_slct_active') ? down() : up();
-                });
-                el.querySelectorAll('.drop_flte_lstng').forEach((lst, i) => {
-                    lst.querySelectorAll('input[type=radio]').forEach(r => {
-                        r.addEventListener('click', () => {
-                            selected.add(i);
-                            disp.textContent = `Filters selected (${selected.size})`;
-                            disp.parentNode.classList.add('filters_selected');
-                        });
-                    });
-                });
-            });
-
-            // clear filters + reset sort
-            document.querySelectorAll('.filter_clear.clear_close').forEach(btn => {
-                let to;
-                btn.addEventListener('click', e => {
-                    e.stopPropagation();
-                    clearTimeout(to);
-                    to = setTimeout(() => {
-                        selected.clear();
-                        if (disp) {
-                            disp.textContent = initTxt;
-                            disp.parentNode.classList.remove('filters_selected');
-                        }
-                        document.querySelectorAll('input[name="sort-by-filter"]').forEach(r => {
-                            r.checked = false;
-                            r.closest('label')?.classList.remove('w--redirected-checked');
-                        });
-                        sortByDate('desc');
-                    }, 300);
-                });
-            });
-        }
-
-        // — pure JS date-sort —
-        const list = document.getElementById('ghost_list');
-        if (!list) return;
-        function parseDMY(s) {
-            let [d, m, y] = s.split('/').map(Number);
-            return new Date(y, m - 1, d);
-        }
-        function order() {
-            const c = document.querySelector('input[name="sort-by-filter"]:checked');
-            return c && /oldest/i.test(c.closest('label')?.textContent) ? 'asc' : 'desc';
-        }
-        function sortByDate(ord = 'desc') {
-            const cards = Array.from(list.children);
-            cards.sort((a, b) => {
-                const da = parseDMY(a.querySelector('.knwldge_dte_box div, .rsurce_dte').textContent.trim());
-                const db = parseDMY(b.querySelector('.knwldge_dte_box div, .rsurce_dte').textContent.trim());
-                return ord === 'desc' ? db - da : da - db;
-            });
-            cards.forEach(c => list.appendChild(c));
-        }
-
-        // wire radios once
-        document.querySelectorAll('input[name="sort-by-filter"]').forEach(r => {
-            if (!r.dataset.wired) {
-                r.dataset.wired = '1';
-                r.addEventListener('change', () => {
-                    document.querySelectorAll('label.w-radio').forEach(lbl => lbl.classList.remove('w--redirected-checked'));
-                    r.closest('label')?.classList.add('w--redirected-checked');
-                    sortByDate(order());
-                });
-            }
-        });
-
-        // apply sort
-        sortByDate(order());
-    }
-
-    // 2) Ghost fetch/render function
-    async function fetchAndRenderGhostPosts(opts) {
-        const {
-            targetId, initialLimit = 3,
-            enableSearch = false, searchInputId = null,
-            enableSort = false, sortRadioName = null,
-            enableFilter = false, filterContainerSelector = null,
-            loadMoreId = null, renderPostHTML = null
-        } = opts;
-
+    async function fetchAndRenderGhostPosts({
+        targetId,
+        initialLimit = 3,
+        enableSearch = false,
+        searchInputId = null,
+        enableSort = false,
+        sortRadioName = null,
+        enableFilter = false,
+        loadMoreId = null,
+        filterContainerSelector = null,
+        renderPostHTML = null
+    }) {
         const container = document.getElementById(targetId);
         if (!container) return;
+
         const loadMoreBtn = loadMoreId ? document.getElementById(loadMoreId) : null;
         const searchInput = searchInputId ? document.getElementById(searchInputId) : null;
-        let activeSearch = '', activeTag = 'all', activeSort = 'latest';
-        let cachedPosts = [], curr = 0, posts = [], filterBtns = [];
+        let filterButtons = [];
 
-        // fetch
-        async function fetchAll() {
+        let activeSearch = '';
+        let activeTag = 'all';
+        let activeSort = 'latest';
+        let cachedPosts = [];
+        let currentVisibleCount = 0;
+        let postsToRender = [];
+
+        async function fetchAllPosts() {
             const url = `${API_URL}?key=${API_KEY}&limit=100&include=tags,authors&order=published_at desc`;
-            const data = await (await fetch(url, { headers: { 'Accept-Version': 'v5.0' } })).json();
-            cachedPosts = data.posts.map(p => {
-                p.filterType = p.tags[0]?.name.toLowerCase() || 'uncategorized';
-                return p;
+            const response = await fetch(url, { headers: { 'Accept-Version': 'v5.0' } });
+            const data = await response.json();
+
+            cachedPosts = data.posts.map(post => {
+                const tags = post.tags.map(tag => tag.name.toLowerCase());
+                return {
+                    ...post,
+                    filterType: tags.length > 0 ? tags[0] : 'uncategorized'
+                };
             });
+
             if (enableFilter && filterContainerSelector) {
-                const fc = document.querySelector(filterContainerSelector);
-                if (fc) {
-                    const tags = Array.from(new Set(cachedPosts.flatMap(p => p.tags.map(t => t.name.toLowerCase()))));
-                    fc.innerHTML = ['all', ...tags].map(tag => `
-          <div class="cmnty_fltr_bttn_item">
-            <a href="#" class="cat_filter_bttn fltrng_bttn ${tag === 'all' ? 'has_active' : ''}" data-filter="${tag}">
-              ${tag.charAt(0).toUpperCase() + tag.slice(1)}
-            </a>
-          </div>`).join('');
-                    filterBtns = document.querySelectorAll('.cat_filter_bttn');
+                const filterContainer = document.querySelector(filterContainerSelector);
+                if (filterContainer) {
+                    const uniqueTags = Array.from(new Set(cachedPosts.flatMap(post => post.tags.map(tag => tag.name.toLowerCase()))));
+                    const buttonsHTML = ['all', ...uniqueTags].map(tag =>
+                        `<div class="cmnty_fltr_bttn_item">
+                            <a href="javascript:void(0);" class="cat_filter_bttn fltrng_bttn ${tag === 'all' ? 'has_active' : ''}" data-filter="${tag}">
+                                ${tag.charAt(0).toUpperCase() + tag.slice(1)}
+                            </a>
+                        </div>`
+                    ).join('');
+                    filterContainer.innerHTML = buttonsHTML;
+                    filterButtons = document.querySelectorAll('.cat_filter_bttn');
                 }
             }
         }
 
-        function defaultHTML(post) {
-            const pd = new Date(post.published_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-            const tag = post.primary_tag?.name || 'Article';
-            const img = post.feature_image || 'https://via.placeholder.com/600x400';
-            return `<div role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
-      <div class="row knwldge_hub_row">
-        <div class="col col-3 knwldge_hub_img_col"><a href="${post.url}">
-          <img src="${img}" alt="${post.title}" class="knwldge_hub_img"/>
-        </a></div>
-        <div class="col col-9 knwldge_hub_info_col">
-          <div class="knwldge_info_hdr">
-            <div class="knwldge_dte_box"><div>${pd}</div></div>
-            <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${tag}</div></div></div>
-          </div>
-          <a href="${post.url}" class="knwldge_ttle_lnk title_h2"><div>${post.title}</div></a>
-        </div>
-      </div>
-    </div>`;
+        function defaultRenderHTML(post) {
+            const postDate = new Date(post.published_at).toLocaleDateString('en-GB', {
+                day: 'numeric', month: 'short', year: 'numeric'
+            });
+            const primaryTag = post.primary_tag?.name || 'Article';
+            const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
+
+            return `
+                <div data-move="up" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
+                    <div class="row knwldge_hub_row">
+                        <div class="col col-3 knwldge_hub_img_col">
+                            <div class="knwldge_hub_img_box">
+                                <a href="${post.url}" class="knwldge_hhub_lnk_box w-inline-block">
+                                    <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col col-9 knwldge_hub_info_col">
+                            <div class="knwldge_info_box pl_big">
+                                <div class="knwldge_info_box_innr">
+                                    <div class="knwldge_info_hdr">
+                                        <div class="knwldge_dte_box"><div>${postDate}</div></div>
+                                        <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
+                                    </div>
+                                    <div class="knwldge_ttle_box pr_big">
+                                        <a href="${post.url}" class="knwldge_ttle_lnk title_h2 w-inline-block">
+                                            <div>${post.title}</div>
+                                        </a>
+                                    </div>
+                                    <div class="knwldge_bttm_bttn_box">
+                                        <a href="${post.url}" class="shape_bttn w-inline-block">
+                                            <div class="shpe_cover_one">
+                                                <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                                            </div>
+                                            <div class="shpe_cover_two shpe_cover_one">
+                                                <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
         }
 
-        function apply() {
-            let arr = [...cachedPosts];
-            if (enableSearch && activeSearch) arr = arr.filter(p => p.title.toLowerCase().includes(activeSearch.toLowerCase()));
-            if (enableFilter && activeTag !== 'all') arr = arr.filter(p => p.tags.some(t => t.name.toLowerCase() === activeTag));
-            if (enableSort) {
-                arr.sort((a, b) => activeSort === 'oldest'
-                    ? new Date(a.published_at) - new Date(b.published_at)
-                    : new Date(b.published_at) - new Date(a.published_at)
+        function renderNextBatch() {
+            const postsToShow = postsToRender.slice(currentVisibleCount, currentVisibleCount + initialLimit);
+            postsToShow.forEach(post => {
+                const html = renderPostHTML ? renderPostHTML(post) : defaultRenderHTML(post);
+                container.innerHTML += html;
+            });
+
+            currentVisibleCount += postsToShow.length;
+            if (loadMoreBtn) {
+                loadMoreBtn.style.display = currentVisibleCount < postsToRender.length ? 'inline-flex' : 'none';
+            }
+        }
+
+        function applyFilters() {
+            let filtered = [...cachedPosts];
+
+            if (enableSearch && activeSearch) {
+                filtered = filtered.filter(post =>
+                    post.title.toLowerCase().includes(activeSearch.toLowerCase())
                 );
             }
-            return arr;
+
+            if (enableFilter && activeTag !== 'all') {
+                filtered = filtered.filter(post =>
+                    post.tags.some(tag => tag.name.toLowerCase() === activeTag)
+                );
+            }
+
+            if (enableSort) {
+                filtered.sort((a, b) => {
+                    return activeSort === 'oldest'
+                        ? new Date(a.published_at) - new Date(b.published_at)
+                        : new Date(b.published_at) - new Date(a.published_at);
+                });
+            }
+
+            return filtered;
         }
 
-        function reset() {
-            container.innerHTML = ''; curr = 0; posts = apply(); next();
-        }
-        function next() {
-            const slice = posts.slice(curr, curr + initialLimit);
-            slice.forEach(p => container.insertAdjacentHTML('beforeend', renderPostHTML ? renderPostHTML(p) : defaultHTML(p)));
-            curr += slice.length;
-            if (loadMoreBtn) loadMoreBtn.style.display = curr < posts.length ? 'inline-flex' : 'none';
-            initEventFilterAndDateSort();
+        function resetAndRender() {
+            container.innerHTML = '';
+            currentVisibleCount = 0;
+            postsToRender = applyFilters();
+            renderNextBatch();
         }
 
-        await fetchAll();
-        reset();
+        await fetchAllPosts();
+        resetAndRender();
 
-        if (loadMoreBtn) loadMoreBtn.addEventListener('click', next);
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', () => renderNextBatch());
+        }
 
         if (enableFilter) {
-            document.addEventListener('click', e => {
+            document.addEventListener('click', function (e) {
                 if (e.target.matches('.cat_filter_bttn')) {
                     e.preventDefault();
-                    activeTag = e.target.dataset.filter;
-                    filterBtns.forEach(b => b.classList.remove('has_active'));
+                    const selected = e.target.getAttribute('data-filter');
+                    if (!selected) return;
+
+                    activeTag = selected;
+                    filterButtons.forEach(b => b.classList.remove('has_active'));
                     e.target.classList.add('has_active');
-                    reset();
+
+                    resetAndRender();
                 }
             });
         }
@@ -2102,50 +1819,85 @@ document.addEventListener('DOMContentLoaded', function () {
         if (enableSearch && searchInput) {
             searchInput.addEventListener('input', () => {
                 activeSearch = searchInput.value.trim();
-                reset();
+                resetAndRender();
             });
         }
 
         if (enableSort && sortRadioName) {
-            document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(r => {
-                r.addEventListener('change', () => {
-                    const txt = r.closest('label')?.textContent.trim().toLowerCase();
-                    activeSort = /oldest/.test(txt) ? 'oldest' : 'latest';
-                    reset();
+            document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
+                radio.addEventListener('change', () => {
+                    const label = radio.closest('label')?.querySelector('.fltrs_label')?.textContent.trim().toLowerCase();
+                    activeSort = label === 'oldest' ? 'oldest' : 'latest';
+                    resetAndRender();
                 });
             });
         }
 
-        document.querySelectorAll('.filter_clear.clear_close').forEach(btn => {
-            btn.addEventListener('click', () => {
-                activeSearch = ''; activeTag = 'all'; activeSort = 'latest';
+        const searchClearButton = document.getElementById('srch_clear_bttn');
+        if (searchClearButton) {
+            searchClearButton.addEventListener('click', () => {
+                activeSearch = '';
                 if (searchInput) searchInput.value = '';
-                filterBtns.forEach(b => b.classList.remove('has_active'));
-                document.querySelector('.cat_filter_bttn[data-filter="all"]')?.classList.add('has_active');
-                document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(r => r.checked = false);
-                reset();
+                resetAndRender();
+            });
+        }
+
+        document.querySelectorAll('.filter_clear.clear_close').forEach(el => {
+            el.addEventListener('click', () => {
+                activeSearch = '';
+                activeTag = 'all';
+                activeSort = 'latest';
+
+                if (searchInput) searchInput.value = '';
+                filterButtons.forEach(b => b.classList.remove('has_active'));
+                const defaultBtn = document.querySelector('.cat_filter_bttn[data-filter="all"]');
+                if (defaultBtn) defaultBtn.classList.add('has_active');
+                document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
+                    radio.checked = false;
+                });
+
+                resetAndRender();
             });
         });
     }
 
-    // 3) Initialize lists
     fetchAndRenderGhostPosts({
-        targetId: 'ghost_list', initialLimit: 3,
-        enableSearch: true, searchInputId: 'search_input',
-        enableSort: true, sortRadioName: 'sort-by-filter',
-        enableFilter: true, filterContainerSelector: '.cmnty_fltr_bttn_lstng',
-        loadMoreId: 'load_mre_bttn'
-    });
-    fetchAndRenderGhostPosts({ targetId: 'ghost-posts', initialLimit: 2 });
-    fetchAndRenderGhostPosts({
-        targetId: 'ghost_box', initialLimit: 1,
-        renderPostHTML: post => `
-    <div class="sptlght_img_box">
-      <a href="${post.url}"><img src="${post.feature_image || ''}" alt="${post.title}"/></a>
-    </div>
-    <div class="sptlght_ttle_box">
-      <a href="${post.url}">${post.title}</a>
-    </div>`
+        targetId: 'ghost_list',
+        initialLimit: 3,
+        enableSearch: true,
+        searchInputId: 'search_input',
+        enableSort: true,
+        sortRadioName: 'sort-by-filter',
+        enableFilter: true,
+        loadMoreId: 'load_mre_bttn',
+        filterContainerSelector: '.cmnty_fltr_bttn_lstng'
     });
 
+    if (document.getElementById('ghost-posts')) {
+        fetchAndRenderGhostPosts({
+            targetId: 'ghost-posts',
+            initialLimit: 2,
+            enableSearch: false,
+            enableSort: false,
+            enableFilter: false
+        });
+    }
+    if (document.getElementById('ghost_box')) {
+        fetchAndRenderGhostPosts({
+            targetId: 'ghost_box',
+            initialLimit: 1,
+            renderPostHTML: post => {
+                const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
+                return `
+                    <div class="sptlght_img_box">
+                        <a href="${post.url}" class="sptlght_img_lnk w-inline-block">
+                            <img src="${featureImage}" loading="lazy" alt="${post.title}" class="sptlght_img">
+                        </a>
+                    </div>
+                    <div class="sptlght_ttle_box">
+                        <a href="${post.url}" class="sptlght_ttle_lnk">${post.title}</a>
+                    </div>`;
+            }
+        });
+    }
 });
