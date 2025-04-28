@@ -1759,3 +1759,6 @@ body.dark_mode .cat_filter_bttn.w--redirected-checked{
 .sldr_prgrss_hldr[data-pagination-bg=dark-grey] .swiper-pagination-progressbar-fill {
     background: var(--dark-grey);
 }
+body.dark_mode [data-bg-color=white] .evnt_dtls_bnnr_lft::before,body.dark_mode [data-bg-color=white] .evnt_dtls_bnnr_rght::before {
+    background: var(--dark-grey);
+}
