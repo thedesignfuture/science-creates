@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    $('.mmbr_box').each(function () {
+    $('.mmbr_box,.cntct_box_item').each(function () {
         let wrapperSelector = this;
         handleResponsiveSliderBehaviorAlt(wrapperSelector);
         setThumbnailNavigationAlt(wrapperSelector);
@@ -394,6 +394,48 @@ document.addEventListener('DOMContentLoaded', function () {
             el.setAttribute('data-slide', i + 1);
         });
     })
+
+    // Contact Us Pillar Slider
+    if ($(".box_wrppr").length) {
+        let tl = gsap.timeline();
+        $(".box_wrppr").each(function (numSlick, sliderParent) {
+            let slider2 = $(sliderParent).find('.mmbr_sldr'),
+                slider1 = $(sliderParent).find('.mmbr_img_sldr');
+
+            var slideControls = $(sliderParent).find('.sldr_custom_dots_hldr');
+
+            const sl2 = slider2.slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                arrows: true,
+                dots: true,
+                fade: true,
+                appendDots: slideControls,
+                prevArrow: $(sliderParent).find('.sldr_custm_arrw .arrw_prev '),
+                nextArrow: $(sliderParent).find('.sldr_custm_arrw .arrw_next'),
+                lazyLoad: 'progressive',
+                dotsClass: 'slick-dots sldr_custom_dots',
+                customPaging: function (slider, i) {
+                    return '<button>' + (i + 1 < 10 ? '0' + (i + 1) : i + 1) + '</button>';
+                },
+                cssEase: 'ease-in',
+                speed: 500,
+                asNavFor: slider1,
+            });
+
+            const sl1 = slider1.slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                arrows: false,
+                fade: true,
+                lazyLoad: 'progressive',
+                cssEase: 'ease-in',
+                dots: false,
+                speed: 500,
+                asNavFor: slider2,
+            });
+        });
+    }
 
     //  Incubators Lab Slider Append Arrows
     if ($(".inbtrs_avlble_wrppr").length) {
