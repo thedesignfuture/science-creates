@@ -389,32 +389,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     //  Contact Piller Slider Append Arrows
-    if ($(".cntct_sldr_outr").length) {
-        let tl = gsap.timeline();
-        $(".cntct_sldr_outr").each(function (numSlick, sliderParent) {
-            let slider2 = $(sliderParent).find('.cntct_sldr'),
-                slider1 = $(sliderParent).find('.four_pillar_sldr');
-            const sl2 = slider2.slick({
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                arrows: false,
-                dots: false,
-                lazyLoad: 'progressive',
-                cssEase: 'ease-in',
-                speed: 500,
-                asNavFor: slider1,
-            });
+    // if ($(".cntct_sldr_outr").length) {
+    //     let tl = gsap.timeline();
+    //     $(".cntct_sldr_outr").each(function (numSlick, sliderParent) {
+    //         let slider2 = $(sliderParent).find('.cntct_sldr'),
+    //             slider1 = $(sliderParent).find('.four_pillar_sldr');
+    //         const sl2 = slider2.slick({
+    //             slidesToShow: 1,
+    //             slidesToScroll: 1,
+    //             arrows: false,
+    //             dots: false,
+    //             lazyLoad: 'progressive',
+    //             cssEase: 'ease-in',
+    //             speed: 500,
+    //             asNavFor: slider1,
+    //         });
 
-            const sl1 = slider1.slick({
-                slidesToShow: 4,
-                slidesToScroll: 4,
-                arrows: false,
-                dots: false,
-                speed: 500,
-                asNavFor: slider2,
-            });
-        });
-    }
+    //         const sl1 = slider1.slick({
+    //             slidesToShow: 4,
+    //             slidesToScroll: 4,
+    //             arrows: false,
+    //             dots: false,
+    //             speed: 500,
+    //             asNavFor: slider2,
+    //         });
+    //     });
+    // }
 
     let dataWrapper = document.querySelectorAll('.thmbnl_sldr_wrppr');
     dataWrapper.forEach((elem, i) => {
