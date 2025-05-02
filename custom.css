@@ -1278,7 +1278,7 @@ body.dark_mode .cmnty_logo {
     color: var(--charcoal-black);
 }
 
-.flloor_tab {
+.flloor_tab,.section_box_innr_alt.cntct_box_item {
     overflow: hidden;
     -webkit-transition: max-height 0.3s ease-out;
     -o-transition: max-height 0.3s ease-out;
