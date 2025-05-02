@@ -389,32 +389,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     //  Contact Piller Slider Append Arrows
-    // if ($(".cntct_sldr_outr").length) {
-    //     let tl = gsap.timeline();
-    //     $(".cntct_sldr_outr").each(function (numSlick, sliderParent) {
-    //         let slider2 = $(sliderParent).find('.cntct_sldr'),
-    //             slider1 = $(sliderParent).find('.four_pillar_sldr');
-    //         const sl2 = slider2.slick({
-    //             slidesToShow: 1,
-    //             slidesToScroll: 1,
-    //             arrows: false,
-    //             dots: false,
-    //             lazyLoad: 'progressive',
-    //             cssEase: 'ease-in',
-    //             speed: 500,
-    //             asNavFor: slider1,
-    //         });
+    const wrappers = document.querySelectorAll('.cntct_sldr_outr');
 
-    //         const sl1 = slider1.slick({
-    //             slidesToShow: 4,
-    //             slidesToScroll: 4,
-    //             arrows: false,
-    //             dots: false,
-    //             speed: 500,
-    //             asNavFor: slider2,
-    //         });
-    //     });
-    // }
+    wrappers.forEach(wrapper => {
+      const remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
+      const items = wrapper.querySelectorAll('.cntct_box_item');
+      const buttons = wrapper.querySelectorAll('.pllr_bttn');
+  
+      function activate(index) {
+        buttons.forEach((btn, i) => {
+          const item = items[i];
+          const color = btn.getAttribute('data-bg-color') || '';
+  
+          if (i === index) {
+            item.classList.add('active');
+            item.style.maxHeight = `${item.scrollHeight / remVal}rem`;
+            wrapper.style.backgroundColor = color;
+            btn.classList.add('active');
+            btn.style.backgroundColor = color;
+          } else {
+            item.classList.remove('active');
+            item.style.maxHeight = '0px';
+            btn.classList.remove('active');
+            btn.style.backgroundColor = '';
+          }
+        });
+      }
+      buttons.forEach((btn, i) => {
+        btn.addEventListener('click', () => activate(i));
+      });
+      if (buttons.length) activate(0);
+    });
 
     let dataWrapper = document.querySelectorAll('.thmbnl_sldr_wrppr');
     dataWrapper.forEach((elem, i) => {
@@ -1146,6 +1151,41 @@ document.addEventListener('DOMContentLoaded', function () {
         window.addEventListener("load", bgHeight);
     }
 
+    // Contact Tab Like
+    // const cntctWrppr = document.querySelectorAll('.cntct_sldr_outr');
+    // cntctWrppr.forEach((ele) => {
+    //   let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    //   const accrdItem = ele.querySelectorAll('.cntct_box_item');
+    //   const accrdBttn = ele.querySelectorAll('.pllr_bttn');
+    
+    //   accrdBttn.forEach((el) => {
+    //     let mainPanel = el.closest('.cntct_box_item');
+    //     // set initial height based on “active” class
+    //     if (mainPanel.classList.contains('active')) {
+    //       mainPanel.style.maxHeight = `${mainPanel.scrollHeight / remVal}rem`;
+    //     } else {
+    //       mainPanel.style.maxHeight = '0px';
+    //     }
+    //     el.addEventListener('click', () => {
+    //       const activeTab = ele.querySelector('.cntct_box_item.active');
+    //       if (activeTab) {
+    //         activeTab.classList.remove('active');
+    //         activeTab.style.maxHeight = '0px';
+    //       }
+    //       let nextTab = mainPanel.nextElementSibling || mainPanel.previousElementSibling;
+    //       if (nextTab && !nextTab.classList.contains('active')) {
+    //         nextTab.classList.add('active');
+    //         nextTab.style.maxHeight = `${nextTab.scrollHeight / remVal}rem`;
+    //       }
+    //     });
+    //   });
+    
+    //   // <-- trigger the first button’s click so the first panel opens on load:
+    //   if (accrdBttn.length) {
+    //     accrdBttn[0].click();
+    //   }
+    // });
+    
     // Accordion
     const accrdWrppr2 = document.querySelectorAll('.accrd_wrppr');
     accrdWrppr2.forEach((ele) => {
