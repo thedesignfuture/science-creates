@@ -391,7 +391,7 @@ document.addEventListener('DOMContentLoaded', function () {
     //  Contact Piller Slider Append Arrows
     if ($(".cntct_sldr_outr").length) {
         let tl = gsap.timeline();
-        $(".box_wrppr").each(function (numSlick, sliderParent) {
+        $(".cntct_sldr_outr").each(function (numSlick, sliderParent) {
             let slider2 = $(sliderParent).find('.cntct_sldr'),
                 slider1 = $(sliderParent).find('.four_pillar_sldr');
             const sl2 = slider2.slick({
