@@ -387,6 +387,35 @@ document.addEventListener('DOMContentLoaded', function () {
         $(wrapperSelector).find('.tem_thmbnl_sldr .tem_thmbnl_item').eq(0).addClass('active');
     });
 
+
+    //  Contact Piller Slider Append Arrows
+    if ($(".cntct_sldr_outr").length) {
+        let tl = gsap.timeline();
+        $(".box_wrppr").each(function (numSlick, sliderParent) {
+            let slider2 = $(sliderParent).find('.cntct_sldr'),
+                slider1 = $(sliderParent).find('.four_pillar_sldr');
+            const sl2 = slider2.slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                arrows: false,
+                dots: false,
+                lazyLoad: 'progressive',
+                cssEase: 'ease-in',
+                speed: 500,
+                asNavFor: slider1,
+            });
+
+            const sl1 = slider1.slick({
+                slidesToShow: 4,
+                slidesToScroll: 4,
+                arrows: false,
+                dots: false,
+                speed: 500,
+                asNavFor: slider2,
+            });
+        });
+    }
+
     let dataWrapper = document.querySelectorAll('.thmbnl_sldr_wrppr');
     dataWrapper.forEach((elem, i) => {
         let dataSlideItem = elem.querySelectorAll('.thmbnl_sldr_wrppr .tem_thmbnl_item');
@@ -395,47 +424,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     })
 
-    // Contact Us Pillar Slider
-    if ($(".box_wrppr").length) {
-        let tl = gsap.timeline();
-        $(".box_wrppr").each(function (numSlick, sliderParent) {
-            let slider2 = $(sliderParent).find('.mmbr_sldr'),
-                slider1 = $(sliderParent).find('.mmbr_img_sldr');
-
-            var slideControls = $(sliderParent).find('.sldr_custom_dots_hldr');
-
-            const sl2 = slider2.slick({
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                arrows: true,
-                dots: true,
-                fade: true,
-                appendDots: slideControls,
-                prevArrow: $(sliderParent).find('.sldr_custm_arrw .arrw_prev '),
-                nextArrow: $(sliderParent).find('.sldr_custm_arrw .arrw_next'),
-                lazyLoad: 'progressive',
-                dotsClass: 'slick-dots sldr_custom_dots',
-                customPaging: function (slider, i) {
-                    return '<button>' + (i + 1 < 10 ? '0' + (i + 1) : i + 1) + '</button>';
-                },
-                cssEase: 'ease-in',
-                speed: 500,
-                asNavFor: slider1,
-            });
-
-            const sl1 = slider1.slick({
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                arrows: false,
-                fade: true,
-                lazyLoad: 'progressive',
-                cssEase: 'ease-in',
-                dots: false,
-                speed: 500,
-                asNavFor: slider2,
-            });
-        });
-    }
 
     //  Incubators Lab Slider Append Arrows
     if ($(".inbtrs_avlble_wrppr").length) {
