@@ -965,13 +965,6 @@ document.addEventListener('DOMContentLoaded', function () {
         document.documentElement.style.fontSize = `${fontSize}px`;
     }
 
-    // Swiper Layout Update
-    function updateSwiperLayout(swiperInstance) {
-        if (swiperInstance && typeof swiperInstance.update === 'function') {
-            swiperInstance.update();
-        }
-    }
-
     updateRootFontSize();
 
     let resizeTimeout;
@@ -994,88 +987,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Community/ Directory Filtering 
-    if (document.querySelector('.directory_filter') !== null) {
+    // Community/ Directory / Resources Filtering 
 
-        let selectedGroups = new Set();
-        let serchSelect = document?.querySelectorAll('.srch_slct');
-        let displayElement = document?.querySelector('.srch_txt_block');
-        let initialDisplayText = displayElement?.textContent;
-        let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
-
-        function updateSelectedCount() {
-            let checkedCount = selectedGroups.size;
-            if (checkedCount > 0) {
-                displayElement.textContent = `Filters selected (${checkedCount})`;
-                displayElement.parentNode.classList.add('filters_selected');
-            } else {
-                displayElement.textContent = initialDisplayText;
-                displayElement.parentNode.classList.remove('filters_selected');
-            }
-        }
-
-        serchSelect.forEach((el) => {
-            let selectDropToggle = el.querySelector('.srch_slct_tggle');
-            let selectDrop = el.querySelector('.slct_lst_drp');
-            let dropMaxHeight = selectDrop.scrollHeight;
-
-            function slideDown() {
-                selectDrop.style.maxHeight = `${dropMaxHeight / remVal}rem`;
-            }
-            function slideUp() {
-                selectDrop.style.maxHeight = `0rem`;
-            }
-
-            if (selectDropToggle.classList.contains('srch_slct_active')) {
-                slideDown();
-            } else {
-                slideUp();
-            }
-            selectDropToggle.addEventListener('click', () => {
-                selectDropToggle.classList.toggle('srch_slct_active');
-                selectDrop.classList.toggle('srch_slct_drop_active');
-                if (selectDropToggle.classList.contains('srch_slct_active')) {
-                    slideDown();
-                } else {
-                    slideUp();
-                }
-            });
-            let dropListing = el.querySelectorAll('.drop_flte_lstng');
-            dropListing.forEach((elem, index) => {
-                let checkboxes = elem.querySelectorAll('.custom_lnk input[type=checkbox]');
-                checkboxes.forEach((checkbox) => {
-                    checkbox.addEventListener('change', function () {
-                        if (checkbox.checked) {
-                            selectedGroups.add(checkbox.name);
-                        } else {
-                            selectedGroups.delete(checkbox.name);
-                        }
-                        updateSelectedCount();
-                    });
-                });
-            });
-        });
-        // Clear Filter
-        let clearFilter = document.querySelectorAll('[fs-cmsfilter-element="clear"]');
-        clearFilter.forEach((elem) => {
-            let clickTimeout = null;
-
-            elem.addEventListener('click', (event) => {
-                event.stopPropagation();
-                if (clickTimeout) {
-                    clearTimeout(clickTimeout);
-                }
-                clickTimeout = setTimeout(() => {
-                    selectedGroups.clear();
-                    if (displayElement) {
-                        displayElement.textContent = initialDisplayText;
-                        displayElement.parentNode.classList.remove('filters_selected');
-                        document.querySelector('.all_bttn_hlder [fs-cmsfilter-element="clear"]').classList.add('has_active')
-                    }
-                }, 300);
-            });
-        });
-    }
 
     // Checkbox Name Attribute
     if ('[data-name]' !== null) {
@@ -1115,81 +1028,6 @@ document.addEventListener('DOMContentLoaded', function () {
     $('.avblble_area_nme, .avblble_area_nme a').on('click', (e) => {
         e.preventDefault();
     })
-
-    // Event Filtering
-    if (document.querySelector('.event_filter') !== null) {
-
-        let selectedGroups = new Set();
-        let serchSelect = document?.querySelectorAll('.srch_slct');
-        let displayElement = document?.querySelector('.srch_txt_block');
-        let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
-        let initialDisplayText = displayElement?.textContent;
-
-        function updateDisplayText() {
-            if (displayElement) {
-                displayElement.textContent = `Filters selected (${selectedGroups.size})`;
-                displayElement.parentNode.classList.add('filters_selected');
-            }
-        }
-
-        serchSelect.forEach((el) => {
-            let selectDropToggle = el.querySelector('.srch_slct_tggle');
-            let selectDrop = el.querySelector('.slct_lst_drp');
-            let dropMaxHeight = selectDrop.scrollHeight;
-
-            function slideDown() {
-                selectDrop.style.maxHeight = `${dropMaxHeight / remVal}rem`;
-            }
-            function slideUp() {
-                selectDrop.style.maxHeight = `0rem`;
-            }
-
-            if (selectDropToggle.classList.contains('srch_slct_active')) {
-                slideDown();
-            } else {
-                slideUp();
-            }
-            selectDropToggle.addEventListener('click', () => {
-                selectDropToggle.classList.toggle('srch_slct_active');
-                selectDrop.classList.toggle('srch_slct_drop_active');
-                if (selectDropToggle.classList.contains('srch_slct_active')) {
-                    slideDown();
-                } else {
-                    slideUp();
-                }
-            });
-            let dropListing = el.querySelectorAll('.drop_flte_lstng');
-            dropListing.forEach((elem, index) => {
-                let customRadio = elem.querySelectorAll('.custom_lnk input[type=radio]');
-                customRadio.forEach((radio) => {
-                    radio.addEventListener('click', function () {
-                        selectedGroups.add(index);
-                        updateDisplayText();
-                    });
-                });
-            });
-        });
-        // Clear Filter
-        let clearFilter = document.querySelectorAll('[fs-cmsfilter-element="clear"]') || document.querySelectorAll('.all_clr_bttn');
-        clearFilter.forEach((elem) => {
-            let clickTimeout = null;
-
-            elem.addEventListener('click', (event) => {
-                event.stopPropagation();
-                if (clickTimeout) {
-                    clearTimeout(clickTimeout);
-                }
-                clickTimeout = setTimeout(() => {
-                    selectedGroups.clear();
-                    if (displayElement) {
-                        displayElement.textContent = initialDisplayText;
-                        displayElement.parentNode.classList.remove('filters_selected');
-                        document.querySelector('.all_bttn_hlder [fs-cmsfilter-element="clear"]').classList.add('has_active')
-                    }
-                }, 300);
-            });
-        });
-    }
 
     //Floor Accordion Mode
     const accrdWrppr = document.querySelectorAll('.floor_tab_wrppr');
@@ -1370,66 +1208,51 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // Programme Date Slider
-    const prgrmsDteSldrWrppr = document.querySelectorAll('.prgrmme_dte_sldr_wrppr');
-    if (prgrmsDteSldrWrppr.length > 0) {
-        prgrmsDteSldrWrppr.forEach((el) => {
-            const swiperElement = el.querySelector('.prgrmme_dte_sldr');
-            const fractionContainer = el.querySelector('.sldr_pgntn');
-            const prevBtn = el.querySelector(".arrw_prev");
-            const nextBtn = el.querySelector(".arrw_next");
+    document.querySelectorAll('.prgrmme_dte_sldr_wrppr').forEach(wrapper => {
+        const swiperEl = wrapper.querySelector('.prgrmme_dte_sldr');
+        const fractionContainer = wrapper.querySelector('.sldr_pgntn');
+        const prevBtn = wrapper.querySelector('.arrw_prev');
+        const nextBtn = wrapper.querySelector('.arrw_next');
+        const totalSlides = swiperEl.querySelectorAll('.swiper-slide').length;
 
-            swiper3 = new Swiper(swiperElement, {
-                slidesPerView: "auto",
-                effect: 'slide',
-                speed: 500,
-                loop: true,
-                centeredSlides: false,
-                spaceBetween: 0,
-                navigation: {
-                    nextEl: nextBtn,
-                    prevEl: prevBtn,
+        const swiper3 = new Swiper(swiperEl, {
+            slidesPerView: 'auto',
+            loop: true,
+            centeredSlides: false,
+            spaceBetween: 0,
+            speed: 500,
+            slideToClickedSlide: true,
+            preventClicks: false,
+            preventClicksPropagation: false,
+            navigation: {
+                prevEl: prevBtn,
+                nextEl: nextBtn,
+            },
+            pagination: {
+                el: wrapper.querySelector('.sldr_prgrss_bg'),
+                type: 'progressbar',
+            },
+            on: {
+                init() {
+                    this.navigation.init();
+                    this.navigation.update();
+                    fractionContainer.textContent = `${this.realIndex + 1} / ${totalSlides}`;
                 },
-                pagination: {
-                    el: el.querySelector('.sldr_prgrss_bg'),
-                    type: 'progressbar',
+                slideChange() {
+                    fractionContainer.textContent = `${this.realIndex + 1} / ${totalSlides}`;
+                    this.navigation.update();
                 },
-                on: {
-                    init: function () {
-                        const totalSlides = swiperElement.querySelectorAll('.swiper-slide').length;
-                        fractionContainer.innerHTML = `${this.realIndex + 1} / ${totalSlides}`;
-
-                        this.on('slideChange', () => {
-                            fractionContainer.innerHTML = `${this.realIndex + 1} / ${totalSlides}`;
-                        });
-                        setTimeout(() => {
-                            updateSwiperLayout(this);
-                        }, 300);
-                    },
+                slideChangeTransitionEnd() {
+                    updateSwiperLayout(this);
+                    this.navigation.update();
                 },
-            });
-
-            // Handle clicking a slide — jump to it
-            swiperElement.querySelectorAll('.swiper-slide').forEach((slide, index) => {
-                slide.addEventListener('click', function () {
-                    swiper3.slideToLoop(index);
-                    setTimeout(() => {
-                        updateSwiperLayout(swiper3);
-                    }, 300);
-                });
-            });
-            prevBtn?.addEventListener('click', () => {
-                setTimeout(() => {
-                    updateSwiperLayout(swiper3);
-                }, 300);
-            });
-
-            nextBtn?.addEventListener('click', () => {
-                setTimeout(() => {
-                    updateSwiperLayout(swiper3);
-                }, 300);
-            });
+                touchEnd() {
+                    updateSwiperLayout(this);
+                    this.navigation.update();
+                }
+            }
         });
-    }
+    });
 
     // Programme Status With Progress
     if (document.querySelector('.prgrmme_predict')) {
@@ -1526,6 +1349,149 @@ document.addEventListener('DOMContentLoaded', function () {
         window.addEventListener('scroll', onScroll);
     }
 
+    // Select Filtering - Community/ Resources
+    let selectedGroups = new Set();
+    let serchSelect = document?.querySelectorAll('.srch_slct');
+    let displayElement = document?.querySelector('.srch_txt_block');
+    let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    let initialDisplayText = displayElement?.textContent;
+
+    function slide(el, expand) {
+        let h = el.scrollHeight;
+        el.style.maxHeight = expand ? `${Math.ceil(h / remVal)}rem` : `0rem`;
+    }
+
+    function updateDisplayText() {
+        displayElement.textContent = `Filters selected (${selectedGroups.size})`;
+        displayElement.parentNode.classList.add('filters_selected');
+    }
+    function updateSelectedCount() {
+        if (selectedGroups.size) {
+            displayElement.textContent = `Filters selected (${selectedGroups.size})`;
+            displayElement.parentNode.classList.add('filters_selected');
+        } else {
+            displayElement.textContent = initialDisplayText;
+            displayElement.parentNode.classList.remove('filters_selected');
+        }
+    }
+
+    function attachItemListeners(el) {
+        let isDirectory = document.querySelector('.directory_filter') !== null;
+        let isEvent = document.querySelector('.event_filter') !== null;
+
+        let items = el.querySelectorAll('.drop_flte_lstng');
+        items.forEach((elem, index) => {
+            if (isDirectory) {
+                elem.querySelectorAll('.custom_lnk input[type=checkbox]').forEach(checkbox => {
+                    checkbox.addEventListener('change', () => {
+                        checkbox.checked ? selectedGroups.add(checkbox.name)
+                            : selectedGroups.delete(checkbox.name);
+                        updateSelectedCount();
+                    });
+                });
+            }
+            else if (isEvent) {
+                elem.querySelectorAll('.custom_lnk input[type=radio]').forEach(radio => {
+                    radio.addEventListener('click', () => {
+                        selectedGroups.add(index);
+                        updateDisplayText();
+                    });
+                });
+            }
+        });
+    }
+
+    serchSelect.forEach(el => {
+        let toggle = el.querySelector('.srch_slct_tggle');
+        let drop = el.querySelector('.slct_lst_drp');
+
+        slide(drop, toggle.classList.contains('srch_slct_active'));
+
+        toggle.addEventListener('click', () => {
+            toggle.classList.toggle('srch_slct_active');
+            drop.classList.toggle('srch_slct_drop_active');
+            slide(drop, toggle.classList.contains('srch_slct_active'));
+        });
+
+        attachItemListeners(el);
+    });
+
+    // Resources Date Sorting
+    const listWrapper = document.querySelector('.resurce_all_box [fs-cmsnest-element="list"]');
+
+    if (listWrapper) {
+        function parseDMY(s) {
+            let [d, m, y] = s.split('/').map(Number);
+            return new Date(y, m - 1, d);
+        }
+
+        function getCurrentOrder() {
+            let sel = document.querySelector('input[name="date-sort"]:checked');
+            return (sel && sel.id === 'Oldest') ? 'asc' : 'desc';
+        }
+
+        function sortByDate(order = 'desc') {
+            let cards = Array.from(listWrapper.querySelectorAll('.w-dyn-item'));
+            cards.sort((a, b) => {
+                let da = parseDMY(a.querySelector('.rsurce_dte').textContent.trim());
+                let db = parseDMY(b.querySelector('.rsurce_dte').textContent.trim());
+                return order === 'desc' ? db - da : da - db;
+            });
+            cards.forEach(c => listWrapper.appendChild(c));
+        }
+
+        document.querySelectorAll('input[name="date-sort"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                document.querySelectorAll('label.w-radio').forEach(lbl => lbl.classList.remove('w--redirected-checked'));
+                radio.closest('label')?.classList.add('w--redirected-checked');
+                sortByDate(radio.id === 'Oldest' ? 'asc' : 'desc');
+            });
+        });
+
+        const loadMoreBtn = document.querySelector('.load_mre_bttn');
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', () => {
+                setTimeout(() => sortByDate(getCurrentOrder()), 400);
+            });
+        }
+
+        sortByDate(getCurrentOrder());
+    }
+
+    // clear button
+    document.querySelectorAll('[fs-cmsfilter-element="clear"], .all_clr_bttn')
+        .forEach(btn => {
+            let timeout;
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    selectedGroups.clear();
+                    displayElement.textContent = initialDisplayText;
+                    displayElement.parentNode.classList.remove('filters_selected');
+                    let allHolderClear = document.querySelector('.all_bttn_hlder [fs-cmsfilter-element="clear"]');
+                    if (allHolderClear)
+                        allHolderClear
+                            .classList.add('has_active');
+                    document.querySelectorAll(`input[name="date-sort"]`).forEach(radio => {
+                        radio.checked = false;
+                    });
+                    if (listWrapper) {
+                        sortByDate('desc');
+                    }
+                }, 300);
+            });
+        });
+    // Add #data-url
+    document.querySelectorAll('[data-url]').forEach(el => {
+        let url = el.getAttribute('href');
+        let slug = el.getAttribute('data-url');
+        if (url && slug && url !== '#') {
+            // Avoid duplicate hashes
+            const base = url.split('#')[0];
+            el.setAttribute('href', `${base}#${slug}`);
+        }
+    });
     // // Ghost Knowledge Hub
     const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
     const API_KEY = '969e9f32437ce35f25af6d1453';
@@ -1740,10 +1706,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
                     radio.checked = false;
                 });
-
                 resetAndRender();
             });
         });
+        if (enableFilter) {
+            const hash = window.location.hash.slice(1);
+            if (hash) {
+                const deepBtn = Array.from(document.querySelectorAll('.cat_filter_bttn')).find(b => b.getAttribute('data-filter') === hash);
+                if (deepBtn) deepBtn.click();
+            }
+        }
     }
 
     fetchAndRenderGhostPosts({
