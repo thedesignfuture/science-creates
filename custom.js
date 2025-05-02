@@ -964,6 +964,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Update the root font size dynamically
         document.documentElement.style.fontSize = `${fontSize}px`;
     }
+    function updateSwiperLayout(sw) {
+        if (sw && typeof sw.update === 'function') sw.update();
+    }
 
     updateRootFontSize();
 
