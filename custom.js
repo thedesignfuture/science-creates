@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    $('.mmbr_box,.cntct_box_item').each(function () {
+    $('.mmbr_box').each(function () {
         let wrapperSelector = this;
         handleResponsiveSliderBehaviorAlt(wrapperSelector);
         setThumbnailNavigationAlt(wrapperSelector);
