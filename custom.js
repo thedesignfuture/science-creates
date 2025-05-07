@@ -1576,6 +1576,7 @@ document.addEventListener('DOMContentLoaded', function () {
         searchInputId = null,
         enableSort = false,
         sortRadioName = null,
+        featured = null,
         enableFilter = false,
         loadMoreId = null,
         filterContainerSelector = null,
@@ -1596,7 +1597,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let postsToRender = [];
 
         async function fetchAllPosts() {
-            const url = `${API_URL}?key=${API_KEY}&limit=100&include=tags,authors&order=published_at desc`;
+            const url = `${API_URL}?key=${API_KEY}&limit=100&include=tags,authors&featured=${featured}&order=published_at desc`;
             const response = await fetch(url, { headers: { 'Accept-Version': 'v5.0' } });
             const data = await response.json();
 
@@ -1815,6 +1816,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('ghost_box')) {
         fetchAndRenderGhostPosts({
             targetId: 'ghost_box',
+            featured: true,
             initialLimit: 1,
             renderPostHTML: post => {
                 const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
