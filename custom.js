@@ -1588,6 +1588,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const loadMoreBtn = loadMoreId ? document.getElementById(loadMoreId) : null;
         const searchInput = searchInputId ? document.getElementById(searchInputId) : null;
         let filterButtons = [];
+        cosnt getFeatured = featured ? `&filter=featured:${featured}` : '';
 
         let activeSearch = '';
         let activeTag = 'all';
@@ -1597,7 +1598,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let postsToRender = [];
 
         async function fetchAllPosts() {
-            const url = `${API_URL}?key=${API_KEY}&limit=100&include=tags,authors&filter=featured:${featured}&order=published_at desc`;
+            const url = `${API_URL}?key=${API_KEY}&limit=100&include=tags,authors${getFeatured}&order=published_at desc`;
             const response = await fetch(url, { headers: { 'Accept-Version': 'v5.0' } });
             const data = await response.json();
 
