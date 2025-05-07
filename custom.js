@@ -1588,7 +1588,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const loadMoreBtn = loadMoreId ? document.getElementById(loadMoreId) : null;
         const searchInput = searchInputId ? document.getElementById(searchInputId) : null;
         let filterButtons = [];
-        cosnt getFeatured = featured ? `&filter=featured:${featured}` : '';
+        const getFeatured = featured ? `&filter=featured:${featured}` : '';
 
         let activeSearch = '';
         let activeTag = 'all';
