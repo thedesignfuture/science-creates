@@ -1576,7 +1576,7 @@ document.addEventListener('DOMContentLoaded', function () {
         searchInputId = null,
         enableSort = false,
         sortRadioName = null,
-        featured = null,
+        featured = false,
         enableFilter = false,
         loadMoreId = null,
         filterContainerSelector = null,
