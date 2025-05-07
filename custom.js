@@ -1597,7 +1597,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let postsToRender = [];
 
         async function fetchAllPosts() {
-            const url = `${API_URL}?key=${API_KEY}&limit=100&include=tags,authors&featured=${featured}&order=published_at desc`;
+            const url = `${API_URL}?key=${API_KEY}&limit=100&include=tags,authors&filter=featured:${featured}&order=published_at desc`;
             const response = await fetch(url, { headers: { 'Accept-Version': 'v5.0' } });
             const data = await response.json();
 
