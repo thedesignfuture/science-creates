@@ -21,6 +21,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 dots: true,
                 dotsClass: 'slick-dots sldr_custom_dots',
                 infinite: true,
+                responsive: [
+                    {
+                        breakpoint: 1200,
+                        settings: {
+                            centerPadding: '6.667rem',
+                        }
+                    }
+                ]
             });
 
         });
@@ -392,33 +400,33 @@ document.addEventListener('DOMContentLoaded', function () {
     const wrappers = document.querySelectorAll('.cntct_sldr_outr');
 
     wrappers.forEach(wrapper => {
-      const remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
-      const items = wrapper.querySelectorAll('.cntct_box_item');
-      const buttons = wrapper.querySelectorAll('.pllr_bttn');
-  
-      function activate(index) {
+        const remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
+        const items = wrapper.querySelectorAll('.cntct_box_item');
+        const buttons = wrapper.querySelectorAll('.pllr_bttn');
+
+        function activate(index) {
+            buttons.forEach((btn, i) => {
+                const item = items[i];
+                const color = btn.getAttribute('data-bg-color') || '';
+
+                if (i === index) {
+                    item.classList.add('active');
+                    item.style.maxHeight = `${item.scrollHeight / remVal}rem`;
+                    wrapper.style.backgroundColor = color;
+                    btn.classList.add('active');
+                    btn.style.backgroundColor = color;
+                } else {
+                    item.classList.remove('active');
+                    item.style.maxHeight = '0px';
+                    btn.classList.remove('active');
+                    btn.style.backgroundColor = '';
+                }
+            });
+        }
         buttons.forEach((btn, i) => {
-          const item = items[i];
-          const color = btn.getAttribute('data-bg-color') || '';
-  
-          if (i === index) {
-            item.classList.add('active');
-            item.style.maxHeight = `${item.scrollHeight / remVal}rem`;
-            wrapper.style.backgroundColor = color;
-            btn.classList.add('active');
-            btn.style.backgroundColor = color;
-          } else {
-            item.classList.remove('active');
-            item.style.maxHeight = '0px';
-            btn.classList.remove('active');
-            btn.style.backgroundColor = '';
-          }
+            btn.addEventListener('click', () => activate(i));
         });
-      }
-      buttons.forEach((btn, i) => {
-        btn.addEventListener('click', () => activate(i));
-      });
-      if (buttons.length) activate(0);
+        if (buttons.length) activate(0);
     });
 
     let dataWrapper = document.querySelectorAll('.thmbnl_sldr_wrppr');
@@ -1150,7 +1158,7 @@ document.addEventListener('DOMContentLoaded', function () {
         window.addEventListener("resize", bgHeight);
         window.addEventListener("load", bgHeight);
     }
-    
+
     // Accordion
     const accrdWrppr2 = document.querySelectorAll('.accrd_wrppr');
     accrdWrppr2.forEach((ele) => {
