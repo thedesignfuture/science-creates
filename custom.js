@@ -27,6 +27,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         settings: {
                             centerPadding: '6.667rem',
                         }
+                    },
+                    {
+                        breakpoint: 992,
+                        settings: {
+                            centerPadding: '4rem',
+                        }
                     }
                 ]
             });
