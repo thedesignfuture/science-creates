@@ -3548,3 +3548,144 @@ body.dark_mode [data-bg-color=white] .avlblty_box.lab_avlble_box{
 body.dark_mode [data-bg-color=white] .lab_supprt_rch_txt_alt li{
     background-image: url(https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67dd58742de83a3893ac94ae_bllt_icon.svg);
 }
+/* 6/5/25 work start */
+.footr_top .logo:hover {
+    background: #fff;
+  }
+  .footr_top .logo:hover .logo_icon {
+    filter: brightness(0);
+  }
+  .footr_top .logo:hover .logo_txt {
+    color: #000;
+  }
+  .sgnup_bttn_hlder .basic_bttn {
+    border: 1px solid #fff;
+  }
+  .sgnup_bttn_hlder .basic_bttn:hover {
+    background-color: transparent;
+  }
+  .fltrng_bttn.has_active .bttn_icon_hldr {
+    filter: brightness(0) invert(1);
+  }
+  .filter_clear.clear_close{
+    filter: brightness(0);
+  }
+  .srch_slct_active .filter_clear.clear_close{
+    filter: inherit;
+  }
+  .fltrng_bttn:hover .bttn_icon:not(.bttn_icon_last) {
+    -webkit-transform: translateX(100%);
+    -ms-transform: translateX(100%);
+    transform: translateX(100%);
+  }
+  .fltrng_bttn:hover .bttn_icon.bttn_icon_last {
+    -webkit-transform: translateX(0);
+    -ms-transform: translateX(0);
+    transform: translateX(0);
+    -webkit-transition-delay: .2s;
+    -o-transition-delay: .2s;
+    transition-delay: .2s;
+  }
+  .fltr_srch_box input:hover {
+    background: rgb(35 30 31 / 25%);
+    border-color: transparent;
+  }
+  .fltr_srch_box input:focus {
+    background: var(--charcoal-black);
+    border-color: var(--charcoal-black);
+    color:#fff;
+  }
+  .fltr_srch_box input:focus::placeholder{
+    color:#fff;
+  }
+  .fltr_srch_box input:focus{
+
+  }
+  .fltr_srch_box input:focus + .srch_input_icon {
+    filter: brightness(0) invert(1);
+  }
+  /* dark mode css */
+  /* contact page dark mode start*/
+  .dark_mode  .cntct_sldr_outr > * {
+    color: var(--charcoal-black); 
+  }
+  .dark_mode .cntct_sldr_outr .pge_sub_hdng {
+    border-color: var(--charcoal-black);
+  }
+  .dark_mode .cntct_sldr_outr .sldr_arrw_icon {
+    filter: none;
+    -webkit-filter:none;
+  }
+  .dark_mode .cntct_sldr_outr .bttn_icon_hldr {
+    filter: brightness(0);
+  }
+  .dark_mode .cntct_sldr_outr .basic_bttn:hover {
+    background:rgba(255,255,255, 0.7) !important;
+    color: var(--charcoal-black) !important;
+  }
+  /* contact page dark mode end*/
+  .rsrc_page_fltr .cmnty_fltr_bttn_item:nth-child(1) .fltrng_bttn:hover {
+    background:#EFDCFF;
+  }
+  .rsrc_page_fltr .cmnty_fltr_bttn_item:nth-child(2) .fltrng_bttn:hover {
+    background:#E1FFC2;
+  }
+  .rsrc_page_fltr .cmnty_fltr_bttn_item:nth-child(3) .fltrng_bttn:hover {
+    background:#E5EAFF;
+  }
+  .rsrc_page_fltr .cmnty_fltr_bttn_item:nth-child(4) .fltrng_bttn:hover {
+    background:#FFFFCA;
+  }
+  body.dark_mode .fltrng_bttn .bttn_icon_hldr{
+    filter:brightness(0) invert(1);
+  }
+
+  body.dark_mode .fltr_srch_box .srch_input_icon {
+    filter:brightness(0) invert(1);
+
+  }
+
+  body.dark_mode .fltr_srch_box input:hover,
+  body.dark_mode .fltr_srch_box input:focus{
+    background: var(--dark-grey);
+    border-color: var(--pure-white);
+  }
+
+  body.dark_mode .fltrng_bttn:hover {
+    background: var(--dark-grey);
+  }
+
+  body.dark_mode .srch_slct_tggle:hover{
+    background: var(--dark-grey);
+  }
+
+  .rsrc_page_fltr .cmnty_fltr_bttn_item .fltrng_bttn:hover{
+    color:var(--charcoal-black);
+  }
+
+  .rsrc_page_fltr .cmnty_fltr_bttn_item .fltrng_bttn:hover .bttn_icon_hldr{
+    filter:none;
+  }
+
+  body.dark_mode .footer_main .logo:hover {
+    background: var(--charcoal-black);
+  }
+  body.dark_mode .footr_top .logo:hover .logo_txt {
+    color: var(--pure-white);
+  }
+  body.dark_mode .footr_top .logo:hover .logo_icon{
+    filter: brightness(0) saturate(100%) invert(100%) sepia(2%) saturate(9%) hue-rotate(339deg) brightness(103%) contrast(104%);
+  }
+  body.dark_mode .footr_lnk.line{ 
+    border-color: rgba(35, 30, 31, 1); 
+  }
+  body.dark_mode .footr_lnk.line:hover {
+    border-color: rgba(35, 30, 31, 0.6);
+  }
+  body.dark_mode .ft-site-sign{
+    filter: brightness(0) saturate(100%) invert(8%) sepia(7%) saturate(1165%) hue-rotate(298deg) brightness(91%) contrast(88%);
+  }
+  body.dark_mode .polcy_rch_txt a{
+    color: var(--pure-white);
+  }
+  /* 6/5/25 work end */
