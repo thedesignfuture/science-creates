@@ -1150,41 +1150,6 @@ document.addEventListener('DOMContentLoaded', function () {
         window.addEventListener("resize", bgHeight);
         window.addEventListener("load", bgHeight);
     }
-
-    // Contact Tab Like
-    // const cntctWrppr = document.querySelectorAll('.cntct_sldr_outr');
-    // cntctWrppr.forEach((ele) => {
-    //   let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
-    //   const accrdItem = ele.querySelectorAll('.cntct_box_item');
-    //   const accrdBttn = ele.querySelectorAll('.pllr_bttn');
-    
-    //   accrdBttn.forEach((el) => {
-    //     let mainPanel = el.closest('.cntct_box_item');
-    //     // set initial height based on “active” class
-    //     if (mainPanel.classList.contains('active')) {
-    //       mainPanel.style.maxHeight = `${mainPanel.scrollHeight / remVal}rem`;
-    //     } else {
-    //       mainPanel.style.maxHeight = '0px';
-    //     }
-    //     el.addEventListener('click', () => {
-    //       const activeTab = ele.querySelector('.cntct_box_item.active');
-    //       if (activeTab) {
-    //         activeTab.classList.remove('active');
-    //         activeTab.style.maxHeight = '0px';
-    //       }
-    //       let nextTab = mainPanel.nextElementSibling || mainPanel.previousElementSibling;
-    //       if (nextTab && !nextTab.classList.contains('active')) {
-    //         nextTab.classList.add('active');
-    //         nextTab.style.maxHeight = `${nextTab.scrollHeight / remVal}rem`;
-    //       }
-    //     });
-    //   });
-    
-    //   // <-- trigger the first button’s click so the first panel opens on load:
-    //   if (accrdBttn.length) {
-    //     accrdBttn[0].click();
-    //   }
-    // });
     
     // Accordion
     const accrdWrppr2 = document.querySelectorAll('.accrd_wrppr');
@@ -1576,7 +1541,6 @@ document.addEventListener('DOMContentLoaded', function () {
         searchInputId = null,
         enableSort = false,
         sortRadioName = null,
-        featured = false,
         enableFilter = false,
         loadMoreId = null,
         filterContainerSelector = null,
@@ -1588,7 +1552,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const loadMoreBtn = loadMoreId ? document.getElementById(loadMoreId) : null;
         const searchInput = searchInputId ? document.getElementById(searchInputId) : null;
         let filterButtons = [];
-        const getFeatured = featured ? `&filter=featured:${featured}` : '';
 
         let activeSearch = '';
         let activeTag = 'all';
@@ -1598,7 +1561,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let postsToRender = [];
 
         async function fetchAllPosts() {
-            const url = `${API_URL}?key=${API_KEY}&limit=100&include=tags,authors${getFeatured}&order=published_at desc`;
+            const url = `${API_URL}?key=${API_KEY}&limit=100&include=tags,authors&order=published_at desc`;
             const response = await fetch(url, { headers: { 'Accept-Version': 'v5.0' } });
             const data = await response.json();
 
@@ -1817,7 +1780,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('ghost_box')) {
         fetchAndRenderGhostPosts({
             targetId: 'ghost_box',
-            featured: true,
             initialLimit: 1,
             renderPostHTML: post => {
                 const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
