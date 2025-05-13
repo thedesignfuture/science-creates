@@ -897,7 +897,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function destroySubmenuHover() {
-        document.querySelectorAll('.submnu_scnd_lnk_box').forEach(elem => {
+        subLinkBox.forEach(elem => {
             elem.removeEventListener('mouseenter', elem._expand);
             elem.removeEventListener('mouseleave', elem._collapse);
         });
