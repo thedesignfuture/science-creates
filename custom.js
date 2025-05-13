@@ -862,31 +862,55 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Submenu Text Animation
     let subLinkBox = document.querySelectorAll('.submnu_scnd_lnk_box');
-    subLinkBox.forEach((elem) => {
-        const subTextBox = elem?.querySelector('.mnu_sub_txt_box');
-        const textMaxHeight = subTextBox?.scrollHeight;
+    const mq = window.matchMedia("(min-width: 1025px)");
+    function initSubmenuHover() {
+        subLinkBox.forEach(elem => {
+            const subTextBox = elem.querySelector('.mnu_sub_txt_box');
+            const textMaxHeight = subTextBox.scrollHeight;
 
-        const expandText = () => {
-            gsap.to(subTextBox, {
-                maxHeight: `${textMaxHeight}`,
-                y: 0,
-                duration: 0.3,
-                ease: 'ease-out',
-            });
-        };
+            gsap.set(subTextBox, { maxHeight: 0, y: 100 });
 
-        const collapseText = () => {
-            gsap.to(subTextBox, {
-                maxHeight: '0',
-                y: 100,
-                duration: 0.3,
-                ease: 'ease-in',
-            });
-        };
-        gsap.set(subTextBox, { maxHeight: '0', y: 100 });
+            function expand() {
+                gsap.to(subTextBox, {
+                    maxHeight: textMaxHeight,
+                    y: 0,
+                    duration: 0.3,
+                    ease: 'power1.out',
+                });
+            }
 
-        elem.addEventListener('mouseenter', expandText);
-        elem.addEventListener('mouseleave', collapseText);
+            function collapse() {
+                gsap.to(subTextBox, {
+                    maxHeight: 0,
+                    y: 100,
+                    duration: 0.3,
+                    ease: 'power1.in',
+                });
+            }
+
+            elem.addEventListener('mouseenter', expand);
+            elem.addEventListener('mouseleave', collapse);
+
+            elem._expand = expand;
+            elem._collapse = collapse;
+        });
+    }
+
+    function destroySubmenuHover() {
+        document.querySelectorAll('.submnu_scnd_lnk_box').forEach(elem => {
+            elem.removeEventListener('mouseenter', elem._expand);
+            elem.removeEventListener('mouseleave', elem._collapse);
+        });
+    }
+    if (mq.matches) {
+        initSubmenuHover();
+    }
+    mq.addEventListener('change', e => {
+        if (e.matches) {
+            initSubmenuHover();
+        } else {
+            destroySubmenuHover();
+        }
     });
 
     // Single Page Animation
