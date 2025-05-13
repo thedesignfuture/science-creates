@@ -463,7 +463,7 @@ document.addEventListener('DOMContentLoaded', function () {
             slider1 = $(sliderParent).find('.inbtrs_lab_sldr');
             var slideControls = $(sliderParent).find('.sldr_custom_dots_hldr');
             const sl2 = slider1.slick({
-                slidesToShow: 2,
+                slidesToShow: 3,
                 slidesToScroll: 1,
                 arrows: true,
                 dots: true,
