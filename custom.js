@@ -731,9 +731,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (submenu) {
             submenu.classList[action]('submenu_active');
+            document.querySelector('html').classList[action]('submenu_open');
         }
         if (menu) {
             menu.classList[action]('submenu_active');
+            document.querySelector('html').classList[action]('submenu_open');
         }
     }
 
