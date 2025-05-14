@@ -179,21 +179,11 @@ document.addEventListener('DOMContentLoaded', function () {
         let dataSlideNum = parseInt(slider3.data('slide-num'));
 
         if (slideCount < dataSlideNum) {
-            if (windowWidth > 1200) {
-                unslickThumbnailSliderAlt(wrapperSelector);
-                initializeMainSlidersAlt(wrapperSelector);
-            } else {
-                initializeMainSlidersAlt(wrapperSelector);
-                initializeThumbnailSliderAlt(wrapperSelector);
-            }
+            unslickThumbnailSliderAlt(wrapperSelector);
+            initializeMainSlidersAlt(wrapperSelector);
         } else {
-            if (windowWidth > 1200) {
-                initializeMainSlidersAlt(wrapperSelector);
-                initializeThumbnailSliderAlt(wrapperSelector);
-            } else {
-                initializeMainSlidersAlt(wrapperSelector);
-                initializeThumbnailSliderAlt(wrapperSelector);
-            }
+            initializeMainSlidersAlt(wrapperSelector);
+            initializeThumbnailSliderAlt(wrapperSelector);
         }
     }
 
