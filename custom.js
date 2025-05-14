@@ -1625,19 +1625,12 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             if (enableFilter && filterContainerSelector) {
-                const filterContainer = document.querySelector(filterContainerSelector);
-                if (filterContainer) {
-                    const uniqueTags = Array.from(new Set(cachedPosts.flatMap(post => post.tags.map(tag => tag.name.toLowerCase()))));
-                    const buttonsHTML = ['all', ...uniqueTags].map(tag =>
-                        `<div class="cmnty_fltr_bttn_item">
-                            <a href="javascript:void(0);" class="cat_filter_bttn fltrng_bttn ${tag === 'all' ? 'has_active' : ''}" data-filter="${tag}">
-                                ${tag.charAt(0).toUpperCase() + tag.slice(1)}
-                            </a>
-                        </div>`
-                    ).join('');
-                    filterContainer.innerHTML = buttonsHTML;
-                    filterButtons = document.querySelectorAll('.cat_filter_bttn');
-                }
+                filterButtons = Array.from(document.querySelectorAll(
+                    `${filterContainerSelector} .cat_filter_bttn`
+                ));
+                filterButtons.forEach(btn => btn.classList.remove('has_active'));
+                const allBtn = filterButtons.find(btn => btn.dataset.filter === 'all');
+                if (allBtn) allBtn.classList.add('has_active');
             }
         }
 
