@@ -3818,9 +3818,6 @@ body.dark_mode [data-bg-color=white] .evnt_cat_bnnr_tag {
     .hdr_lft_txt {
         padding-top: 0.9rem;
     }
-}
-
-@media(max-width:767px) {
     .eco_row .eco_col:nth-child(odd) {
         padding-right: 0;
     }
