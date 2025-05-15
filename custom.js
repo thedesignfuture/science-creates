@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Initialize main image + text sliders
+    // Initialize main image + text sliders (no dots here)
     function initializeMainSlidersAlt(wrapperSelector) {
         initializeSliderAlt('.mmbr_img_sldr', {
             slidesToShow: 1,
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, wrapperSelector);
     }
 
-    // Initialize thumbnail strip nav
+    // Initialize thumbnail strip nav (desktop)
     function initializeThumbnailSliderAlt(wrapperSelector) {
         initializeSliderAlt('.mmbr_sldr_tab_lstng', {
             slidesToShow: 6,
@@ -232,16 +232,21 @@ document.addEventListener('DOMContentLoaded', function () {
         $(wrapperSelector).find('.sldr_custm_arrw .arrw_next').off('click').on('click', function () {
             $(wrapperSelector).find('.mmbr_sldr_tab_lstng').slick('slickNext');
         });
+
+        // ensure strip is visible
+        $(wrapperSelector).find('.mmbr_sldr_tab_lstng').show();
     }
 
-    // Initialize numbered-dot pagination nav
-    function initializeThumbnailPaginationAlt(wrapperSelector) {
-        let slider3 = $(wrapperSelector).find('.mmbr_sldr_tab_lstng');
-        // Remove any old slick instance
-        if (slider3.hasClass('slick-initialized')) {
-            slider3.slick('unslick');
+    // Initialize text slider with custom‑text dots (mobile)
+    function initializeTextSliderWithPagerAlt(wrapperSelector) {
+        let slider2 = $(wrapperSelector).find('.mmbr_optn_txt_sldr');
+
+        // destroy old instance
+        if (slider2.hasClass('slick-initialized')) {
+            slider2.slick('unslick');
         }
-        slider3.slick({
+
+        slider2.slick({
             slidesToShow: 1,
             slidesToScroll: 1,
             arrows: false,
@@ -250,42 +255,57 @@ document.addEventListener('DOMContentLoaded', function () {
             lazyLoad: 'progressive',
             cssEase: 'ease-in',
             speed: 500,
-            asNavFor: $(wrapperSelector).find('.mmbr_img_sldr, .mmbr_optn_txt_sldr'),
-            customPaging: function (slider, i) {
-                let num = i + 1;
-                return (num < 10 ? '0' + num : num.toString());
-            }
+            customPaging: function (slick, i) {
+                // pull custom text from your thumbnail items
+                let label = $(wrapperSelector)
+                    .find('.mmbr_sldr_tab_item')
+                    .eq(i)
+                    .text()
+                    .trim();
+                // fallback to zero‑padded number
+                if (!label) {
+                    let num = i + 1;
+                    label = num < 10 ? '0' + num : num.toString();
+                }
+                return '<button type="button">' + label + '</button>';
+            },
+            asNavFor: $(wrapperSelector).find('.mmbr_img_sldr')
         });
+
+        // hide the thumbnail strip container completely
+        $(wrapperSelector).find('.mmbr_sldr_tab_lstng').hide();
     }
 
-    // Decide which thumbnail nav to use based on screen size and count
+    // Decide which thumbnail/text nav to use
     function handleResponsiveSliderBehaviorAlt(wrapperSelector) {
         let windowWidth = $(window).width();
         let slider3 = $(wrapperSelector).find('.mmbr_sldr_tab_lstng');
         let slideCount = slider3.find('.mmbr_sldr_tab_item').length;
         let dataSlideNum = parseInt(slider3.data('slide-num'), 10);
 
-        // Always init main sliders first
+        // always init main sliders (image+text)
         initializeMainSlidersAlt(wrapperSelector);
 
         if (windowWidth < 1200) {
-            // On smaller screens, use numbered-dot pagination
-            initializeThumbnailPaginationAlt(wrapperSelector);
-        } else if (slideCount < dataSlideNum) {
-            // Too few thumbnails: no navigation
+            // mobile: hide strip, use text slider as pager
             unslickThumbnailSliderAlt(wrapperSelector);
-        } else {
-            // Desktop and enough slides: thumbnail strip
+            initializeTextSliderWithPagerAlt(wrapperSelector);
+        }
+        else if (slideCount < dataSlideNum) {
+            // too few thumbnails → no nav at all
+            unslickThumbnailSliderAlt(wrapperSelector);
+        }
+        else {
+            // desktop: strip nav
             initializeThumbnailSliderAlt(wrapperSelector);
         }
     }
 
-    // Sync active classes between thumbnails and text slider
+    // Sync active classes between thumbnail items and text slider
     function setThumbnailNavigationAlt(wrapperSelector) {
         let slider3 = $(wrapperSelector).find('.mmbr_sldr_tab_lstng');
         let slider2 = $(wrapperSelector).find('.mmbr_optn_txt_sldr');
 
-        // Click on thumbnail item jumps text slider
         slider3.find('.mmbr_sldr_tab_item').off('click').on('click', function (e) {
             e.preventDefault();
             slider3.find('.mmbr_sldr_tab_item').removeClass('active');
@@ -296,30 +316,27 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Before text slider changes, update active thumbnail
         slider2.off('beforeChange').on('beforeChange', function (ev, slick, current, next) {
             slider3.find('.mmbr_sldr_tab_item').removeClass('active');
             slider3.find('.mmbr_sldr_tab_item').eq(next).addClass('active');
         });
     }
 
-    // Initialize all member boxes
+    // Kick everything off
     $('.mmbr_box').each(function () {
         let wrapper = this;
-
         handleResponsiveSliderBehaviorAlt(wrapper);
         setThumbnailNavigationAlt(wrapper);
 
-        // Ensure on resize we re-evaluate nav type
         $(window).on('resize', function () {
             handleResponsiveSliderBehaviorAlt(wrapper);
         });
 
-        // Set first thumbnail active
+        // mark first thumbnail active
         $(wrapper).find('.mmbr_sldr_tab_lstng .mmbr_sldr_tab_item').eq(0).addClass('active');
     });
 
-    // Assign data-slide attributes to each thumbnail item
+    // assign data-slide attributes
     document.querySelectorAll('.mmbr_sldr_tab_hldr').forEach((elem) => {
         elem.querySelectorAll('.mmbr_sldr_tab_item').forEach((item, i) => {
             item.setAttribute('data-slide', i + 1);
