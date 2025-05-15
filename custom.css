@@ -3797,6 +3797,10 @@ body.dark_mode [data-bg-color=white] .evnt_cat_bnnr_tag {
     background: var(--charcoal-black);
     color: var(--pure-white);
 }
+body.dark_mode .flr_swtchng_bttn.active .floor_nme{
+    background: var(--pure-white);
+    color: var(--charcoal-black);
+}
 /* Responsive CSS */
 @media(max-width:1199px) {
     html {
