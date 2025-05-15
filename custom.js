@@ -1112,34 +1112,40 @@ document.addEventListener('DOMContentLoaded', function () {
     const accrdWrppr = document.querySelectorAll('.floor_tab_wrppr');
 
     accrdWrppr.forEach((wrapper) => {
-        let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
-        const accrdItems = wrapper.querySelectorAll('.flloor_tab');
-        const accrdBttns = wrapper.querySelectorAll('.flr_swtchng_bttn');
+        const remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
+        const tabs = wrapper.querySelectorAll('.flloor_tab');
+        const buttons = wrapper.querySelectorAll('.flr_swtchng_bttn');
 
-        accrdItems.forEach((tab) => {
+        // Initialize panels & buttons on load
+        tabs.forEach((tab, i) => {
             if (tab.classList.contains('active')) {
                 tab.style.maxHeight = `${tab.scrollHeight / remVal}rem`;
+                buttons[i].classList.add('active');
             } else {
                 tab.style.maxHeight = '0px';
+                buttons[i].classList.remove('active');
             }
         });
 
-        accrdBttns.forEach((btn) => {
+        // Attach click handlers
+        buttons.forEach((btn, idx) => {
             btn.addEventListener('click', () => {
-                const currentTab = btn.closest('.flloor_tab');
-
-                // Deactivate all tabs
-                accrdItems.forEach((tab) => {
-                    tab.classList.remove('active');
-                    tab.style.maxHeight = '0px';
+                // Collapse all tabs and deactivate all buttons
+                tabs.forEach((t, j) => {
+                    t.classList.remove('active');
+                    t.style.maxHeight = '0px';
+                    buttons[j].classList.remove('active');
                 });
 
-                // Activate the clicked tab
-                currentTab.classList.add('active');
-                currentTab.style.maxHeight = `${currentTab.scrollHeight / remVal}rem`;
+                // Activate the clicked button + corresponding tab
+                btn.classList.add('active');
+                const targetTab = tabs[idx];
+                targetTab.classList.add('active');
+                targetTab.style.maxHeight = `${targetTab.scrollHeight / remVal}rem`;
             });
         });
     });
+
 
 
     // Add Id To Each Floor Tab
