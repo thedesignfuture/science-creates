@@ -1570,7 +1570,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Dark Menu Hover Color
     let pllrLink = document.querySelectorAll("[link-color]");
-    pllrLink.forEach((ele) => {
+    pllrLink.forEach((ele),function() {
         let pllrLinkColor = ele.getAttribute("link-color");
         ele.addEventListener("mouseenter", function () {
             this.style.color = pllrLinkColor;
@@ -1578,6 +1578,9 @@ document.addEventListener('DOMContentLoaded', function () {
         ele.addEventListener("mouseleave", function () {
             this.style.color = null;
         })
+        if(ele.classList.contains("w--current")){
+            this.style.color = pllrLinkColor;
+        }
     })
 
     // Add #data-url
