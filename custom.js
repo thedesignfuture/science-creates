@@ -1569,6 +1569,9 @@ document.addEventListener('DOMContentLoaded', function () {
             ele.addEventListener("mouseenter",function(){
                 this.style.color= pllrLinkColor;
             })
+            ele.addEventListener("mouseleave",function(){
+                this.style.color= null;
+            })
         })
 
     // Add #data-url
