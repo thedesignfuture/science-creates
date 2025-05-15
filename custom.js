@@ -165,6 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     //  Members Slider
+    // Helper to initialize any slick slider if not already initialized
     function initializeSliderAlt(sliderSelector, options, wrapperSelector) {
         let slider = $(wrapperSelector).find(sliderSelector);
         if (!slider.hasClass('slick-initialized')) {
@@ -172,21 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function handleResponsiveSliderBehaviorAlt(wrapperSelector) {
-        let windowWidth = $(window).width();
-        let slider3 = $(wrapperSelector).find('.mmbr_sldr_tab_lstng');
-        let slideCount = slider3.find('.mmbr_sldr_tab_item').length;
-        let dataSlideNum = parseInt(slider3.data('slide-num'));
-
-        if (slideCount < dataSlideNum) {
-            unslickThumbnailSliderAlt(wrapperSelector);
-            initializeMainSlidersAlt(wrapperSelector);
-        } else {
-            initializeMainSlidersAlt(wrapperSelector);
-            initializeThumbnailSliderAlt(wrapperSelector);
-        }
-    }
-
+    // Destroy thumbnail slider if initialized
     function unslickThumbnailSliderAlt(wrapperSelector) {
         let slider3 = $(wrapperSelector).find('.mmbr_sldr_tab_lstng');
         if (slider3.hasClass('slick-initialized')) {
@@ -194,6 +181,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Initialize main image + text sliders
     function initializeMainSlidersAlt(wrapperSelector) {
         initializeSliderAlt('.mmbr_img_sldr', {
             slidesToShow: 1,
@@ -207,7 +195,6 @@ document.addEventListener('DOMContentLoaded', function () {
             speed: 500,
         }, wrapperSelector);
 
-        // Slider 2 settings
         initializeSliderAlt('.mmbr_optn_txt_sldr', {
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -224,6 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, wrapperSelector);
     }
 
+    // Initialize thumbnail strip nav
     function initializeThumbnailSliderAlt(wrapperSelector) {
         initializeSliderAlt('.mmbr_sldr_tab_lstng', {
             slidesToShow: 6,
@@ -238,18 +226,67 @@ document.addEventListener('DOMContentLoaded', function () {
             asNavFor: $(wrapperSelector).find('.mmbr_img_sldr, .mmbr_optn_txt_sldr'),
         }, wrapperSelector);
 
-        $(wrapperSelector).find('.sldr_custm_arrw .arrw_prev').click(function () {
+        $(wrapperSelector).find('.sldr_custm_arrw .arrw_prev').off('click').on('click', function () {
             $(wrapperSelector).find('.mmbr_sldr_tab_lstng').slick('slickPrev');
         });
-        $(wrapperSelector).find('.sldr_custm_arrw .arrw_next').click(function () {
+        $(wrapperSelector).find('.sldr_custm_arrw .arrw_next').off('click').on('click', function () {
             $(wrapperSelector).find('.mmbr_sldr_tab_lstng').slick('slickNext');
         });
     }
 
+    // Initialize numbered-dot pagination nav
+    function initializeThumbnailPaginationAlt(wrapperSelector) {
+        let slider3 = $(wrapperSelector).find('.mmbr_sldr_tab_lstng');
+        // Remove any old slick instance
+        if (slider3.hasClass('slick-initialized')) {
+            slider3.slick('unslick');
+        }
+        slider3.slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            dots: true,
+            infinite: true,
+            lazyLoad: 'progressive',
+            cssEase: 'ease-in',
+            speed: 500,
+            asNavFor: $(wrapperSelector).find('.mmbr_img_sldr, .mmbr_optn_txt_sldr'),
+            customPaging: function (slider, i) {
+                let num = i + 1;
+                return (num < 10 ? '0' + num : num.toString());
+            }
+        });
+    }
+
+    // Decide which thumbnail nav to use based on screen size and count
+    function handleResponsiveSliderBehaviorAlt(wrapperSelector) {
+        let windowWidth = $(window).width();
+        let slider3 = $(wrapperSelector).find('.mmbr_sldr_tab_lstng');
+        let slideCount = slider3.find('.mmbr_sldr_tab_item').length;
+        let dataSlideNum = parseInt(slider3.data('slide-num'), 10);
+
+        // Always init main sliders first
+        initializeMainSlidersAlt(wrapperSelector);
+
+        if (windowWidth < 1200) {
+            // On smaller screens, use numbered-dot pagination
+            initializeThumbnailPaginationAlt(wrapperSelector);
+        } else if (slideCount < dataSlideNum) {
+            // Too few thumbnails: no navigation
+            unslickThumbnailSliderAlt(wrapperSelector);
+        } else {
+            // Desktop and enough slides: thumbnail strip
+            initializeThumbnailSliderAlt(wrapperSelector);
+        }
+    }
+
+    // Sync active classes between thumbnails and text slider
     function setThumbnailNavigationAlt(wrapperSelector) {
         let slider3 = $(wrapperSelector).find('.mmbr_sldr_tab_lstng');
         let slider2 = $(wrapperSelector).find('.mmbr_optn_txt_sldr');
-        slider3.find('.mmbr_sldr_tab_item').click(function (e) {
+
+        // Click on thumbnail item jumps text slider
+        slider3.find('.mmbr_sldr_tab_item').off('click').on('click', function (e) {
             e.preventDefault();
             slider3.find('.mmbr_sldr_tab_item').removeClass('active');
             let slideIndex = $(this).data('slide') - 1;
@@ -258,30 +295,36 @@ document.addEventListener('DOMContentLoaded', function () {
                 slider2.slick('slickGoTo', slideIndex);
             }
         });
-        slider2.on("beforeChange", function (ev, slick, current, next) {
+
+        // Before text slider changes, update active thumbnail
+        slider2.off('beforeChange').on('beforeChange', function (ev, slick, current, next) {
             slider3.find('.mmbr_sldr_tab_item').removeClass('active');
             slider3.find('.mmbr_sldr_tab_item').eq(next).addClass('active');
         });
     }
 
+    // Initialize all member boxes
     $('.mmbr_box').each(function () {
-        let wrapperSelector = this;
-        handleResponsiveSliderBehaviorAlt(wrapperSelector);
-        setThumbnailNavigationAlt(wrapperSelector);
+        let wrapper = this;
 
-        $(window).resize(function () {
-            handleResponsiveSliderBehaviorAlt(wrapperSelector);
+        handleResponsiveSliderBehaviorAlt(wrapper);
+        setThumbnailNavigationAlt(wrapper);
+
+        // Ensure on resize we re-evaluate nav type
+        $(window).on('resize', function () {
+            handleResponsiveSliderBehaviorAlt(wrapper);
         });
-        $(wrapperSelector).find('.mmbr_sldr_tab_lstng .mmbr_sldr_tab_item').eq(0).addClass('active');
+
+        // Set first thumbnail active
+        $(wrapper).find('.mmbr_sldr_tab_lstng .mmbr_sldr_tab_item').eq(0).addClass('active');
     });
 
-    let dataWrapper1 = document.querySelectorAll('.mmbr_sldr_tab_hldr');
-    dataWrapper1.forEach((elem, i) => {
-        let dataSlideItem = elem.querySelectorAll('.mmbr_sldr_tab_hldr .mmbr_sldr_tab_item');
-        dataSlideItem.forEach((el, i) => {
-            el.setAttribute('data-slide', i + 1);
+    // Assign data-slide attributes to each thumbnail item
+    document.querySelectorAll('.mmbr_sldr_tab_hldr').forEach((elem) => {
+        elem.querySelectorAll('.mmbr_sldr_tab_item').forEach((item, i) => {
+            item.setAttribute('data-slide', i + 1);
         });
-    })
+    });
 
     //  Staff Slider Custom
     function initializeSlider(sliderSelector, options, wrapperSelector) {
@@ -1112,42 +1155,42 @@ document.addEventListener('DOMContentLoaded', function () {
     const accrdWrppr = document.querySelectorAll('.floor_tab_wrppr');
 
     accrdWrppr.forEach((wrapper) => {
-      const rem  = parseFloat(getComputedStyle(document.documentElement).fontSize);
-      const tabs = wrapper.querySelectorAll('.flloor_tab');
-      tabs.forEach((tab, i) => {
-        tab.classList.toggle('active', i === 0);
-        tab.style.maxHeight = i === 0
-          ? `${tab.scrollHeight / rem}rem`
-          : '0px';
-      });
-      wrapper.querySelectorAll('.flloor_tab').forEach((tab) => {
-        tab.querySelectorAll('.flr_swtchng_bttn')[0].classList.add('active');
-      });
-    
-      wrapper.querySelectorAll('.flr_swtchng_bttn')
-        .forEach((btn) => {
-          btn.addEventListener('click', () => {
-            const panelBtns = btn.closest('.flloor_tab')
-                                  .querySelectorAll('.flr_swtchng_bttn');
-            const idx = Array.from(panelBtns).indexOf(btn);
-    
-            tabs.forEach((t) => {
-              t.classList.remove('active');
-              t.style.maxHeight = '0px';
-            });
-            wrapper.querySelectorAll('.flr_swtchng_bttn')
-                   .forEach((b) => b.classList.remove('active'));
-            const targetTab = tabs[idx];
-            targetTab.classList.add('active');
-            targetTab.style.maxHeight = `${targetTab.scrollHeight / rem}rem`;
-            tabs.forEach((t) => {
-              t.querySelectorAll('.flr_swtchng_bttn')[idx]
-               .classList.add('active');
-            });
-          });
+        const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+        const tabs = wrapper.querySelectorAll('.flloor_tab');
+        tabs.forEach((tab, i) => {
+            tab.classList.toggle('active', i === 0);
+            tab.style.maxHeight = i === 0
+                ? `${tab.scrollHeight / rem}rem`
+                : '0px';
         });
+        wrapper.querySelectorAll('.flloor_tab').forEach((tab) => {
+            tab.querySelectorAll('.flr_swtchng_bttn')[0].classList.add('active');
+        });
+
+        wrapper.querySelectorAll('.flr_swtchng_bttn')
+            .forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    const panelBtns = btn.closest('.flloor_tab')
+                        .querySelectorAll('.flr_swtchng_bttn');
+                    const idx = Array.from(panelBtns).indexOf(btn);
+
+                    tabs.forEach((t) => {
+                        t.classList.remove('active');
+                        t.style.maxHeight = '0px';
+                    });
+                    wrapper.querySelectorAll('.flr_swtchng_bttn')
+                        .forEach((b) => b.classList.remove('active'));
+                    const targetTab = tabs[idx];
+                    targetTab.classList.add('active');
+                    targetTab.style.maxHeight = `${targetTab.scrollHeight / rem}rem`;
+                    tabs.forEach((t) => {
+                        t.querySelectorAll('.flr_swtchng_bttn')[idx]
+                            .classList.add('active');
+                    });
+                });
+            });
     });
-    
+
 
     // Add Id To Each Floor Tab
     let ftab = document.querySelectorAll('.flloor_tab');
@@ -1578,7 +1621,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ele.addEventListener("mouseleave", function () {
             this.style.color = null;
         })
-        if(ele.classList.contains("w--current")){
+        if (ele.classList.contains("w--current")) {
             ele.style.color = pllrLinkColor;
         }
     })
