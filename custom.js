@@ -1622,6 +1622,25 @@ document.addEventListener('DOMContentLoaded', function () {
     const API_URL = `https://sciencecreates.ghost.io/ghost/api/content/posts/${POST_ID}`;
     const API_KEY = '969e9f32437ce35f25af6d1453';
 
+    const fullUrl = `${API_URL}/?key=${API_KEY}&formats=html`;
+
+  try {
+    const response = await fetch(fullUrl);
+    const data = await response.json();
+    
+    // Check if we have posts data
+    if (data.posts && data.posts.length > 0) {
+      // Return the full HTML content
+      return data.posts[0].html;
+    } else {
+      throw new Error('Post not found');
+    }
+  } catch (error) {
+    console.error('Error fetching Ghost post:', error);
+    return null;
+  }
+}
+    
     async function fetchAndRenderGhostPosts({
         targetId,
         initialLimit = 3,
