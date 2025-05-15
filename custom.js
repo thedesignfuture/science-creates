@@ -165,7 +165,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     //  Members Slider
-    // Helper to initialize any slick slider if not already initialized
     function initializeSliderAlt(sliderSelector, options, wrapperSelector) {
         let slider = $(wrapperSelector).find(sliderSelector);
         if (!slider.hasClass('slick-initialized')) {
@@ -173,7 +172,21 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Destroy thumbnail slider if initialized
+    function handleResponsiveSliderBehaviorAlt(wrapperSelector) {
+        let windowWidth = $(window).width();
+        let slider3 = $(wrapperSelector).find('.mmbr_sldr_tab_lstng');
+        let slideCount = slider3.find('.mmbr_sldr_tab_item').length;
+        let dataSlideNum = parseInt(slider3.data('slide-num'));
+
+        if (slideCount < dataSlideNum) {
+            unslickThumbnailSliderAlt(wrapperSelector);
+            initializeMainSlidersAlt(wrapperSelector);
+        } else {
+            initializeMainSlidersAlt(wrapperSelector);
+            initializeThumbnailSliderAlt(wrapperSelector);
+        }
+    }
+
     function unslickThumbnailSliderAlt(wrapperSelector) {
         let slider3 = $(wrapperSelector).find('.mmbr_sldr_tab_lstng');
         if (slider3.hasClass('slick-initialized')) {
@@ -181,7 +194,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Initialize main image + text sliders (no dots here)
     function initializeMainSlidersAlt(wrapperSelector) {
         initializeSliderAlt('.mmbr_img_sldr', {
             slidesToShow: 1,
@@ -195,6 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
             speed: 500,
         }, wrapperSelector);
 
+        // Slider 2 settings
         initializeSliderAlt('.mmbr_optn_txt_sldr', {
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -211,7 +224,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }, wrapperSelector);
     }
 
-    // Initialize thumbnail strip nav (desktop)
     function initializeThumbnailSliderAlt(wrapperSelector) {
         initializeSliderAlt('.mmbr_sldr_tab_lstng', {
             slidesToShow: 6,
@@ -226,87 +238,18 @@ document.addEventListener('DOMContentLoaded', function () {
             asNavFor: $(wrapperSelector).find('.mmbr_img_sldr, .mmbr_optn_txt_sldr'),
         }, wrapperSelector);
 
-        $(wrapperSelector).find('.sldr_custm_arrw .arrw_prev').off('click').on('click', function () {
+        $(wrapperSelector).find('.sldr_custm_arrw .arrw_prev').click(function () {
             $(wrapperSelector).find('.mmbr_sldr_tab_lstng').slick('slickPrev');
         });
-        $(wrapperSelector).find('.sldr_custm_arrw .arrw_next').off('click').on('click', function () {
+        $(wrapperSelector).find('.sldr_custm_arrw .arrw_next').click(function () {
             $(wrapperSelector).find('.mmbr_sldr_tab_lstng').slick('slickNext');
         });
-
-        // ensure strip is visible
-        $(wrapperSelector).find('.mmbr_sldr_tab_lstng').show();
     }
 
-    // Initialize text slider with custom‑text dots (mobile)
-    function initializeTextSliderWithPagerAlt(wrapperSelector) {
-        let slider2 = $(wrapperSelector).find('.mmbr_optn_txt_sldr');
-
-        // destroy old instance
-        if (slider2.hasClass('slick-initialized')) {
-            slider2.slick('unslick');
-        }
-
-        slider2.slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            dots: true,
-            infinite: true,
-            lazyLoad: 'progressive',
-            cssEase: 'ease-in',
-            speed: 500,
-            customPaging: function (slick, i) {
-                // pull custom text from your thumbnail items
-                let label = $(wrapperSelector)
-                    .find('.mmbr_sldr_tab_item')
-                    .eq(i)
-                    .text()
-                    .trim();
-                // fallback to zero‑padded number
-                if (!label) {
-                    let num = i + 1;
-                    label = num < 10 ? '0' + num : num.toString();
-                }
-                return '<button type="button">' + label + '</button>';
-            },
-            asNavFor: $(wrapperSelector).find('.mmbr_img_sldr')
-        });
-
-        // hide the thumbnail strip container completely
-        $(wrapperSelector).find('.mmbr_sldr_tab_lstng').hide();
-    }
-
-    // Decide which thumbnail/text nav to use
-    function handleResponsiveSliderBehaviorAlt(wrapperSelector) {
-        let windowWidth = $(window).width();
-        let slider3 = $(wrapperSelector).find('.mmbr_sldr_tab_lstng');
-        let slideCount = slider3.find('.mmbr_sldr_tab_item').length;
-        let dataSlideNum = parseInt(slider3.data('slide-num'), 10);
-
-        // always init main sliders (image+text)
-        initializeMainSlidersAlt(wrapperSelector);
-
-        if (windowWidth < 1200) {
-            // mobile: hide strip, use text slider as pager
-            unslickThumbnailSliderAlt(wrapperSelector);
-            initializeTextSliderWithPagerAlt(wrapperSelector);
-        }
-        else if (slideCount < dataSlideNum) {
-            // too few thumbnails → no nav at all
-            unslickThumbnailSliderAlt(wrapperSelector);
-        }
-        else {
-            // desktop: strip nav
-            initializeThumbnailSliderAlt(wrapperSelector);
-        }
-    }
-
-    // Sync active classes between thumbnail items and text slider
     function setThumbnailNavigationAlt(wrapperSelector) {
         let slider3 = $(wrapperSelector).find('.mmbr_sldr_tab_lstng');
         let slider2 = $(wrapperSelector).find('.mmbr_optn_txt_sldr');
-
-        slider3.find('.mmbr_sldr_tab_item').off('click').on('click', function (e) {
+        slider3.find('.mmbr_sldr_tab_item').click(function (e) {
             e.preventDefault();
             slider3.find('.mmbr_sldr_tab_item').removeClass('active');
             let slideIndex = $(this).data('slide') - 1;
@@ -315,33 +258,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 slider2.slick('slickGoTo', slideIndex);
             }
         });
-
-        slider2.off('beforeChange').on('beforeChange', function (ev, slick, current, next) {
+        slider2.on("beforeChange", function (ev, slick, current, next) {
             slider3.find('.mmbr_sldr_tab_item').removeClass('active');
             slider3.find('.mmbr_sldr_tab_item').eq(next).addClass('active');
         });
     }
 
-    // Kick everything off
     $('.mmbr_box').each(function () {
-        let wrapper = this;
-        handleResponsiveSliderBehaviorAlt(wrapper);
-        setThumbnailNavigationAlt(wrapper);
+        let wrapperSelector = this;
+        handleResponsiveSliderBehaviorAlt(wrapperSelector);
+        setThumbnailNavigationAlt(wrapperSelector);
 
-        $(window).on('resize', function () {
-            handleResponsiveSliderBehaviorAlt(wrapper);
+        $(window).resize(function () {
+            handleResponsiveSliderBehaviorAlt(wrapperSelector);
         });
-
-        // mark first thumbnail active
-        $(wrapper).find('.mmbr_sldr_tab_lstng .mmbr_sldr_tab_item').eq(0).addClass('active');
+        $(wrapperSelector).find('.mmbr_sldr_tab_lstng .mmbr_sldr_tab_item').eq(0).addClass('active');
     });
 
-    // assign data-slide attributes
-    document.querySelectorAll('.mmbr_sldr_tab_hldr').forEach((elem) => {
-        elem.querySelectorAll('.mmbr_sldr_tab_item').forEach((item, i) => {
-            item.setAttribute('data-slide', i + 1);
+    let dataWrapper1 = document.querySelectorAll('.mmbr_sldr_tab_hldr');
+    dataWrapper1.forEach((elem, i) => {
+        let dataSlideItem = elem.querySelectorAll('.mmbr_sldr_tab_hldr .mmbr_sldr_tab_item');
+        dataSlideItem.forEach((el, i) => {
+            el.setAttribute('data-slide', i + 1);
         });
-    });
+    })
 
     //  Staff Slider Custom
     function initializeSlider(sliderSelector, options, wrapperSelector) {
@@ -1172,42 +1112,42 @@ document.addEventListener('DOMContentLoaded', function () {
     const accrdWrppr = document.querySelectorAll('.floor_tab_wrppr');
 
     accrdWrppr.forEach((wrapper) => {
-        const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-        const tabs = wrapper.querySelectorAll('.flloor_tab');
-        tabs.forEach((tab, i) => {
-            tab.classList.toggle('active', i === 0);
-            tab.style.maxHeight = i === 0
-                ? `${tab.scrollHeight / rem}rem`
-                : '0px';
-        });
-        wrapper.querySelectorAll('.flloor_tab').forEach((tab) => {
-            tab.querySelectorAll('.flr_swtchng_bttn')[0].classList.add('active');
-        });
-
-        wrapper.querySelectorAll('.flr_swtchng_bttn')
-            .forEach((btn) => {
-                btn.addEventListener('click', () => {
-                    const panelBtns = btn.closest('.flloor_tab')
-                        .querySelectorAll('.flr_swtchng_bttn');
-                    const idx = Array.from(panelBtns).indexOf(btn);
-
-                    tabs.forEach((t) => {
-                        t.classList.remove('active');
-                        t.style.maxHeight = '0px';
-                    });
-                    wrapper.querySelectorAll('.flr_swtchng_bttn')
-                        .forEach((b) => b.classList.remove('active'));
-                    const targetTab = tabs[idx];
-                    targetTab.classList.add('active');
-                    targetTab.style.maxHeight = `${targetTab.scrollHeight / rem}rem`;
-                    tabs.forEach((t) => {
-                        t.querySelectorAll('.flr_swtchng_bttn')[idx]
-                            .classList.add('active');
-                    });
-                });
+      const rem  = parseFloat(getComputedStyle(document.documentElement).fontSize);
+      const tabs = wrapper.querySelectorAll('.flloor_tab');
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle('active', i === 0);
+        tab.style.maxHeight = i === 0
+          ? `${tab.scrollHeight / rem}rem`
+          : '0px';
+      });
+      wrapper.querySelectorAll('.flloor_tab').forEach((tab) => {
+        tab.querySelectorAll('.flr_swtchng_bttn')[0].classList.add('active');
+      });
+    
+      wrapper.querySelectorAll('.flr_swtchng_bttn')
+        .forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const panelBtns = btn.closest('.flloor_tab')
+                                  .querySelectorAll('.flr_swtchng_bttn');
+            const idx = Array.from(panelBtns).indexOf(btn);
+    
+            tabs.forEach((t) => {
+              t.classList.remove('active');
+              t.style.maxHeight = '0px';
             });
+            wrapper.querySelectorAll('.flr_swtchng_bttn')
+                   .forEach((b) => b.classList.remove('active'));
+            const targetTab = tabs[idx];
+            targetTab.classList.add('active');
+            targetTab.style.maxHeight = `${targetTab.scrollHeight / rem}rem`;
+            tabs.forEach((t) => {
+              t.querySelectorAll('.flr_swtchng_bttn')[idx]
+               .classList.add('active');
+            });
+          });
+        });
     });
-
+    
 
     // Add Id To Each Floor Tab
     let ftab = document.querySelectorAll('.flloor_tab');
@@ -1638,7 +1578,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ele.addEventListener("mouseleave", function () {
             this.style.color = null;
         })
-        if (ele.classList.contains("w--current")) {
+        if(ele.classList.contains("w--current")){
             ele.style.color = pllrLinkColor;
         }
     })
