@@ -194,10 +194,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function initializeMainSlidersAlt(wrapperSelector) {
-        const isMobile = window.innerWidth <= 767;
+        const isMobile = window.innerWidth <= 1199;
         const $wrapper = $(wrapperSelector);
-
-        // Image slider
         initializeSliderAlt('.mmbr_img_sldr', {
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -210,7 +208,6 @@ document.addEventListener('DOMContentLoaded', function () {
             speed: 500,
         }, wrapperSelector);
 
-        // Text slider with always‐on arrows, mobile dots
         initializeSliderAlt('.mmbr_optn_txt_sldr', {
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -224,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function () {
             prevArrow: $wrapper.find('.sldr_custm_arrw .arrw_prev'),
             nextArrow: $wrapper.find('.sldr_custm_arrw .arrw_next'),
             dots: isMobile,
-            appendDots: isMobile ? $wrapper.find('.sldr_custom_dots_wrapper') : null,
+            appendDots: isMobile ? $wrapper.find('.sldr_custom_dots_hldr') : null,
             dotsClass: 'slick-dots sldr_custom_dots',
             customPaging: function (_, i) {
                 let num = i + 1;
@@ -248,7 +245,6 @@ document.addEventListener('DOMContentLoaded', function () {
             asNavFor: $wrapper.find('.mmbr_img_sldr, .mmbr_optn_txt_sldr'),
         }, wrapperSelector);
 
-        // Thumbnail prev/next hooks
         $wrapper.find('.sldr_custm_arrw .arrw_prev').on('click', function () {
             $wrapper.find('.mmbr_sldr_tab_lstng').slick('slickPrev');
         });
@@ -277,31 +273,25 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // 1) Assign data-slide attributes
     document.querySelectorAll('.mmbr_sldr_tab_hldr').forEach(holder => {
         holder.querySelectorAll('.mmbr_sldr_tab_item').forEach((item, i) => {
             item.setAttribute('data-slide', i + 1);
         });
     });
 
-    // 2) Initial setup per .mmbr_box
     document.querySelectorAll('.mmbr_box').forEach(box => {
         handleResponsiveSliderBehaviorAlt(box);
         setThumbnailNavigationAlt(box);
-        // mark first thumbnail active
         $(box).find('.mmbr_sldr_tab_lstng .mmbr_sldr_tab_item').first().addClass('active');
     });
 
-    // 3) Reinit on crossing 767px breakpoint
-    let wasMobile = window.innerWidth <= 767;
+    let wasMobile = window.innerWidth <= 1199;
     window.addEventListener('resize', () => {
-        let isMobile = window.innerWidth <= 767;
+        let isMobile = window.innerWidth <= 1199;
         if (isMobile !== wasMobile) {
             document.querySelectorAll('.mmbr_box').forEach(box => {
-                // destroy slick instances
                 $(box).find('.mmbr_img_sldr, .mmbr_optn_txt_sldr').slick('unslick');
                 unslickThumbnailSliderAlt(box);
-                // reinit
                 handleResponsiveSliderBehaviorAlt(box);
                 setThumbnailNavigationAlt(box);
                 $(box).find('.mmbr_sldr_tab_lstng .mmbr_sldr_tab_item').first().addClass('active');
