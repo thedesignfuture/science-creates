@@ -1111,37 +1111,36 @@ document.addEventListener('DOMContentLoaded', function () {
     //Floor Accordion Mode
     const accrdWrppr = document.querySelectorAll('.floor_tab_wrppr');
 
-    accrdWrppr.forEach((ele) => {
+    accrdWrppr.forEach((wrapper) => {
         let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
-        const accrdItem = ele.querySelectorAll('.flloor_tab');
-        const accrdBttn = ele.querySelectorAll('.tgglebttn');
+        const accrdItems = wrapper.querySelectorAll('.flloor_tab');
+        const accrdBttns = wrapper.querySelectorAll('.flr_swtchng_bttn');
 
-        accrdBttn.forEach((el) => {
-            let mainPanel = el.closest('.flloor_tab');
-            if (mainPanel.classList.contains('active')) {
-                mainPanel.style.maxHeight = `${mainPanel.scrollHeight / remVal}rem`;
+        accrdItems.forEach((tab) => {
+            if (tab.classList.contains('active')) {
+                tab.style.maxHeight = `${tab.scrollHeight / remVal}rem`;
             } else {
-                mainPanel.style.maxHeight = '0px';
+                tab.style.maxHeight = '0px';
             }
-            el.addEventListener('click', () => {
-                const activeTab = ele.querySelector('.flloor_tab.active');
+        });
 
-                if (activeTab) {
-                    activeTab.classList.remove('active');
-                    activeTab.style.maxHeight = '0px';
-                }
-                let nextTab = mainPanel.nextElementSibling;
+        accrdBttns.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const currentTab = btn.closest('.flloor_tab');
 
-                if (!nextTab) {
-                    nextTab = mainPanel.previousElementSibling;
-                }
-                if (nextTab && !nextTab.classList.contains('active')) {
-                    nextTab.classList.add('active');
-                    nextTab.style.maxHeight = `${nextTab.scrollHeight / remVal}rem`;
-                }
+                // Deactivate all tabs
+                accrdItems.forEach((tab) => {
+                    tab.classList.remove('active');
+                    tab.style.maxHeight = '0px';
+                });
+
+                // Activate the clicked tab
+                currentTab.classList.add('active');
+                currentTab.style.maxHeight = `${currentTab.scrollHeight / remVal}rem`;
             });
         });
     });
+
 
     // Add Id To Each Floor Tab
     let ftab = document.querySelectorAll('.flloor_tab');
@@ -1562,17 +1561,17 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-        // Dark Menu Hover Color
-        let pllrLink = document.querySelectorAll("[link-color]");
-        pllrLink.forEach((ele) => {
-            let pllrLinkColor = ele.getAttribute("link-color");
-            ele.addEventListener("mouseenter",function(){
-                this.style.color= pllrLinkColor;
-            })
-            ele.addEventListener("mouseleave",function(){
-                this.style.color= null;
-            })
+    // Dark Menu Hover Color
+    let pllrLink = document.querySelectorAll("[link-color]");
+    pllrLink.forEach((ele) => {
+        let pllrLinkColor = ele.getAttribute("link-color");
+        ele.addEventListener("mouseenter", function () {
+            this.style.color = pllrLinkColor;
         })
+        ele.addEventListener("mouseleave", function () {
+            this.style.color = null;
+        })
+    })
 
     // Add #data-url
     document.querySelectorAll('[data-url]').forEach(el => {
