@@ -1644,7 +1644,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const url = `${API_URL}?key=${API_KEY}&limit=100&include=tags,authors&order=published_at desc`;
             const response = await fetch(url, { headers: { 'Accept-Version': 'v5.0' } });
             const data = await response.json();
-
+            console.log(data);
             cachedPosts = data.posts.map(post => {
                 const tags = post.tags.map(tag => tag.name.toLowerCase());
                 return {
