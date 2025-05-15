@@ -1624,21 +1624,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const fullUrl = `${API_URL}/?key=${API_KEY}&formats=html`;
 
-  try {
-    const response = fetch(fullUrl);
-    const data = response.json();
-    
-    // Check if we have posts data
+async function fetchInnerPosts(url) {
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log('-----');
+    console.log(data);
+     // Check if we have posts data
     if (data.posts && data.posts.length > 0) {
       // Return the full HTML content
       return data.posts[0].html;
     } else {
       throw new Error('Post not found');
     }
-  } catch (error) {
-    console.error('Error fetching Ghost post:', error);
-    return null;
-  }
 }
     
     async function fetchAndRenderGhostPosts({
@@ -1667,6 +1664,8 @@ document.addEventListener('DOMContentLoaded', function () {
         let currentVisibleCount = 0;
         let postsToRender = [];
 
+        fetchInnerPosts(fullUrl);
+        
         async function fetchAllPosts() {
             const url = `${API_URL}?key=${API_KEY}&limit=100&include=tags,authors&order=published_at desc`;
             const response = await fetch(url, { headers: { 'Accept-Version': 'v5.0' } });
