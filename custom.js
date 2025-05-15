@@ -1114,42 +1114,32 @@ document.addEventListener('DOMContentLoaded', function () {
     accrdWrppr.forEach((wrapper) => {
       const rem  = parseFloat(getComputedStyle(document.documentElement).fontSize);
       const tabs = wrapper.querySelectorAll('.flloor_tab');
-    
-      // 1) Initialize: collapse all then open the FIRST panel + mark all first-buttons active
       tabs.forEach((tab, i) => {
         tab.classList.toggle('active', i === 0);
         tab.style.maxHeight = i === 0
           ? `${tab.scrollHeight / rem}rem`
           : '0px';
       });
-      // mark all “first” buttons active
       wrapper.querySelectorAll('.flloor_tab').forEach((tab) => {
         tab.querySelectorAll('.flr_swtchng_bttn')[0].classList.add('active');
       });
     
-      // 2) Click‐handler on each .flr_swtchng_bttn
       wrapper.querySelectorAll('.flr_swtchng_bttn')
         .forEach((btn) => {
           btn.addEventListener('click', () => {
-            // figure out whether this is the 0th or 1st button in its panel
             const panelBtns = btn.closest('.flloor_tab')
                                   .querySelectorAll('.flr_swtchng_bttn');
             const idx = Array.from(panelBtns).indexOf(btn);
     
-            // collapse all panels + remove all button–active classes
             tabs.forEach((t) => {
               t.classList.remove('active');
               t.style.maxHeight = '0px';
             });
             wrapper.querySelectorAll('.flr_swtchng_bttn')
                    .forEach((b) => b.classList.remove('active'));
-    
-            // activate the chosen panel (tabs[idx])...
             const targetTab = tabs[idx];
             targetTab.classList.add('active');
             targetTab.style.maxHeight = `${targetTab.scrollHeight / rem}rem`;
-    
-            // …and **every** button at position idx in each panel
             tabs.forEach((t) => {
               t.querySelectorAll('.flr_swtchng_bttn')[idx]
                .classList.add('active');
