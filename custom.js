@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    //  Staff Slider Custom
+    // Staff Slider Custom
     function initializeSlider(sliderSelector, options, wrapperSelector) {
         let slider = $(wrapperSelector).find(sliderSelector);
         if (!slider.hasClass('slick-initialized')) {
@@ -309,34 +309,31 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function handleResponsiveSliderBehavior(wrapperSelector) {
-        let windowWidth = $(window).width();
-        let slider3 = $(wrapperSelector).find('.tem_thmbnl_sldr');
-        let slideCount = slider3.find('.tem_thmbnl_item').length;
-        let dataSlideNum = parseInt(slider3.data('slide-num'));
+        const $wrapper = $(wrapperSelector);
+        const $thumbSldr = $wrapper.find('.tem_thmbnl_sldr');
+        const slideCount = $thumbSldr.find('.tem_thmbnl_item').length;
+        const winWidth = $(window).width();
 
-        if (slideCount < dataSlideNum) {
-            if (windowWidth > 1200) {
-                unslickThumbnailSlider(wrapperSelector);
-                initializeMainSliders(wrapperSelector);
-            } else {
-                initializeMainSliders(wrapperSelector);
-                initializeThumbnailSlider(wrapperSelector);
-            }
+        const numDesktop = parseInt($thumbSldr.data('slideNumDesktop'), 10) || 0;
+        const numTablet = parseInt($thumbSldr.data('slideNumTablet'), 10) || 0;
+        const numMobile = parseInt($thumbSldr.data('slideNumMobile'), 10) || 0;
+
+        // decide slidesToShow based on viewport
+        let slidesToShow;
+        if (winWidth > 1200) {
+            slidesToShow = numDesktop;
+        } else if (winWidth > 768) {
+            slidesToShow = numTablet;
         } else {
-            if (windowWidth > 1200) {
-                initializeMainSliders(wrapperSelector);
-                initializeThumbnailSlider(wrapperSelector);
-            } else {
-                initializeMainSliders(wrapperSelector);
-                initializeThumbnailSlider(wrapperSelector);
-            }
+            slidesToShow = numMobile;
         }
-    }
+        initializeMainSliders(wrapperSelector);
 
-    function unslickThumbnailSlider(wrapperSelector) {
-        let slider3 = $(wrapperSelector).find('.tem_thmbnl_sldr');
-        if (slider3.hasClass('slick-initialized')) {
-            slider3.slick('unslick');
+        if ($thumbSldr.hasClass('slick-initialized')) {
+            $thumbSldr.slick('unslick');
+        }
+        if (slideCount > slidesToShow) {
+            initializeThumbnailSlider(wrapperSelector, slidesToShow);
         }
     }
 
@@ -353,7 +350,6 @@ document.addEventListener('DOMContentLoaded', function () {
             speed: 500,
         }, wrapperSelector);
 
-        // Slider 2 settings
         initializeSlider('.txt_tm_sldr', {
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -364,61 +360,84 @@ document.addEventListener('DOMContentLoaded', function () {
             nextArrow: $(wrapperSelector).find('.sldr_custm_arrw .arrw_next'),
             lazyLoad: 'progressive',
             cssEase: 'ease-in',
-            speed: 500,
             infinite: true,
+            speed: 500,
             asNavFor: $(wrapperSelector).find('.img_sldr'),
         }, wrapperSelector);
     }
 
-    function initializeThumbnailSlider(wrapperSelector) {
+    function initializeThumbnailSlider(wrapperSelector, slidesToShow) {
+        const $thumbSldr = $(wrapperSelector).find('.tem_thmbnl_sldr');
+
         initializeSlider('.tem_thmbnl_sldr', {
-            slidesToShow: 7,
+            slidesToShow: slidesToShow,
             slidesToScroll: 1,
             arrows: false,
             lazyLoad: 'progressive',
             cssEase: 'ease-in',
             focusOnSelect: true,
             dots: false,
-            speed: 500,
             infinite: true,
+            speed: 500,
             asNavFor: $(wrapperSelector).find('.img_sldr, .txt_tm_sldr'),
+            responsive: [
+                {
+                    breakpoint: 1199,
+                    settings: {
+                        slidesToShow: Math.min(slidesToShow, 4)
+                    }
+                },
+                {
+                    breakpoint: 991,
+                    settings: {
+                        slidesToShow: Math.min(slidesToShow, 3)
+                    }
+                },
+                {
+                    breakpoint: 767,
+                    settings: {
+                        slidesToShow: Math.min(slidesToShow, 2)
+                    }
+                }
+            ]
         }, wrapperSelector);
 
-        $(wrapperSelector).find('.sldr_custm_arrw .arrw_prev').click(function () {
-            $(wrapperSelector).find('.tem_thmbnl_sldr').slick('slickPrev');
-        });
-        $(wrapperSelector).find('.sldr_custm_arrw .arrw_next').click(function () {
-            $(wrapperSelector).find('.tem_thmbnl_sldr').slick('slickNext');
-        });
+        $(wrapperSelector).find('.sldr_custm_arrw .arrw_prev')
+            .off('click')
+            .on('click', () => $thumbSldr.slick('slickPrev'));
+        $(wrapperSelector).find('.sldr_custm_arrw .arrw_next')
+            .off('click')
+            .on('click', () => $thumbSldr.slick('slickNext'));
     }
 
     function setThumbnailNavigation(wrapperSelector) {
-        let slider3 = $(wrapperSelector).find('.tem_thmbnl_sldr');
-        let slider2 = $(wrapperSelector).find('.txt_tm_sldr');
-        slider3.find('.tem_thmbnl_item').click(function (e) {
+        const $thumbSldr = $(wrapperSelector).find('.tem_thmbnl_sldr');
+        const $txtSldr = $(wrapperSelector).find('.txt_tm_sldr');
+        $thumbSldr.on('click', '.tem_thmbnl_item', function (e) {
             e.preventDefault();
-            slider3.find('.tem_thmbnl_item').removeClass('active');
-            let slideIndex = $(this).data('slide') - 1;
+            $thumbSldr.find('.tem_thmbnl_item').removeClass('active');
+            const index = $(this).data('slide') - 1;
             $(this).addClass('active');
-            if (slider2.hasClass('slick-initialized')) {
-                slider2.slick('slickGoTo', slideIndex);
+            if ($txtSldr.hasClass('slick-initialized')) {
+                $txtSldr.slick('slickGoTo', index);
             }
         });
-        slider2.on("beforeChange", function (ev, slick, current, next) {
-            slider3.find('.tem_thmbnl_item').removeClass('active');
-            slider3.find('.tem_thmbnl_item').eq(next).addClass('active');
+        $txtSldr.on('beforeChange', function (ev, slick, current, next) {
+            $thumbSldr.find('.tem_thmbnl_item').removeClass('active')
+                .eq(next).addClass('active');
         });
     }
 
+    // initialize on each wrapper
     $('.tem_box_wrppr').each(function () {
-        let wrapperSelector = this;
-        handleResponsiveSliderBehavior(wrapperSelector);
-        setThumbnailNavigation(wrapperSelector);
+        const wrapper = this;
+        handleResponsiveSliderBehavior(wrapper);
+        setThumbnailNavigation(wrapper);
+        $(window).on('resize', () => handleResponsiveSliderBehavior(wrapper));
 
-        $(window).resize(function () {
-            handleResponsiveSliderBehavior(wrapperSelector);
-        });
-        $(wrapperSelector).find('.tem_thmbnl_sldr .tem_thmbnl_item').eq(0).addClass('active');
+        // mark the first thumb active
+        $(wrapper).find('.tem_thmbnl_sldr .tem_thmbnl_item')
+            .eq(0).addClass('active');
     });
 
 
