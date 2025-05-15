@@ -1619,7 +1619,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // // Ghost Knowledge Hub
     const POST_ID =  getUrlParam('post_id');
-    const API_URL = `https://sciencecreates.ghost.io/ghost/api/content/posts/${POST_ID}`;
+    const API_URL = `https://sciencecreates.ghost.io/ghost/api/v3/content/posts/${POST_ID}`;
     const API_KEY = '969e9f32437ce35f25af6d1453';
 
     async function fetchAndRenderGhostPosts({
