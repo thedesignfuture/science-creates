@@ -1561,6 +1561,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 }, 300);
             });
         });
+
+        // Dark Menu Hover Color
+        let pllrLink = document.querySelectorAll("[link-color]");
+        pllrLink.forEach((ele) => {
+            let pllrLinkColor = ele.getAttribute("link-color");
+            ele.addEventListener("mouseenter",function(){
+                this.style.color= pllrLinkColor;
+            })
+        })
+
     // Add #data-url
     document.querySelectorAll('[data-url]').forEach(el => {
         let url = el.getAttribute('href');
