@@ -173,10 +173,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function handleResponsiveSliderBehaviorAlt(wrapperSelector) {
-        let windowWidth = $(window).width();
         let slider3 = $(wrapperSelector).find('.mmbr_sldr_tab_lstng');
         let slideCount = slider3.find('.mmbr_sldr_tab_item').length;
-        let dataSlideNum = parseInt(slider3.data('slide-num'));
+        let dataSlideNum = parseInt(slider3.data('slide-num'), 10);
 
         if (slideCount < dataSlideNum) {
             unslickThumbnailSliderAlt(wrapperSelector);
@@ -195,6 +194,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function initializeMainSlidersAlt(wrapperSelector) {
+        const isMobile = window.innerWidth <= 767;
+        const $wrapper = $(wrapperSelector);
+
+        // Image slider
         initializeSliderAlt('.mmbr_img_sldr', {
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -207,24 +210,31 @@ document.addEventListener('DOMContentLoaded', function () {
             speed: 500,
         }, wrapperSelector);
 
-        // Slider 2 settings
+        // Text slider with always‐on arrows, mobile dots
         initializeSliderAlt('.mmbr_optn_txt_sldr', {
             slidesToShow: 1,
             slidesToScroll: 1,
             arrows: true,
-            dots: false,
             fade: true,
-            prevArrow: $(wrapperSelector).find('.sldr_custm_arrw .arrw_prev'),
-            nextArrow: $(wrapperSelector).find('.sldr_custm_arrw .arrw_next'),
             lazyLoad: 'progressive',
             cssEase: 'ease-in',
-            speed: 500,
             infinite: true,
-            asNavFor: $(wrapperSelector).find('.mmbr_img_sldr'),
+            speed: 500,
+            asNavFor: $wrapper.find('.mmbr_img_sldr'),
+            prevArrow: $wrapper.find('.sldr_custm_arrw .arrw_prev'),
+            nextArrow: $wrapper.find('.sldr_custm_arrw .arrw_next'),
+            dots: isMobile,
+            appendDots: isMobile ? $wrapper.find('.sldr_custom_dots_wrapper') : null,
+            dotsClass: 'slick-dots sldr_custom_dots',
+            customPaging: function (_, i) {
+                let num = i + 1;
+                return '<button>' + (num < 10 ? '0' + num : num) + '</button>';
+            }
         }, wrapperSelector);
     }
 
     function initializeThumbnailSliderAlt(wrapperSelector) {
+        const $wrapper = $(wrapperSelector);
         initializeSliderAlt('.mmbr_sldr_tab_lstng', {
             slidesToShow: 6,
             slidesToScroll: 1,
@@ -233,55 +243,72 @@ document.addEventListener('DOMContentLoaded', function () {
             cssEase: 'ease-in',
             focusOnSelect: true,
             dots: false,
-            speed: 500,
             infinite: true,
-            asNavFor: $(wrapperSelector).find('.mmbr_img_sldr, .mmbr_optn_txt_sldr'),
+            speed: 500,
+            asNavFor: $wrapper.find('.mmbr_img_sldr, .mmbr_optn_txt_sldr'),
         }, wrapperSelector);
 
-        $(wrapperSelector).find('.sldr_custm_arrw .arrw_prev').click(function () {
-            $(wrapperSelector).find('.mmbr_sldr_tab_lstng').slick('slickPrev');
+        // Thumbnail prev/next hooks
+        $wrapper.find('.sldr_custm_arrw .arrw_prev').on('click', function () {
+            $wrapper.find('.mmbr_sldr_tab_lstng').slick('slickPrev');
         });
-        $(wrapperSelector).find('.sldr_custm_arrw .arrw_next').click(function () {
-            $(wrapperSelector).find('.mmbr_sldr_tab_lstng').slick('slickNext');
+        $wrapper.find('.sldr_custm_arrw .arrw_next').on('click', function () {
+            $wrapper.find('.mmbr_sldr_tab_lstng').slick('slickNext');
         });
     }
 
     function setThumbnailNavigationAlt(wrapperSelector) {
         let slider3 = $(wrapperSelector).find('.mmbr_sldr_tab_lstng');
         let slider2 = $(wrapperSelector).find('.mmbr_optn_txt_sldr');
-        slider3.find('.mmbr_sldr_tab_item').click(function (e) {
+
+        slider3.find('.mmbr_sldr_tab_item').on('click', function (e) {
             e.preventDefault();
             slider3.find('.mmbr_sldr_tab_item').removeClass('active');
-            let slideIndex = $(this).data('slide') - 1;
+            let idx = $(this).data('slide') - 1;
             $(this).addClass('active');
             if (slider2.hasClass('slick-initialized')) {
-                slider2.slick('slickGoTo', slideIndex);
+                slider2.slick('slickGoTo', idx);
             }
         });
-        slider2.on("beforeChange", function (ev, slick, current, next) {
-            slider3.find('.mmbr_sldr_tab_item').removeClass('active');
-            slider3.find('.mmbr_sldr_tab_item').eq(next).addClass('active');
+
+        slider2.on('beforeChange', function (_, slick, current, next) {
+            slider3.find('.mmbr_sldr_tab_item').removeClass('active')
+                .eq(next).addClass('active');
         });
     }
 
-    $('.mmbr_box').each(function () {
-        let wrapperSelector = this;
-        handleResponsiveSliderBehaviorAlt(wrapperSelector);
-        setThumbnailNavigationAlt(wrapperSelector);
-
-        $(window).resize(function () {
-            handleResponsiveSliderBehaviorAlt(wrapperSelector);
+    // 1) Assign data-slide attributes
+    document.querySelectorAll('.mmbr_sldr_tab_hldr').forEach(holder => {
+        holder.querySelectorAll('.mmbr_sldr_tab_item').forEach((item, i) => {
+            item.setAttribute('data-slide', i + 1);
         });
-        $(wrapperSelector).find('.mmbr_sldr_tab_lstng .mmbr_sldr_tab_item').eq(0).addClass('active');
     });
 
-    let dataWrapper1 = document.querySelectorAll('.mmbr_sldr_tab_hldr');
-    dataWrapper1.forEach((elem, i) => {
-        let dataSlideItem = elem.querySelectorAll('.mmbr_sldr_tab_hldr .mmbr_sldr_tab_item');
-        dataSlideItem.forEach((el, i) => {
-            el.setAttribute('data-slide', i + 1);
-        });
-    })
+    // 2) Initial setup per .mmbr_box
+    document.querySelectorAll('.mmbr_box').forEach(box => {
+        handleResponsiveSliderBehaviorAlt(box);
+        setThumbnailNavigationAlt(box);
+        // mark first thumbnail active
+        $(box).find('.mmbr_sldr_tab_lstng .mmbr_sldr_tab_item').first().addClass('active');
+    });
+
+    // 3) Reinit on crossing 767px breakpoint
+    let wasMobile = window.innerWidth <= 767;
+    window.addEventListener('resize', () => {
+        let isMobile = window.innerWidth <= 767;
+        if (isMobile !== wasMobile) {
+            document.querySelectorAll('.mmbr_box').forEach(box => {
+                // destroy slick instances
+                $(box).find('.mmbr_img_sldr, .mmbr_optn_txt_sldr').slick('unslick');
+                unslickThumbnailSliderAlt(box);
+                // reinit
+                handleResponsiveSliderBehaviorAlt(box);
+                setThumbnailNavigationAlt(box);
+                $(box).find('.mmbr_sldr_tab_lstng .mmbr_sldr_tab_item').first().addClass('active');
+            });
+            wasMobile = isMobile;
+        }
+    });
 
     //  Staff Slider Custom
     function initializeSlider(sliderSelector, options, wrapperSelector) {
@@ -1112,42 +1139,42 @@ document.addEventListener('DOMContentLoaded', function () {
     const accrdWrppr = document.querySelectorAll('.floor_tab_wrppr');
 
     accrdWrppr.forEach((wrapper) => {
-      const rem  = parseFloat(getComputedStyle(document.documentElement).fontSize);
-      const tabs = wrapper.querySelectorAll('.flloor_tab');
-      tabs.forEach((tab, i) => {
-        tab.classList.toggle('active', i === 0);
-        tab.style.maxHeight = i === 0
-          ? `${tab.scrollHeight / rem}rem`
-          : '0px';
-      });
-      wrapper.querySelectorAll('.flloor_tab').forEach((tab) => {
-        tab.querySelectorAll('.flr_swtchng_bttn')[0].classList.add('active');
-      });
-    
-      wrapper.querySelectorAll('.flr_swtchng_bttn')
-        .forEach((btn) => {
-          btn.addEventListener('click', () => {
-            const panelBtns = btn.closest('.flloor_tab')
-                                  .querySelectorAll('.flr_swtchng_bttn');
-            const idx = Array.from(panelBtns).indexOf(btn);
-    
-            tabs.forEach((t) => {
-              t.classList.remove('active');
-              t.style.maxHeight = '0px';
-            });
-            wrapper.querySelectorAll('.flr_swtchng_bttn')
-                   .forEach((b) => b.classList.remove('active'));
-            const targetTab = tabs[idx];
-            targetTab.classList.add('active');
-            targetTab.style.maxHeight = `${targetTab.scrollHeight / rem}rem`;
-            tabs.forEach((t) => {
-              t.querySelectorAll('.flr_swtchng_bttn')[idx]
-               .classList.add('active');
-            });
-          });
+        const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+        const tabs = wrapper.querySelectorAll('.flloor_tab');
+        tabs.forEach((tab, i) => {
+            tab.classList.toggle('active', i === 0);
+            tab.style.maxHeight = i === 0
+                ? `${tab.scrollHeight / rem}rem`
+                : '0px';
         });
+        wrapper.querySelectorAll('.flloor_tab').forEach((tab) => {
+            tab.querySelectorAll('.flr_swtchng_bttn')[0].classList.add('active');
+        });
+
+        wrapper.querySelectorAll('.flr_swtchng_bttn')
+            .forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    const panelBtns = btn.closest('.flloor_tab')
+                        .querySelectorAll('.flr_swtchng_bttn');
+                    const idx = Array.from(panelBtns).indexOf(btn);
+
+                    tabs.forEach((t) => {
+                        t.classList.remove('active');
+                        t.style.maxHeight = '0px';
+                    });
+                    wrapper.querySelectorAll('.flr_swtchng_bttn')
+                        .forEach((b) => b.classList.remove('active'));
+                    const targetTab = tabs[idx];
+                    targetTab.classList.add('active');
+                    targetTab.style.maxHeight = `${targetTab.scrollHeight / rem}rem`;
+                    tabs.forEach((t) => {
+                        t.querySelectorAll('.flr_swtchng_bttn')[idx]
+                            .classList.add('active');
+                    });
+                });
+            });
     });
-    
+
 
     // Add Id To Each Floor Tab
     let ftab = document.querySelectorAll('.flloor_tab');
@@ -1578,7 +1605,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ele.addEventListener("mouseleave", function () {
             this.style.color = null;
         })
-        if(ele.classList.contains("w--current")){
+        if (ele.classList.contains("w--current")) {
             ele.style.color = pllrLinkColor;
         }
     })
