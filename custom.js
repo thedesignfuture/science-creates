@@ -1610,8 +1610,16 @@ document.addEventListener('DOMContentLoaded', function () {
             el.setAttribute('href', `${base}#${slug}`);
         }
     });
+
+    // Get Params from URL
+    function getUrlParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param) || '';
+    }
+    
     // // Ghost Knowledge Hub
-    const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
+    const POST_ID =  getUrlParam('post_id');
+    const API_URL = `https://sciencecreates.ghost.io/ghost/api/content/posts/${POST_ID}`;
     const API_KEY = '969e9f32437ce35f25af6d1453';
 
     async function fetchAndRenderGhostPosts({
