@@ -1622,7 +1622,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const API_URL = `https://sciencecreates.ghost.io/ghost/api/content/posts/${POST_ID}`;
     const API_KEY = '969e9f32437ce35f25af6d1453';
 
-    const fullUrl = `${API_URL}/?key=${API_KEY}&include=html,plaintext&formats=html,plaintext`;
+    const fullUrl = `${API_URL}/?key=${API_KEY}&include=html,plaintext&formats=html,plaintext&fields=mobiledoc`;
 
 async function fetchInnerPosts(url) {
     const response = await fetch(url);
