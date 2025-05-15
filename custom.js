@@ -1625,8 +1625,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const fullUrl = `${API_URL}/?key=${API_KEY}&formats=html`;
 
   try {
-    const response = await fetch(fullUrl);
-    const data = await response.json();
+    const response = fetch(fullUrl);
+    const data = response.json();
     
     // Check if we have posts data
     if (data.posts && data.posts.length > 0) {
