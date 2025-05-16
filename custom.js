@@ -1917,9 +1917,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 const postDate = new Date(post.published_at).toLocaleDateString('en-GB', {
                     day: 'numeric', month: 'short', year: 'numeric'
                 });
-                document.getElementById('single-post-date').textContent = postDate;
-                const primaryTag = post.primary_tag?.name || 'Article';
                 const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
+                const primaryTag = post.primary_tag?.name || 'Article';
+
+                document.getElementById('single-post-date').textContent = postDate;
+                document.getElementById('kn_singe_post_image').style.backgroundImage = `url(${featureImage})`;
 
                 return post.html;
             }
