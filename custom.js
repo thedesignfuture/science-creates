@@ -1738,7 +1738,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="row knwldge_hub_row">
                         <div class="col col-3 knwldge_hub_img_col">
                             <div class="knwldge_hub_img_box">
-                                <a href="${post.url}" class="knwldge_hhub_lnk_box w-inline-block">
+                                <a href="/knowledge-hub/post?post_id=${post.id}" class="knwldge_hhub_lnk_box w-inline-block">
                                     <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
                                 </a>
                             </div>
@@ -1751,12 +1751,12 @@ document.addEventListener('DOMContentLoaded', function () {
                                         <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
                                     </div>
                                     <div class="knwldge_ttle_box pr_big">
-                                        <a href="${post.url}" class="knwldge_ttle_lnk title_h2 w-inline-block">
+                                        <a href="/knowledge-hub/post?post_id=${post.id}" class="knwldge_ttle_lnk title_h2 w-inline-block">
                                             <div>${post.title}</div>
                                         </a>
                                     </div>
                                     <div class="knwldge_bttm_bttn_box">
-                                        <a href="${post.url}" class="shape_bttn w-inline-block">
+                                        <a href="/knowledge-hub/post?post_id=${post.id}" class="shape_bttn w-inline-block">
                                             <div class="shpe_cover_one">
                                                 <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
                                             </div>
@@ -1945,12 +1945,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
                 return `
                     <div class="sptlght_img_box">
-                        <a href="${post.url}" class="sptlght_img_lnk w-inline-block">
+                        <a href="/knowledge-hub/post?post_id=${post.id}" class="sptlght_img_lnk w-inline-block">
                             <img src="${featureImage}" loading="lazy" alt="${post.title}" class="sptlght_img">
                         </a>
                     </div>
                     <div class="sptlght_ttle_box">
-                        <a href="${post.url}" class="sptlght_ttle_lnk">${post.title}</a>
+                        <a href="/knowledge-hub/post?post_id=${post.id}" class="sptlght_ttle_lnk">${post.title}</a>
                     </div>`;
             }
         });
