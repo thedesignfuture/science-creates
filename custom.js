@@ -1684,6 +1684,7 @@ document.addEventListener('DOMContentLoaded', function () {
         loadMoreId = null,
         filterContainerSelector = null,
         renderPostHTML = null,
+        renderSinglePostHTML = null,
         postId = null
     }) {
         const container = document.getElementById(targetId);
@@ -1770,10 +1771,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>`;
         }
 
+        function renderSinglePostHTML(post) {
+            const postDate = new Date(post.published_at).toLocaleDateString('en-GB', {
+                day: 'numeric', month: 'short', year: 'numeric'
+            });
+            const primaryTag = post.primary_tag?.name || 'Article';
+            const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
+
+            return post.html;
+        }
+
         function renderNextBatch() {
             const postsToShow = postsToRender.slice(currentVisibleCount, currentVisibleCount + initialLimit);
             postsToShow.forEach(post => {
-                const html = renderPostHTML ? renderPostHTML(post) : defaultRenderHTML(post);
+                const html = renderSinglePostHTML ? renderSinglePostHTML(post) : renderPostHTML ? renderPostHTML(post) : defaultRenderHTML(post);
                 container.innerHTML += html;
             });
 
@@ -1902,7 +1913,6 @@ document.addEventListener('DOMContentLoaded', function () {
         filterContainerSelector: '.cmnty_fltr_bttn_lstng'
     });
 
-
     if (document.getElementById('ghost-single-post')) {
         fetchAndRenderGhostPosts({
             targetId: 'ghost-single-post',
@@ -1910,7 +1920,8 @@ document.addEventListener('DOMContentLoaded', function () {
             enableSearch: false,
             enableSort: false,
             enableFilter: false,
-            postId: getUrlParam('post_id')
+            postId: getUrlParam('post_id'),
+            renderSinglePostHTML: true
         });
     }
 
