@@ -3849,7 +3849,7 @@ body.dark_mode .flr_swtchng_bttn.active .floor_nme{
 
 @media(max-width:479px) {
     .sldr_custom_dots>li button {
-        width: 4rem;
+        width: 3rem;
     }
 
     .sldr_custom_dots {
