@@ -1662,6 +1662,13 @@ document.addEventListener('DOMContentLoaded', function () {
             el.setAttribute('href', `${base}#${slug}`);
         }
     });
+
+    // Get Params from URL
+    function getUrlParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param) || '';
+    }
+
     // // Ghost Knowledge Hub
     const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
     const API_KEY = '969e9f32437ce35f25af6d1453';
@@ -1676,13 +1683,15 @@ document.addEventListener('DOMContentLoaded', function () {
         enableFilter = false,
         loadMoreId = null,
         filterContainerSelector = null,
-        renderPostHTML = null
+        renderPostHTML = null,
+        postId = null
     }) {
         const container = document.getElementById(targetId);
         if (!container) return;
 
         const loadMoreBtn = loadMoreId ? document.getElementById(loadMoreId) : null;
         const searchInput = searchInputId ? document.getElementById(searchInputId) : null;
+
         let filterButtons = [];
 
         let activeSearch = '';
@@ -1693,7 +1702,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let postsToRender = [];
 
         async function fetchAllPosts() {
-            const url = `${API_URL}?key=${API_KEY}&limit=100&include=tags,authors&order=published_at desc`;
+            const url = `${API_URL}${postId}?key=${API_KEY}&limit=100&include=tags,authors&order=published_at desc`;
             const response = await fetch(url, { headers: { 'Accept-Version': 'v5.0' } });
             const data = await response.json();
 
@@ -1892,6 +1901,18 @@ document.addEventListener('DOMContentLoaded', function () {
         loadMoreId: 'load_mre_bttn',
         filterContainerSelector: '.cmnty_fltr_bttn_lstng'
     });
+
+
+    if (document.getElementById('ghost-single-post')) {
+        fetchAndRenderGhostPosts({
+            targetId: 'ghost-single-post',
+            initialLimit: 1,
+            enableSearch: false,
+            enableSort: false,
+            enableFilter: false,
+            postId: getUrlParam('post_id')
+        });
+    }
 
     if (document.getElementById('ghost-posts')) {
         fetchAndRenderGhostPosts({
