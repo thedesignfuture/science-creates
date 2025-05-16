@@ -1925,10 +1925,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('kh_tag').textContent = post.title;
 
                 document.title = post.title;
-                document.querySelector('meta[name="description"]').setAttribute('content', post.excerpt || post.title);
-                document.querySelector('meta[property="og:title"]').setAttribute('content', post.title);
-                document.querySelector('meta[property="og:description"]').setAttribute('content', post.excerpt || post.title);
-                document.querySelector('meta[property="og:image"]').setAttribute('content', featureImage);
+                document.querySelector('meta[name="description"]')?.setAttribute('content', post.excerpt || post.title);
+                document.querySelector('meta[property="og:title"]')?.setAttribute('content', post.title);
+                document.querySelector('meta[property="og:description"]')?.setAttribute('content', post.excerpt || post.title);
+                document.querySelector('meta[property="og:image"]')?.setAttribute('content', featureImage);
 
                 return post.html;
             }
