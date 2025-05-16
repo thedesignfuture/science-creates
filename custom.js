@@ -1685,7 +1685,6 @@ document.addEventListener('DOMContentLoaded', function () {
         loadMoreId = null,
         filterContainerSelector = null,
         renderPostHTML = null,
-        renderSinglePostHTML = false,
         postId = ''
     }) {
         const container = document.getElementById(targetId);
@@ -1772,20 +1771,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>`;
         }
 
-        function renderSingleInnerPostHTML(post) {
-            const postDate = new Date(post.published_at).toLocaleDateString('en-GB', {
-                day: 'numeric', month: 'short', year: 'numeric'
-            });
-            const primaryTag = post.primary_tag?.name || 'Article';
-            const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
-
-            return post.html;
-        }
-
         function renderNextBatch() {
             const postsToShow = postsToRender.slice(currentVisibleCount, currentVisibleCount + initialLimit);
             postsToShow.forEach(post => {
-                const html = (renderSinglePostHTML && postId) ? renderSingleInnerPostHTML(post) : renderPostHTML ? renderPostHTML(post) : defaultRenderHTML(post);
+                const html = renderPostHTML ? renderPostHTML(post) : defaultRenderHTML(post);
                 container.innerHTML += html;
             });
 
@@ -1924,7 +1913,15 @@ document.addEventListener('DOMContentLoaded', function () {
             enableSort: false,
             enableFilter: false,
             postId: getUrlParam('post_id'),
-            renderSinglePostHTML: true
+            renderPostHTML: post => {
+                const postDate = new Date(post.published_at).toLocaleDateString('en-GB', {
+                    day: 'numeric', month: 'short', year: 'numeric'
+                });
+                const primaryTag = post.primary_tag?.name || 'Article';
+                const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
+
+                return post.html;
+            }
         });
     }
 
