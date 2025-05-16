@@ -1915,20 +1915,37 @@ document.addEventListener('DOMContentLoaded', function () {
             postId: getUrlParam('post_id'),
             renderPostHTML: post => {
                 const postDate = new Date(post.published_at).toLocaleDateString('en-GB', {
-                    day: 'numeric', month: 'short', year: 'numeric'
+                    day: 'numeric',
+                    month: 'short',
+                    year: '2-digit'
                 });
+
                 const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
                 const primaryTag = post.primary_tag?.name || 'Article';
+                const postExcerpt = post.excerpt || post.title;
 
-                document.getElementById('single-post-date').textContent = postDate;
-                document.getElementById('kn_singe_post_image').style.backgroundImage = `url(${featureImage})`;
-                document.getElementById('kh_tag').textContent = primaryTag;
+                const elements = {
+                    date: document.getElementById('single-post-date'),
+                    image: document.getElementById('kn_singe_post_image'),
+                    tag: document.getElementById('kh_tag')
+                };
 
-                document.title = post.title;
-                document.querySelector('meta[name="description"]')?.setAttribute('content', post.excerpt || post.title);
-                document.querySelector('meta[property="og:title"]')?.setAttribute('content', post.title);
-                document.querySelector('meta[property="og:description"]')?.setAttribute('content', post.excerpt || post.title);
-                document.querySelector('meta[property="og:image"]')?.setAttribute('content', featureImage);
+                elements.date.textContent = postDate;
+                elements.image.style.backgroundImage = `url(${featureImage})`;
+                elements.tag.textContent = primaryTag;
+
+                const metaTags = {
+                    title: (document.title = post.title),
+                    description: document.querySelector('meta[name="description"]'),
+                    ogTitle: document.querySelector('meta[property="og:title"]'),
+                    ogDescription: document.querySelector('meta[property="og:description"]'),
+                    ogImage: document.querySelector('meta[property="og:image"]')
+                };
+
+                metaTags.description?.setAttribute('content', postExcerpt);
+                metaTags.ogTitle?.setAttribute('content', post.title);
+                metaTags.ogDescription?.setAttribute('content', postExcerpt);
+                metaTags.ogImage?.setAttribute('content', featureImage);
 
                 return post.html;
             }
