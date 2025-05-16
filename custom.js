@@ -1785,7 +1785,7 @@ document.addEventListener('DOMContentLoaded', function () {
         function renderNextBatch() {
             const postsToShow = postsToRender.slice(currentVisibleCount, currentVisibleCount + initialLimit);
             postsToShow.forEach(post => {
-                const html = renderSinglePostHTML ? renderSinglePostHTML(post) : renderPostHTML ? renderPostHTML(post) : defaultRenderHTML(post);
+                const html = (renderSinglePostHTML && postId) ? renderSinglePostHTML(post) : renderPostHTML ? renderPostHTML(post) : defaultRenderHTML(post);
                 container.innerHTML += html;
             });
 
