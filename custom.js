@@ -300,13 +300,31 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    //  Staff Slider Custom
-    // Staff Slider Custom
     function initializeSlider(sliderSelector, options, wrapperSelector) {
-        let slider = $(wrapperSelector).find(sliderSelector);
+        const slider = $(wrapperSelector).find(sliderSelector);
         if (!slider.hasClass('slick-initialized')) {
             slider.slick(options);
         }
+    }
+
+    function getBreakpointSlides($thumbSldr, winWidth) {
+        // Define your custom breakpoints from largest to smallest
+        const breakpoints = [
+            { max: Infinity, key: 'slideNumDesktop' },    
+            { max: 1199, key: 'slideNumTablet' },        
+            { max: 991, key: 'slideNumSmallTablet' },   
+            { max: 767, key: 'slideNumLargeMobile' },   
+            { max: 575, key: 'slideNumMobile' }          
+        ];
+
+        let slidesToShow = 0;
+        for (const bp of breakpoints) {
+            const val = parseInt($thumbSldr.data(bp.key), 10);
+            if (winWidth <= bp.max && !isNaN(val)) {
+                slidesToShow = val;
+            }
+        }
+        return slidesToShow;
     }
 
     function handleResponsiveSliderBehavior(wrapperSelector) {
@@ -315,37 +333,20 @@ document.addEventListener('DOMContentLoaded', function () {
         const slideCount = $thumbSldr.find('.tem_thmbnl_item').length;
         const winWidth = $(window).width();
 
-        // read per‑breakpoint slide‑nums (fallback to 0 if missing)
-        const numDesktop = parseInt($thumbSldr.data('slideNumDesktop'), 10) || 0;
-        const numTablet = parseInt($thumbSldr.data('slideNumTablet'), 10) || 0;
-        const numMobile = parseInt($thumbSldr.data('slideNumMobile'), 10) || 0;
+        const slidesToShow = getBreakpointSlides($thumbSldr, winWidth);
 
-        // decide slidesToShow based on viewport
-        let slidesToShow;
-        if (winWidth > 1200) {
-            slidesToShow = numDesktop;
-        } else if (winWidth > 768) {
-            slidesToShow = numTablet;
-        } else {
-            slidesToShow = numMobile;
-        }
-
-        // always ensure main sliders are inited
         initializeMainSliders(wrapperSelector);
 
-        // tear down any existing thumbnail carousel
         if ($thumbSldr.hasClass('slick-initialized')) {
             $thumbSldr.slick('unslick');
         }
 
-        // only rebuild thumbs carousel if you have more items than fit
         if (slideCount > slidesToShow) {
             initializeThumbnailSlider(wrapperSelector, slidesToShow);
         }
     }
 
     function initializeMainSliders(wrapperSelector) {
-        // Main image slider
         initializeSlider('.img_sldr', {
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -358,7 +359,6 @@ document.addEventListener('DOMContentLoaded', function () {
             speed: 500,
         }, wrapperSelector);
 
-        // Text slider synced to image
         initializeSlider('.txt_tm_sldr', {
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -379,7 +379,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const $thumbSldr = $(wrapperSelector).find('.tem_thmbnl_sldr');
 
         initializeSlider('.tem_thmbnl_sldr', {
-            slidesToShow: slidesToShow,    // default (desktop)
+            slidesToShow: slidesToShow,
             slidesToScroll: 1,
             arrows: false,
             lazyLoad: 'progressive',
@@ -391,19 +391,25 @@ document.addEventListener('DOMContentLoaded', function () {
             asNavFor: $(wrapperSelector).find('.img_sldr, .txt_tm_sldr'),
             responsive: [
                 {
-                    breakpoint: 1199,
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: Math.min(slidesToShow, 6)
+                    }
+                },
+                {
+                    breakpoint: 992,
                     settings: {
                         slidesToShow: Math.min(slidesToShow, 4)
                     }
                 },
                 {
-                    breakpoint: 991,
+                    breakpoint: 768,
                     settings: {
                         slidesToShow: Math.min(slidesToShow, 3)
                     }
                 },
                 {
-                    breakpoint: 767,
+                    breakpoint: 576,
                     settings: {
                         slidesToShow: Math.min(slidesToShow, 2)
                     }
@@ -411,7 +417,6 @@ document.addEventListener('DOMContentLoaded', function () {
             ]
         }, wrapperSelector);
 
-        // custom arrows
         $(wrapperSelector).find('.sldr_custm_arrw .arrw_prev')
             .off('click')
             .on('click', () => $thumbSldr.slick('slickPrev'));
@@ -424,7 +429,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const $thumbSldr = $(wrapperSelector).find('.tem_thmbnl_sldr');
         const $txtSldr = $(wrapperSelector).find('.txt_tm_sldr');
 
-        // click thumb to navigate text slider
         $thumbSldr.on('click', '.tem_thmbnl_item', function (e) {
             e.preventDefault();
             $thumbSldr.find('.tem_thmbnl_item').removeClass('active');
@@ -435,23 +439,18 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // sync thumb active class on text change
         $txtSldr.on('beforeChange', function (ev, slick, current, next) {
             $thumbSldr.find('.tem_thmbnl_item').removeClass('active')
                 .eq(next).addClass('active');
         });
     }
 
-    // initialize on each wrapper
     $('.tem_box_wrppr').each(function () {
         const wrapper = this;
         handleResponsiveSliderBehavior(wrapper);
         setThumbnailNavigation(wrapper);
         $(window).on('resize', () => handleResponsiveSliderBehavior(wrapper));
-
-        // mark the first thumb active
-        $(wrapper).find('.tem_thmbnl_sldr .tem_thmbnl_item')
-            .eq(0).addClass('active');
+        $(wrapper).find('.tem_thmbnl_sldr .tem_thmbnl_item').eq(0).addClass('active');
     });
 
 
