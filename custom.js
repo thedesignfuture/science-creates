@@ -391,27 +391,21 @@ document.addEventListener('DOMContentLoaded', function () {
             asNavFor: $(wrapperSelector).find('.img_sldr, .txt_tm_sldr'),
             responsive: [
                 {
-                    breakpoint: 1200,
+                    breakpoint: 992,
                     settings: {
                         slidesToShow: Math.min(slidesToShow, 6)
                     }
                 },
                 {
-                    breakpoint: 992,
-                    settings: {
-                        slidesToShow: Math.min(slidesToShow, 4)
-                    }
-                },
-                {
                     breakpoint: 768,
                     settings: {
-                        slidesToShow: Math.min(slidesToShow, 3)
+                        slidesToShow: Math.min(slidesToShow, 5)
                     }
                 },
                 {
                     breakpoint: 576,
                     settings: {
-                        slidesToShow: Math.min(slidesToShow, 2)
+                        slidesToShow: Math.min(slidesToShow, 4)
                     }
                 }
             ]
