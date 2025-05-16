@@ -1922,6 +1922,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 document.getElementById('single-post-date').textContent = postDate;
                 document.getElementById('kn_singe_post_image').style.backgroundImage = `url(${featureImage})`;
+                document.getElementById('kh_tag').textContent = post.title;
 
                 return post.html;
             }
