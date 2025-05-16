@@ -1685,7 +1685,7 @@ document.addEventListener('DOMContentLoaded', function () {
         filterContainerSelector = null,
         renderPostHTML = null,
         renderSinglePostHTML = null,
-        postId = null
+        postId = ''
     }) {
         const container = document.getElementById(targetId);
         if (!container) return;
