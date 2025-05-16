@@ -310,11 +310,11 @@ document.addEventListener('DOMContentLoaded', function () {
     function getBreakpointSlides($thumbSldr, winWidth) {
         // Define your custom breakpoints from largest to smallest
         const breakpoints = [
-            { max: Infinity, key: 'slideNumDesktop' },    
-            { max: 1199, key: 'slideNumTablet' },        
-            { max: 991, key: 'slideNumSmallTablet' },   
-            { max: 767, key: 'slideNumLargeMobile' },   
-            { max: 575, key: 'slideNumMobile' }          
+            { max: Infinity, key: 'slideNumDesktop' },
+            { max: 1199, key: 'slideNumTablet' },
+            { max: 991, key: 'slideNumSmallTablet' },
+            { max: 767, key: 'slideNumLargeMobile' },
+            { max: 575, key: 'slideNumMobile' }
         ];
 
         let slidesToShow = 0;
@@ -510,21 +510,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 dotsClass: 'slick-dots sldr_custom_dots',
                 cssEase: 'ease-in',
                 speed: 500,
-                 responsive: [
-                {
-                    breakpoint: 992,
-                    settings: {
-                        slidesToShow:2
+                responsive: [
+                    {
+                        breakpoint: 992,
+                        settings: {
+                            slidesToShow: 2
+                        }
+                    },
+                    {
+                        breakpoint: 576,
+                        settings: {
+                            slidesToShow: 1
+                        }
                     }
-                },
-                 {
-                    breakpoint: 576,
-                    settings: {
-                        slidesToShow:1
-                    }
-                }
 
-                 ]    
+                ]
             });
         });
     }
@@ -535,9 +535,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const swiperElement = el?.querySelector('.huse_mmbr_sldr');
             const fractionContainer = el?.querySelector('.sldr_pgntn');
 
-            const slidesPerView = parseInt(swiperElement?.getAttribute('data-comp-slider'), 10) || 6;
+            // const slidesPerView = parseInt(swiperElement?.getAttribute('data-comp-slider'), 10) || 6;
             const swiper = new Swiper(swiperElement, {
-                slidesPerView: slidesPerView,
+                slidesPerView: 1,
                 loop: true,
                 navigation: {
                     nextEl: el?.querySelector(".arrw_next"),
@@ -564,6 +564,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         const currentSlide = this.realIndex + 1;
                         fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
                     }
+                },
+                breakpoints: {
+                    576: {
+                        slidesPerView: 2,
+                    },
+                    768: {
+                        slidesPerView: 4,
+                    },
+                    1200: {
+                        slidesPerView: 6,
+                    },
                 },
             });
         });
