@@ -1666,7 +1666,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Get Params from URL
     function getUrlParam(param) {
         const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param) || '';
+        const urlParamsValue = urlParams.get(param);
+        return urlParamsValue ? `${urlParamsValue}/` : '';
     }
 
     // // Ghost Knowledge Hub
