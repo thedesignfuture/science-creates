@@ -1901,17 +1901,19 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    fetchAndRenderGhostPosts({
-        targetId: 'ghost_list',
-        initialLimit: 3,
-        enableSearch: true,
-        searchInputId: 'search_input',
-        enableSort: true,
-        sortRadioName: 'sort-by-filter',
-        enableFilter: true,
-        loadMoreId: 'load_mre_bttn',
-        filterContainerSelector: '.cmnty_fltr_bttn_lstng'
-    });
+    if (document.getElementById('ghost_list')) {
+        fetchAndRenderGhostPosts({
+            targetId: 'ghost_list',
+            initialLimit: 3,
+            enableSearch: true,
+            searchInputId: 'search_input',
+            enableSort: true,
+            sortRadioName: 'sort-by-filter',
+            enableFilter: true,
+            loadMoreId: 'load_mre_bttn',
+            filterContainerSelector: '.cmnty_fltr_bttn_lstng'
+        });
+    }
 
     if (document.getElementById('ghost-single-post')) {
         fetchAndRenderGhostPosts({
