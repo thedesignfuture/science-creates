@@ -510,6 +510,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 dotsClass: 'slick-dots sldr_custom_dots',
                 cssEase: 'ease-in',
                 speed: 500,
+                 responsive: [
+                {
+                    breakpoint: 992,
+                    settings: {
+                        slidesToShow:2
+                    }
+                },
+
+                 ]    
             });
         });
     }
