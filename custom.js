@@ -1772,7 +1772,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>`;
         }
 
-        function renderSinglePostHTML(post) {
+        function renderSingleInnerPostHTML(post) {
             const postDate = new Date(post.published_at).toLocaleDateString('en-GB', {
                 day: 'numeric', month: 'short', year: 'numeric'
             });
@@ -1785,7 +1785,7 @@ document.addEventListener('DOMContentLoaded', function () {
         function renderNextBatch() {
             const postsToShow = postsToRender.slice(currentVisibleCount, currentVisibleCount + initialLimit);
             postsToShow.forEach(post => {
-                const html = (renderSinglePostHTML && postId) ? renderSinglePostHTML(post) : renderPostHTML ? renderPostHTML(post) : defaultRenderHTML(post);
+                const html = (renderSinglePostHTML && postId) ? renderSingleInnerPostHTML(post) : renderPostHTML ? renderPostHTML(post) : defaultRenderHTML(post);
                 container.innerHTML += html;
             });
 
