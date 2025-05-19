@@ -551,7 +551,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // const slidesPerView = parseInt(swiperElement?.getAttribute('data-comp-slider'), 10) || 6;
             const swiper = new Swiper(swiperElement, {
                 slidesPerView: 1,
-                  spaceBetween: 16,
+                spaceBetween: 16,
                 loop: true,
                 navigation: {
                     nextEl: el?.querySelector(".arrw_next"),
@@ -588,7 +588,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     },
                     1200: {
                         slidesPerView: 6,
-                          spaceBetween: 0,
+                        spaceBetween: 0,
                     },
                 },
             });
@@ -1140,14 +1140,24 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateSwiperLayout(sw) {
         if (sw && typeof sw.update === 'function') sw.update();
     }
+    let bodyGap = () => {
+        let innerHeader = document?.querySelector('.main_header.inner_header');
+        if (innerHeader !== null) {
+            let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+            let headerHeight = innerHeader.clientHeight;
+            document.body.style.paddingTop = (headerHeight / remVal) + 'rem';
+        }
+    };
 
     updateRootFontSize();
-
+    bodyGap();
     let resizeTimeout;
     window.addEventListener('resize', function () {
         cancelAnimationFrame(resizeTimeout);
         resizeTimeout = requestAnimationFrame(() => {
             updateRootFontSize();
+            bodyGap();
             if (swiper3) {
                 setTimeout(() => {
                     updateSwiperLayout(swiper3);
