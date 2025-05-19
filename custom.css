@@ -3837,6 +3837,9 @@ body.dark_mode .drk_mde_pln_img {
         margin-left: 0;
         margin-right: 0;
     }
+    .huse_sldr_item.swiper-slide{
+        margin-right: 1.157rem;
+    }
 }
 
 @media(max-width:991px) {
@@ -3896,12 +3899,6 @@ body.dark_mode .drk_mde_pln_img {
         margin-left: 0;
         margin-right: 0;
     }
-
-    .huse_sldr_item.swiper-slide {
-        padding-left: 0.533rem;
-        padding-right: 0.533rem;
-    }
-
     .slick-list {
         margin-left: -0.667rem;
         margin-right: -0.667rem;
@@ -3910,6 +3907,9 @@ body.dark_mode .drk_mde_pln_img {
     .slick-slide {
         margin-left: 0.667rem;
         margin-right: 0.667rem;
+    }
+     .huse_sldr_item.swiper-slide{
+        margin-right: 0.926rem;
     }
 }
 
