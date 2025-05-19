@@ -496,16 +496,16 @@ body.dark_mode .shape_bttn.inhuse_shpe_bttn {
 }
 
 .mmbr_img_sldr .mmbr_sldr_cvr_img {
-    -webkit-clip-path: inset(45% round 0);
-    clip-path: polygon inset(45% round 0);
+    -webkit-clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+    clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
     -webkit-transition: all 0.5s ease-in-out;
     -o-transition: all 0.5s ease-in-out;
     transition: all 0.5s ease-in-out;
 }
 
 .mmbr_img_sldr .slick-current .mmbr_sldr_cvr_img {
-    -webkit-clip-path: inset(0% round 0);
-    clip-path: polygon inset(0% round 0);
+    -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    clip-path:  polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
 }
 
 .footr_lnk::after,
