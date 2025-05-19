@@ -612,7 +612,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const swiper1 = new Swiper(swiperElement, {
                 slidesPerView: 1,
-                spaceBetween: 20,
+                spaceBetween: 16,
                 loop: true,
                 navigation: {
                     nextEl: el?.querySelector(".arrw_next"),
