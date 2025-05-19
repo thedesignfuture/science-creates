@@ -3837,10 +3837,6 @@ body.dark_mode .drk_mde_pln_img {
         margin-left: 0;
         margin-right: 0;
     }
-    .huse_sldr_item.swiper-slide{
-        margin-right: 1.157rem;
-        padding: 0;
-    }
 }
 
 @media(max-width:991px) {
@@ -3908,9 +3904,6 @@ body.dark_mode .drk_mde_pln_img {
     .slick-slide {
         margin-left: 0.667rem;
         margin-right: 0.667rem;
-    }
-     .huse_sldr_item.swiper-slide{
-        margin-right: 0.926rem;
     }
 }
 
