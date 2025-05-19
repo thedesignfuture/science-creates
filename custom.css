@@ -3823,7 +3823,12 @@ body.dark_mode .drk_mde_pln_img {
     opacity: 1;
     visibility: visible;
 }
-
+.main_header.inner_header{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+}
 /* Responsive CSS */
 @media(max-width:1199px) {
     html {
