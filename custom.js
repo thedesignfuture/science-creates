@@ -143,6 +143,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 centerMode: false,
                 // centerPadding:"11.574rem",
                 speed: 500,
+                 responsive: [
+                    {
+                        breakpoint: 992,
+                        settings: {
+                            slidesToShow: 2,
+                        }
+                    },
+                ]
             });
         });
     }
