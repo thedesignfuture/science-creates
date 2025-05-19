@@ -3793,18 +3793,45 @@ body.dark_mode .polcy_rch_txt a {
 body.dark_mode [data-bg-color=white] .evnt_cat_bnnr_tag {
     color: var(--charcoal-black);
 }
-.flr_swtchng_bttn.active .floor_nme{
+
+.flr_swtchng_bttn.active .floor_nme {
     background: var(--charcoal-black);
     color: var(--pure-white);
 }
-body.dark_mode .flr_swtchng_bttn.active .floor_nme{
+
+body.dark_mode .flr_swtchng_bttn.active .floor_nme {
     background: var(--pure-white);
     color: var(--charcoal-black);
 }
+
+.inbtrs_lab_sldr .slick-track {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.inbtrs_lab_sldr .slick-slide {
+    height: auto;
+}
+
+body.dark_mode .pln_img {
+    opacity: 1;
+    visibility: hidden;
+}
+
+body.dark_mode .drk_mde_pln_img {
+    opacity: 1;
+    visibility: visible;
+}
+
 /* Responsive CSS */
 @media(max-width:1199px) {
     html {
         font-size: 15px !important;
+    }
+
+    .mmbr_sldr_tab_hldr {
+        display: none;
     }
 }
 
@@ -3816,6 +3843,16 @@ body.dark_mode .flr_swtchng_bttn.active .floor_nme{
     .eco_row .eco_col:nth-child(even) {
         padding-left: 1.333rem;
     }
+
+    .slick-list {
+        margin-left: -0.667rem;
+        margin-right: -0.667rem;
+    }
+
+    .slick-slide {
+        margin-left: 0.667rem;
+        margin-right: 0.667rem;
+    }
 }
 
 @media(max-width:767px) {
@@ -3826,6 +3863,7 @@ body.dark_mode .flr_swtchng_bttn.active .floor_nme{
     .hdr_lft_txt {
         padding-top: 0.9rem;
     }
+
     .eco_row .eco_col:nth-child(odd) {
         padding-right: 0;
     }
@@ -3845,6 +3883,31 @@ body.dark_mode .flr_swtchng_bttn.active .floor_nme{
     .sldr_custom_dots>li button {
         width: 2.667rem;
     }
+
+    .submnu_scnd_lnk_box::before {
+        display: none;
+    }
+
+    .sldr_outr_hldr,
+    .inhuse_cmpny_wrppr.swiper-wrapper {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .huse_sldr_item.swiper-slide {
+        padding-left: 0.533rem;
+        padding-right: 0.533rem;
+    }
+
+    .slick-list {
+        margin-left: -0.667rem;
+        margin-right: -0.667rem;
+    }
+
+    .slick-slide {
+        margin-left: 0.667rem;
+        margin-right: 0.667rem;
+    }
 }
 
 @media(max-width:479px) {
@@ -3860,5 +3923,15 @@ body.dark_mode .flr_swtchng_bttn.active .floor_nme{
     .sldr_custom_dots>li {
         padding-left: 0.533rem;
         padding-right: 0.533rem;
+    }
+
+    .slick-list {
+        margin-left: -0.533rem;
+        margin-right: -0.533rem;
+    }
+
+    .slick-slide {
+        margin-left: 0.533rem;
+        margin-right: 0.533rem;
     }
 }
