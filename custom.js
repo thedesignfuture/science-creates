@@ -1140,24 +1140,13 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateSwiperLayout(sw) {
         if (sw && typeof sw.update === 'function') sw.update();
     }
-    let bodyGap = () => {
-        let innerHeader = document?.querySelector('.main_header.inner_header');
-        if (innerHeader !== null) {
-            let remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
-
-            let headerHeight = innerHeader.clientHeight;
-            document.body.style.paddingTop = (headerHeight / remVal) + 'rem';
-        }
-    };
 
     updateRootFontSize();
-    bodyGap();
     let resizeTimeout;
     window.addEventListener('resize', function () {
         cancelAnimationFrame(resizeTimeout);
         resizeTimeout = requestAnimationFrame(() => {
             updateRootFontSize();
-            bodyGap();
             if (swiper3) {
                 setTimeout(() => {
                     updateSwiperLayout(swiper3);
