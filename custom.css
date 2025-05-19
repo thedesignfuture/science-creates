@@ -3839,6 +3839,7 @@ body.dark_mode .drk_mde_pln_img {
     }
     .huse_sldr_item.swiper-slide{
         margin-right: 1.157rem;
+        padding: 0;
     }
 }
 
