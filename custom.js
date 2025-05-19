@@ -141,13 +141,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 dotsClass: 'slick-dots sldr_custom_dots',
                 cssEase: 'ease-in',
                 centerMode: false,
-                // centerPadding:"11.574rem",
                 speed: 500,
-                 responsive: [
+                responsive: [
                     {
                         breakpoint: 992,
                         settings: {
                             slidesToShow: 2,
+                        }
+                    },
+                    {
+                        breakpoint: 576,
+                        settings: {
+                            slidesToShow: 1,
                         }
                     },
                 ]
@@ -607,7 +612,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const swiper1 = new Swiper(swiperElement, {
                 slidesPerView: 1,
-                  spaceBetween: 20,
+                spaceBetween: 20,
                 loop: true,
                 navigation: {
                     nextEl: el?.querySelector(".arrw_next"),
@@ -639,14 +644,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     576: {
                         slidesPerView: 2,
                     },
-                     768: {
+                    768: {
                         slidesPerView: 3,
                     },
-                     1200: {
+                    1200: {
                         slidesPerView: 4,
                         spaceBetween: 0,
                     },
-                }    
+                }
             });
         });
     }
