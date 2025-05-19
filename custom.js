@@ -598,7 +598,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const fractionContainer = el?.querySelector('.sldr_pgntn_alt');
 
             const swiper1 = new Swiper(swiperElement, {
-                slidesPerView: 4,
+                slidesPerView: 1,
                 loop: true,
                 navigation: {
                     nextEl: el?.querySelector(".arrw_next"),
@@ -626,6 +626,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
                     }
                 },
+                breakpoints: {
+                    576: {
+                        slidesPerView: 2,
+                    },
+                     768: {
+                        slidesPerView: 3,
+                    },
+                     1200: {
+                        slidesPerView: 4,
+                    },
+                }    
             });
         });
     }
@@ -1662,14 +1673,6 @@ document.addEventListener('DOMContentLoaded', function () {
             el.setAttribute('href', `${base}#${slug}`);
         }
     });
-
-    // Get Params from URL
-    function getUrlParam(param) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const urlParamsValue = urlParams.get(param);
-        return urlParamsValue ? `${urlParamsValue}/` : '';
-    }
-
     // // Ghost Knowledge Hub
     const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
     const API_KEY = '969e9f32437ce35f25af6d1453';
@@ -1684,15 +1687,13 @@ document.addEventListener('DOMContentLoaded', function () {
         enableFilter = false,
         loadMoreId = null,
         filterContainerSelector = null,
-        renderPostHTML = null,
-        postId = ''
+        renderPostHTML = null
     }) {
         const container = document.getElementById(targetId);
         if (!container) return;
 
         const loadMoreBtn = loadMoreId ? document.getElementById(loadMoreId) : null;
         const searchInput = searchInputId ? document.getElementById(searchInputId) : null;
-
         let filterButtons = [];
 
         let activeSearch = '';
@@ -1703,7 +1704,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let postsToRender = [];
 
         async function fetchAllPosts() {
-            const url = `${API_URL}${postId}?key=${API_KEY}&limit=100&include=tags,authors&order=published_at desc`;
+            const url = `${API_URL}?key=${API_KEY}&limit=100&include=tags,authors&order=published_at desc`;
             const response = await fetch(url, { headers: { 'Accept-Version': 'v5.0' } });
             const data = await response.json();
 
@@ -1737,7 +1738,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="row knwldge_hub_row">
                         <div class="col col-3 knwldge_hub_img_col">
                             <div class="knwldge_hub_img_box">
-                                <a href="/knowledge-hub/post?post_id=${post.id}" class="knwldge_hhub_lnk_box w-inline-block">
+                                <a href="${post.url}" class="knwldge_hhub_lnk_box w-inline-block">
                                     <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
                                 </a>
                             </div>
@@ -1750,12 +1751,12 @@ document.addEventListener('DOMContentLoaded', function () {
                                         <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
                                     </div>
                                     <div class="knwldge_ttle_box pr_big">
-                                        <a href="/knowledge-hub/post?post_id=${post.id}" class="knwldge_ttle_lnk title_h2 w-inline-block">
+                                        <a href="${post.url}" class="knwldge_ttle_lnk title_h2 w-inline-block">
                                             <div>${post.title}</div>
                                         </a>
                                     </div>
                                     <div class="knwldge_bttm_bttn_box">
-                                        <a href="/knowledge-hub/post?post_id=${post.id}" class="shape_bttn w-inline-block">
+                                        <a href="${post.url}" class="shape_bttn w-inline-block">
                                             <div class="shpe_cover_one">
                                                 <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
                                             </div>
@@ -1891,66 +1892,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    if (document.getElementById('ghost_list')) {
-        fetchAndRenderGhostPosts({
-            targetId: 'ghost_list',
-            initialLimit: 3,
-            enableSearch: true,
-            searchInputId: 'search_input',
-            enableSort: true,
-            sortRadioName: 'sort-by-filter',
-            enableFilter: true,
-            loadMoreId: 'load_mre_bttn',
-            filterContainerSelector: '.cmnty_fltr_bttn_lstng'
-        });
-    }
-
-    if (document.getElementById('ghost-single-post')) {
-        fetchAndRenderGhostPosts({
-            targetId: 'ghost-single-post',
-            initialLimit: 1,
-            enableSearch: false,
-            enableSort: false,
-            enableFilter: false,
-            postId: getUrlParam('post_id'),
-            renderPostHTML: post => {
-                const postDate = new Date(post.published_at).toLocaleDateString('en-GB', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: '2-digit'
-                });
-
-                const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
-                const primaryTag = post.primary_tag?.name || 'Article';
-                const postExcerpt = post.excerpt || post.title;
-
-                const elements = {
-                    date: document.getElementById('single-post-date'),
-                    image: document.getElementById('kn_singe_post_image'),
-                    tag: document.getElementById('kh_tag')
-                };
-
-                elements.date.textContent = postDate;
-                elements.image.style.backgroundImage = `url(${featureImage})`;
-                elements.tag.textContent = primaryTag;
-
-                const metaTags = {
-                    title: (document.title = post.title),
-                    description: document.querySelector('meta[name="description"]'),
-                    ogTitle: document.querySelector('meta[property="og:title"]'),
-                    ogDescription: document.querySelector('meta[property="og:description"]'),
-                    ogImage: document.querySelector('meta[property="og:image"]')
-                };
-
-                metaTags.description?.setAttribute('content', postExcerpt);
-                metaTags.ogTitle?.setAttribute('content', post.title);
-                metaTags.ogDescription?.setAttribute('content', postExcerpt);
-                metaTags.ogImage?.setAttribute('content', featureImage);
-
-                return post.html;
-            }
-        });
-    }
+    fetchAndRenderGhostPosts({
+        targetId: 'ghost_list',
+        initialLimit: 3,
+        enableSearch: true,
+        searchInputId: 'search_input',
+        enableSort: true,
+        sortRadioName: 'sort-by-filter',
+        enableFilter: true,
+        loadMoreId: 'load_mre_bttn',
+        filterContainerSelector: '.cmnty_fltr_bttn_lstng'
+    });
 
     if (document.getElementById('ghost-posts')) {
         fetchAndRenderGhostPosts({
@@ -1969,12 +1921,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
                 return `
                     <div class="sptlght_img_box">
-                        <a href="/knowledge-hub/post?post_id=${post.id}" class="sptlght_img_lnk w-inline-block">
+                        <a href="${post.url}" class="sptlght_img_lnk w-inline-block">
                             <img src="${featureImage}" loading="lazy" alt="${post.title}" class="sptlght_img">
                         </a>
                     </div>
                     <div class="sptlght_ttle_box">
-                        <a href="/knowledge-hub/post?post_id=${post.id}" class="sptlght_ttle_lnk">${post.title}</a>
+                        <a href="${post.url}" class="sptlght_ttle_lnk">${post.title}</a>
                     </div>`;
             }
         });
