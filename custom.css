@@ -3833,6 +3833,10 @@ body.dark_mode .drk_mde_pln_img {
     .mmbr_sldr_tab_hldr {
         display: none;
     }
+    .inhuse_cmpny_wrppr.swiper-wrapper {
+        margin-left: 0;
+        margin-right: 0;
+    }
 }
 
 @media(max-width:991px) {
@@ -3888,8 +3892,7 @@ body.dark_mode .drk_mde_pln_img {
         display: none;
     }
 
-    .sldr_outr_hldr,
-    .inhuse_cmpny_wrppr.swiper-wrapper {
+    .sldr_outr_hldr{
         margin-left: 0;
         margin-right: 0;
     }
