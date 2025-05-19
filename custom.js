@@ -551,6 +551,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // const slidesPerView = parseInt(swiperElement?.getAttribute('data-comp-slider'), 10) || 6;
             const swiper = new Swiper(swiperElement, {
                 slidesPerView: 1,
+                  spaceBetween: 16,
                 loop: true,
                 navigation: {
                     nextEl: el?.querySelector(".arrw_next"),
@@ -587,6 +588,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     },
                     1200: {
                         slidesPerView: 6,
+                          spaceBetween: 0,
                     },
                 },
             });
