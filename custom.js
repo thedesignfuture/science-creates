@@ -1996,7 +1996,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('ghost-posts-magazine')) {
         fetchAndRenderGhostPosts({
             targetId: 'ghost-posts-magazine',
-            initialLimit: 10,
+            initialLimit: 50,
             enableSearch: false,
             enableSort: false,
             enableFilter: false
