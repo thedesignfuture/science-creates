@@ -1713,6 +1713,7 @@ document.addEventListener('DOMContentLoaded', function () {
         loadMoreId = null,
         filterContainerSelector = null,
         renderPostHTML = null,
+        filterTag = '',
         postId = ''
     }) {
         const container = document.getElementById(targetId);
@@ -1720,6 +1721,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const loadMoreBtn = loadMoreId ? document.getElementById(loadMoreId) : null;
         const searchInput = searchInputId ? document.getElementById(searchInputId) : null;
+        const filterTagRequest = filterTag ? `&filter=tag:${filterTag}` : '';
+
         let filterButtons = [];
 
         let activeSearch = '';
@@ -1730,7 +1733,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let postsToRender = [];
 
         async function fetchAllPosts() {
-            const url = `${API_URL}${postId}?key=${API_KEY}&limit=100&include=tags,authors&order=published_at desc`;
+            const url = `${API_URL}${postId}?key=${API_KEY}&limit=100&include=tags,authors${filterTagRequest}&order=published_at desc`;
             const response = await fetch(url, { headers: { 'Accept-Version': 'v5.0' } });
             const data = await response.json();
 
@@ -1988,6 +1991,18 @@ document.addEventListener('DOMContentLoaded', function () {
             enableFilter: false
         });
     }
+
+    if (document.getElementById('ghost-posts-magazine')) {
+        fetchAndRenderGhostPosts({
+            targetId: 'ghost-posts-magazine',
+            initialLimit: 10,
+            enableSearch: false,
+            enableSort: false,
+            enableFilter: false,
+            filterTag: 'gravitate-2025'
+        });
+    }
+
     if (document.getElementById('ghost_box')) {
         fetchAndRenderGhostPosts({
             targetId: 'ghost_box',
