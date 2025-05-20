@@ -1713,7 +1713,6 @@ document.addEventListener('DOMContentLoaded', function () {
         loadMoreId = null,
         filterContainerSelector = null,
         renderPostHTML = null,
-        filterTag = '',
         postId = ''
     }) {
         const container = document.getElementById(targetId);
@@ -1721,7 +1720,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const loadMoreBtn = loadMoreId ? document.getElementById(loadMoreId) : null;
         const searchInput = searchInputId ? document.getElementById(searchInputId) : null;
-        const filterTagRequest = filterTag ? `&filter=tag:${filterTag}` : '';
+
+        const filterTagData = container.getAttribute('tag');
+        const filterTagRequest = filterTagData ? `&filter=tag:${filterTagData}` : '';
 
         let filterButtons = [];
 
@@ -1998,8 +1999,7 @@ document.addEventListener('DOMContentLoaded', function () {
             initialLimit: 10,
             enableSearch: false,
             enableSort: false,
-            enableFilter: false,
-            filterTag: 'gravitate-2025'
+            enableFilter: false
         });
     }
 
