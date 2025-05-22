@@ -542,58 +542,49 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     // Inhouse Members Slider
-    let huseWrppr = document?.querySelectorAll('.huse_sldr_wrppr');
-    if (huseWrppr.length > 0) {
-        huseWrppr?.forEach((el) => {
-            const swiperElement = el?.querySelector('.huse_mmbr_sldr');
-            const fractionContainer = el?.querySelector('.sldr_pgntn');
+    // Select all slider wrappers
+    const huseWrppr = document?.querySelectorAll('.huse_sldr_wrppr');
 
-            // const slidesPerView = parseInt(swiperElement?.getAttribute('data-comp-slider'), 10) || 6;
-            const swiper = new Swiper(swiperElement, {
-                slidesPerView: 1,
+    if (huseWrppr) {
+        huseWrppr.forEach((wrapper) => {
+            const swiperEl = wrapper.querySelector('.huse_mmbr_sldr');
+            const fractionCt = wrapper.querySelector('.sldr_pgntn');
+
+            const perMobile = parseInt(wrapper.dataset.slidesMobile, 10) || 1;
+            const perSm = parseInt(wrapper.dataset.slidesSm, 10) || perMobile;
+            const perMd = parseInt(wrapper.dataset.slidesMd, 10) || perSm;
+            const perLg = parseInt(wrapper.dataset.slidesLg, 10) || perMd;
+
+            const swiper = new Swiper(swiperEl, {
+                slidesPerView: perMobile,
                 spaceBetween: 16,
                 loop: true,
                 navigation: {
-                    nextEl: el?.querySelector(".arrw_next"),
-                    prevEl: el?.querySelector(".arrw_prev"),
+                    nextEl: wrapper.querySelector('.arrw_next'),
+                    prevEl: wrapper.querySelector('.arrw_prev'),
                 },
                 pagination: {
-                    el: el?.querySelector('.sldr_prgrss_bg'),
+                    el: wrapper.querySelector('.sldr_prgrss_bg'),
                     type: 'progressbar',
                 },
-                on: {
-                    init: function () {
-                        const totalSlides = swiperElement?.querySelectorAll('.swiper-slide').length;
-                        const currentSlide = this.realIndex + 1;
-
-                        fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
-
-                        this.on('slideChange', function () {
-                            const currentSlide = this.realIndex + 1;
-                            fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
-                        });
-                    },
-                    slideChange: function () {
-                        const totalSlides = swiperElement?.querySelectorAll('.swiper-slide').length;
-                        const currentSlide = this.realIndex + 1;
-                        fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
-                    }
-                },
                 breakpoints: {
-                    576: {
-                        slidesPerView: 2,
-                    },
-                    768: {
-                        slidesPerView: 4,
-                    },
-                    1200: {
-                        slidesPerView: 6,
-                        spaceBetween: 0,
-                    },
+                    576: { slidesPerView: perSm },
+                    768: { slidesPerView: perMd },
+                    1200: { slidesPerView: perLg, spaceBetween: 0 },
                 },
+                on: {
+                    init() {
+                        const total = swiperEl.querySelectorAll('.swiper-slide').length;
+                        fractionCt.textContent = `${this.realIndex + 1} / ${total}`;
+                        this.on('slideChange', () => {
+                            fractionCt.textContent = `${this.realIndex + 1} / ${total}`;
+                        });
+                    }
+                }
             });
         });
     }
+
     const invisibleElements = document.querySelectorAll('.lab_sldr_wrppr.w-condition-invisible');
 
     invisibleElements.forEach(el => {
