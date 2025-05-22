@@ -542,7 +542,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     // Inhouse Members Slider
-    ocument.querySelectorAll('.huse_sldr_wrppr').forEach((wrapper) => {
+    document.querySelectorAll('.huse_sldr_wrppr').forEach((wrapper) => {
         const swiperEl = wrapper.querySelector('.huse_mmbr_sldr');
         const fractionCt = wrapper.querySelector('.sldr_pgntn');
 
