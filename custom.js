@@ -660,35 +660,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // Header Animation
-    let menuHeader = document.querySelector('.main_header');
-    let lastScrollPosY = window.pageYOffset;
-    let scrollThreshold = 8;
+    // let menuHeader = document.querySelector('.main_header');
+    // let lastScrollPosY = window.pageYOffset;
+    // let scrollThreshold = 8;
 
-    let stickyFunc = () => {
-        let scrollPosY = window.pageYOffset;
+    // let stickyFunc = () => {
+    //     let scrollPosY = window.pageYOffset;
 
-        if (scrollPosY > 0) {
-            menuHeader.classList.add('sticky_header');
-        } else {
-            menuHeader.classList.remove('sticky_header');
-        }
+    //     if (scrollPosY > 0) {
+    //         menuHeader.classList.add('sticky_header');
+    //     } else {
+    //         menuHeader.classList.remove('sticky_header');
+    //     }
 
-        if (Math.abs(scrollPosY - lastScrollPosY) > scrollThreshold) {
-            if (scrollPosY > lastScrollPosY) {
-                menuHeader.classList.remove('scrollup');
-                menuHeader.classList.add('scrolldown');
-            } else if (scrollPosY < lastScrollPosY) {
-                menuHeader.classList.remove('scrolldown');
-                menuHeader.classList.add('scrollup');
-            }
+    //     if (Math.abs(scrollPosY - lastScrollPosY) > scrollThreshold) {
+    //         if (scrollPosY > lastScrollPosY) {
+    //             menuHeader.classList.remove('scrollup');
+    //             menuHeader.classList.add('scrolldown');
+    //         } else if (scrollPosY < lastScrollPosY) {
+    //             menuHeader.classList.remove('scrolldown');
+    //             menuHeader.classList.add('scrollup');
+    //         }
 
-            lastScrollPosY = scrollPosY;
-        }
-    };
+    //         lastScrollPosY = scrollPosY;
+    //     }
+    // };
 
-    stickyFunc();
+    // stickyFunc();
 
-    window.addEventListener('scroll', stickyFunc);
+    // window.addEventListener('scroll', stickyFunc);
 
     // Dark Mode / Light Mode & Clone Right Header Part & Custom Menu
     function initializeThemeButton(themeButton) {
