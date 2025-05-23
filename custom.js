@@ -795,18 +795,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Custom Menu With Submenu
 (function() {
-  const BR = 1025;
-  let mode, activeKey, leaveWatcher, removeOutsideClick;
+  const BREAK = 1025;
+  let mode, activeKey, removeOutside;
 
-  const menuLinks = () => document.querySelectorAll('.mnu_item > .menu_lnk:not(.submenu_lnk)');
+  const menuItems = () => document.querySelectorAll('.mnu_item > .menu_lnk:not(.submenu_lnk)');
   const subMenus  = () => document.querySelectorAll('[data-menu-open]');
 
   function openSub(key) {
+    closeSub(activeKey);
     document.querySelector(`[data-menu="${key}"]`)?.classList.add('submenu_active');
-    document.querySelector(`[data-menu-open="${key}"]`)?.classList.add('submenu_active');
+    const submenuEl = document.querySelector(`[data-menu-open="${key}"]`);
+    submenuEl?.classList.add('submenu_active');
     activeKey = key;
+
+    // close when you truly leave the dropdown
+    if (submenuEl) {
+      submenuEl.addEventListener('mouseleave', () => {
+        closeSub(key);
+      }, { once: true });
+    }
   }
+
   function closeSub(key) {
+    if (!key) return;
     document.querySelector(`[data-menu="${key}"]`)?.classList.remove('submenu_active');
     document.querySelector(`[data-menu-open="${key}"]`)?.classList.remove('submenu_active');
     if (activeKey === key) activeKey = null;
@@ -814,64 +825,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // HOVER mode
   function bindHover() {
-    menuLinks().forEach(link => link.addEventListener('mouseenter', onHover));
+    menuItems().forEach(link => {
+      link.addEventListener('mouseenter', e => {
+        const key = e.currentTarget.closest('.mnu_item').dataset.menu;
+        openSub(key);
+      });
+    });
   }
   function unbindHover() {
-    menuLinks().forEach(link => link.removeEventListener('mouseenter', onHover));
-    detachLeaveWatcher();
-  }
-  function onHover(e) {
-    const key = e.currentTarget.closest('.mnu_item').dataset.menu;
-    if (activeKey && activeKey !== key) closeSub(activeKey);
-    openSub(key);
-    attachLeaveWatcher();
-  }
-  function attachLeaveWatcher() {
-    if (leaveWatcher) return;
-    leaveWatcher = e => {
-      if (!activeKey) return;
-      const overLink = !!e.target.closest(`.mnu_item[data-menu="${activeKey}"] > .menu_lnk`);
-      const overSub  = !!e.target.closest(`.submenu_drpdwn[data-menu-open="${activeKey}"]`);
-      if (!overLink && !overSub) {
-        closeSub(activeKey);
-        detachLeaveWatcher();
-      }
-    };
-    document.addEventListener('mousemove', leaveWatcher);
-  }
-  function detachLeaveWatcher() {
-    if (!leaveWatcher) return;
-    document.removeEventListener('mousemove', leaveWatcher);
-    leaveWatcher = null;
+    menuItems().forEach(link => {
+      link.replaceWith(link.cloneNode(true)); // strip hover listeners
+    });
+    subMenus().forEach(sm => sm.replaceWith(sm.cloneNode(true))); // strip leave listeners
+    activeKey = null;
   }
 
   // CLICK mode
   function bindClick() {
-    menuLinks().forEach(link => link.addEventListener('click', onClick));
-    removeOutsideClick = () => {
-      document.removeEventListener('click', onOutsideClick);
+    menuItems().forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const key = e.currentTarget.closest('.mnu_item').dataset.menu;
+        if (activeKey === key) closeSub(key);
+        else openSub(key);
+      });
+    });
+    removeOutside = () => {
+      document.removeEventListener('click', onOutside);
     };
-    document.addEventListener('click', onOutsideClick);
+    document.addEventListener('click', onOutside);
   }
   function unbindClick() {
-    menuLinks().forEach(link => link.removeEventListener('click', onClick));
-    removeOutsideClick?.();
+    menuItems().forEach(link => {
+      link.replaceWith(link.cloneNode(true));
+    });
+    removeOutside?.();
+    activeKey = null;
   }
-  function onClick(e) {
-    e.preventDefault();
-    const key = e.currentTarget.closest('.mnu_item').dataset.menu;
-    if (activeKey && activeKey !== key) closeSub(activeKey);
-    activeKey === key ? closeSub(key) : openSub(key);
-  }
-  function onOutsideClick(e) {
+  function onOutside(e) {
     if (!e.target.closest('.mnu_item') && !e.target.closest('.submenu_drpdwn')) {
-      if (activeKey) closeSub(activeKey);
+      closeSub(activeKey);
     }
   }
 
-  // initialize / rebind on resize
+  // Init / resize
   function init() {
-    const wantHover = window.innerWidth >= BR;
+    const wantHover = window.innerWidth >= BREAK;
     if (wantHover && mode === 'hover') return;
     if (!wantHover && mode === 'click')  return;
 
@@ -879,19 +878,24 @@ document.addEventListener('DOMContentLoaded', function () {
     unbindHover();
     unbindClick();
     subMenus().forEach(sm => sm.classList.remove('submenu_active'));
-    activeKey = null;
 
-    // bind new
-    if (wantHover) { bindHover(); mode = 'hover'; }
-    else           { bindClick(); mode = 'click';  }
+    // bind
+    if (wantHover) {
+      bindHover();
+      mode = 'hover';
+    } else {
+      bindClick();
+      mode = 'click';
+    }
   }
 
   init();
   window.addEventListener('resize', () => {
-    clearTimeout(window._resizer);
-    window._resizer = setTimeout(init, 150);
+    clearTimeout(window._resizeMenu);
+    window._resizeMenu = setTimeout(init, 150);
   });
 })();
+
 
 
 
