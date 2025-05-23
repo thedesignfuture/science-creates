@@ -796,103 +796,74 @@ document.addEventListener('DOMContentLoaded', function () {
     // Custom Menu With Submenu
 (function() {
   const BREAK = 1025;
-  let mode, activeKey, removeOutside;
+  const menuItems   = document.querySelectorAll('[data-menu]');       // your <li data-menu="…">
+  const subMenus    = document.querySelectorAll('[data-menu-open]');  // your dropdowns
+  let   activeKey   = null;
 
-  const menuItems = () => document.querySelectorAll('.mnu_item > .menu_lnk:not(.submenu_lnk)');
-  const subMenus  = () => document.querySelectorAll('[data-menu-open]');
-
-  function openSub(key) {
-    closeSub(activeKey);
-    document.querySelector(`[data-menu="${key}"]`)?.classList.add('submenu_active');
-    const submenuEl = document.querySelector(`[data-menu-open="${key}"]`);
-    submenuEl?.classList.add('submenu_active');
-    activeKey = key;
-
-    // close when you truly leave the dropdown
-    if (submenuEl) {
-      submenuEl.addEventListener('mouseleave', () => {
-        closeSub(key);
-      }, { once: true });
-    }
+  function toggleSubMenu(key, action) {
+    const menu    = document.querySelector(`[data-menu="${key}"]`);
+    const submenu = document.querySelector(`[data-menu-open="${key}"]`);
+    menu    && menu.classList[action]('submenu_active');
+    submenu && submenu.classList[action]('submenu_active');
   }
 
-  function closeSub(key) {
-    if (!key) return;
-    document.querySelector(`[data-menu="${key}"]`)?.classList.remove('submenu_active');
-    document.querySelector(`[data-menu-open="${key}"]`)?.classList.remove('submenu_active');
+  function open(key) {
+    if (activeKey && activeKey !== key) toggleSubMenu(activeKey, 'remove');
+    toggleSubMenu(key, 'add');
+    activeKey = key;
+  }
+
+  function close(key) {
+    toggleSubMenu(key, 'remove');
     if (activeKey === key) activeKey = null;
   }
 
-  // HOVER mode
-  function bindHover() {
-    menuItems().forEach(link => {
-      link.addEventListener('mouseenter', e => {
-        const key = e.currentTarget.closest('.mnu_item').dataset.menu;
-        openSub(key);
-      });
+  // 1) HOVER behavior (desktop ≥1025px)
+  menuItems.forEach(el => {
+    el.addEventListener('mouseenter', e => {
+      if (window.innerWidth < BREAK) return;
+      const key = e.currentTarget.dataset.menu;
+      open(key);
     });
-  }
-  function unbindHover() {
-    menuItems().forEach(link => {
-      link.replaceWith(link.cloneNode(true)); // strip hover listeners
-    });
-    subMenus().forEach(sm => sm.replaceWith(sm.cloneNode(true))); // strip leave listeners
-    activeKey = null;
-  }
+  });
 
-  // CLICK mode
-  function bindClick() {
-    menuItems().forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        const key = e.currentTarget.closest('.mnu_item').dataset.menu;
-        if (activeKey === key) closeSub(key);
-        else openSub(key);
-      });
+  // When your pointer fully leaves the open dropdown → close it.
+  subMenus.forEach(sm => {
+    const key = sm.dataset.menuOpen;
+    sm.addEventListener('mouseleave', e => {
+      if (window.innerWidth < BREAK) return;
+      close(key);
     });
-    removeOutside = () => {
-      document.removeEventListener('click', onOutside);
-    };
-    document.addEventListener('click', onOutside);
-  }
-  function unbindClick() {
-    menuItems().forEach(link => {
-      link.replaceWith(link.cloneNode(true));
+  });
+
+  // 2) CLICK behavior (mobile <1025px)
+  menuItems.forEach(el => {
+    el.addEventListener('click', e => {
+      if (window.innerWidth >= BREAK) return;
+      e.preventDefault();
+      const key = e.currentTarget.dataset.menu;
+      if (activeKey === key) close(key);
+      else open(key);
     });
-    removeOutside?.();
-    activeKey = null;
-  }
-  function onOutside(e) {
+  });
+
+  // Close any open on “click outside” (mobile only)
+  document.addEventListener('click', e => {
+    if (window.innerWidth >= BREAK) return;
     if (!e.target.closest('.mnu_item') && !e.target.closest('.submenu_drpdwn')) {
-      closeSub(activeKey);
+      if (activeKey) close(activeKey);
     }
-  }
+  });
 
-  // Init / resize
-  function init() {
-    const wantHover = window.innerWidth >= BREAK;
-    if (wantHover && mode === 'hover') return;
-    if (!wantHover && mode === 'click')  return;
-
-    // teardown
-    unbindHover();
-    unbindClick();
-    subMenus().forEach(sm => sm.classList.remove('submenu_active'));
-
-    // bind
-    if (wantHover) {
-      bindHover();
-      mode = 'hover';
-    } else {
-      bindClick();
-      mode = 'click';
-    }
-  }
-
-  init();
+  // Optional: on resize, clear any stale open state
   window.addEventListener('resize', () => {
-    clearTimeout(window._resizeMenu);
-    window._resizeMenu = setTimeout(init, 150);
+    if (activeKey) {
+      // if mode switched, close everything
+      if ((window.innerWidth < BREAK && document.querySelector('.submenu_active')) ||
+          (window.innerWidth >= BREAK && document.querySelector('.submenu_active'))) {
+        close(activeKey);
+      }
+    }
   });
 })();
 
