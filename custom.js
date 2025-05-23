@@ -794,78 +794,72 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Custom Menu With Submenu
-(function() {
-  const BREAK = 1025;
-  const menuItems   = document.querySelectorAll('[data-menu]');       // your <li data-menu="…">
-  const subMenus    = document.querySelectorAll('[data-menu-open]');  // your dropdowns
-  let   activeKey   = null;
+    (function () {
+        const BREAK = 1025;
+        const menuItems = document.querySelectorAll('[data-menu]');
+        const subMenus = document.querySelectorAll('[data-menu-open]');
+        let activeKey = null;
 
-  function toggleSubMenu(key, action) {
-    const menu    = document.querySelector(`[data-menu="${key}"]`);
-    const submenu = document.querySelector(`[data-menu-open="${key}"]`);
-    menu    && menu.classList[action]('submenu_active');
-    submenu && submenu.classList[action]('submenu_active');
-  }
+        function toggleSubMenu(key, action) {
+            const menu = document.querySelector(`[data-menu="${key}"]`);
+            const submenu = document.querySelector(`[data-menu-open="${key}"]`);
+            menu && menu.classList[action]('submenu_active');
+            submenu && submenu.classList[action]('submenu_active');
+        }
 
-  function open(key) {
-    if (activeKey && activeKey !== key) toggleSubMenu(activeKey, 'remove');
-    toggleSubMenu(key, 'add');
-    activeKey = key;
-  }
+        function open(key) {
+            if (activeKey && activeKey !== key) toggleSubMenu(activeKey, 'remove');
+            toggleSubMenu(key, 'add');
+            activeKey = key;
+        }
 
-  function close(key) {
-    toggleSubMenu(key, 'remove');
-    if (activeKey === key) activeKey = null;
-  }
+        function close(key) {
+            toggleSubMenu(key, 'remove');
+            if (activeKey === key) activeKey = null;
+        }
 
-  // 1) HOVER behavior (desktop ≥1025px)
-  menuItems.forEach(el => {
-    el.addEventListener('mouseenter', e => {
-      if (window.innerWidth < BREAK) return;
-      const key = e.currentTarget.dataset.menu;
-      open(key);
-    });
-  });
+        menuItems.forEach(el => {
+            el.addEventListener('mouseenter', e => {
+                if (window.innerWidth < BREAK) return;
+                const key = e.currentTarget.dataset.menu;
+                open(key);
+            });
+        });
 
-  // When your pointer fully leaves the open dropdown → close it.
-  subMenus.forEach(sm => {
-    const key = sm.dataset.menuOpen;
-    sm.addEventListener('mouseleave', e => {
-      if (window.innerWidth < BREAK) return;
-      close(key);
-    });
-  });
+        subMenus.forEach(sm => {
+            const key = sm.dataset.menuOpen;
+            sm.addEventListener('mouseleave', e => {
+                if (window.innerWidth < BREAK) return;
+                close(key);
+            });
+        });
 
-  // 2) CLICK behavior (mobile <1025px)
-  menuItems.forEach(el => {
-    el.addEventListener('click', e => {
-      if (window.innerWidth >= BREAK) return;
-      e.preventDefault();
-      const key = e.currentTarget.dataset.menu;
-      if (activeKey === key) close(key);
-      else open(key);
-    });
-  });
+        menuItems.forEach(el => {
+            el.addEventListener('click', e => {
+                if (window.innerWidth >= BREAK) return;
+                e.preventDefault();
+                const key = e.currentTarget.dataset.menu;
+                if (activeKey === key) close(key);
+                else open(key);
+            });
+        });
 
-  // Close any open on “click outside” (mobile only)
-  document.addEventListener('click', e => {
-    if (window.innerWidth >= BREAK) return;
-    if (!e.target.closest('.mnu_item') && !e.target.closest('.submenu_drpdwn')) {
-      if (activeKey) close(activeKey);
-    }
-  });
+        document.addEventListener('click', e => {
+            if (window.innerWidth >= BREAK) return;
+            if (!e.target.closest('.mnu_item') && !e.target.closest('.submenu_drpdwn')) {
+                if (activeKey) close(activeKey);
+            }
+        });
 
-  // Optional: on resize, clear any stale open state
-  window.addEventListener('resize', () => {
-    if (activeKey) {
-      // if mode switched, close everything
-      if ((window.innerWidth < BREAK && document.querySelector('.submenu_active')) ||
-          (window.innerWidth >= BREAK && document.querySelector('.submenu_active'))) {
-        close(activeKey);
-      }
-    }
-  });
-})();
+        window.addEventListener('resize', () => {
+            if (activeKey) {
+                if ((window.innerWidth < BREAK && document.querySelector('.submenu_active')) ||
+                    (window.innerWidth >= BREAK && document.querySelector('.submenu_active'))) {
+                    close(activeKey);
+                }
+            }
+        });
+    })();
 
 
 
@@ -1687,19 +1681,43 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
     // Dark Menu Hover Color
-    let pllrLink = document.querySelectorAll("[link-color]");
-    pllrLink.forEach((ele) => {
-        let pllrLinkColor = ele.getAttribute("link-color");
-        ele.addEventListener("mouseenter", function () {
-            this.style.color = pllrLinkColor;
-        })
-        ele.addEventListener("mouseleave", function () {
-            this.style.color = null;
-        })
-        if (ele.classList.contains("w--current")) {
-            ele.style.color = pllrLinkColor;
+    const MOBILE_BREAKPOINT = 768;
+    const pllrLinks = document.querySelectorAll('[link-color]');
+
+    function applyHoverLogic(link) {
+        const color = link.getAttribute('link-color');
+
+        link.addEventListener('mouseenter', () => {
+            link.style.color = color;
+        });
+
+        link.addEventListener('mouseleave', () => {
+            if (!link.classList.contains('w--current')) {
+                link.style.color = '';
+            } else {
+                link.style.color = color;
+            }
+        });
+
+        if (link.classList.contains('w--current')) {
+            link.style.color = color;
         }
-    })
+    }
+
+    function stripSrcOnMobile() {
+        const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+        pllrLinks.forEach(link => {
+            if (isMobile) {
+                link.removeAttribute('src');
+            }
+        });
+    }
+
+    // initialize
+    pllrLinks.forEach(applyHoverLogic);
+    stripSrcOnMobile();
+    window.addEventListener('resize', stripSrcOnMobile);
+
 
     // Add #data-url
     document.querySelectorAll('[data-url]').forEach(el => {
