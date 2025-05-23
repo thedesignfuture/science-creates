@@ -1273,7 +1273,7 @@ body.dark_mode .cmnty_logo {
 }
 
 .huse_sldr_box:hover .mmbr_logo_img {
-    filter: invert(1);
+    filter: invert(1) !important;
 }
 
 .huse_sldr_box:hover .page_lnk {
