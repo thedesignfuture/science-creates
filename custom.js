@@ -794,109 +794,102 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Custom Menu With Submenu
-    (function () {
-        const BREAKPOINT = 1025;
-        const menuLinks = document.querySelectorAll('.mnu_item > .menu_lnk:not(.submenu_lnk)');
-        const subMenus = document.querySelectorAll('[data-menu-open]');
-        let mode = null;    // 'hover' or 'click'
-        let activeKey = null;    // e.g. 'incubators'
-        let leaveWatch = null;    // mousemove listener in hover-mode
-        let outsideClick = null;    // click listener in click-mode
+(function() {
+  const BREAKPOINT = 1025;
+  const subMenuItems = document.querySelectorAll('[data-menu-open]');
+  const menuItems    = document.querySelectorAll('[data-menu]');
+  let   activeMenu   = null;
+  let   mode         = null;
 
-        // OPEN / CLOSE helpers
-        function openSub(key) {
-            document.querySelector(`[data-menu="${key}"]`)?.classList.add('submenu_active');
-            document.querySelector(`[data-menu-open="${key}"]`)?.classList.add('submenu_active');
-            activeKey = key;
-        }
-        function closeSub(key) {
-            document.querySelector(`[data-menu="${key}"]`)?.classList.remove('submenu_active');
-            document.querySelector(`[data-menu-open="${key}"]`)?.classList.remove('submenu_active');
-            if (activeKey === key) activeKey = null;
-        }
+  function toggleSubMenu(key, action) {
+    const submenu = Array.from(subMenuItems).find(i => i.dataset.menuOpen === key);
+    const menu    = Array.from(menuItems)   .find(i => i.dataset.menu     === key);
+    if (submenu) submenu.classList[action]('submenu_active');
+    if (menu)    menu.classList[action]('submenu_active');
+  }
 
-        // HOVER MODE
-        function bindHover() {
-            menuLinks.forEach(link => {
-                link.addEventListener('mouseenter', onHoverEnter);
-            });
+  // ----- HOVER handlers -----
+  function onHover(e) {
+    const key = e.currentTarget.dataset.menu;
+    if (activeMenu && activeMenu !== key) {
+      toggleSubMenu(activeMenu, 'remove');
+    }
+    toggleSubMenu(key, 'add');
+    activeMenu = key;
+  }
+  function watchLeave() {
+    const leave = e => {
+      if (!e.target.closest('.mnu_item') && !e.target.closest('.submenu_drpdwn')) {
+        if (activeMenu) {
+          toggleSubMenu(activeMenu, 'remove');
+          activeMenu = null;
         }
-        function unbindHover() {
-            menuLinks.forEach(link => {
-                link.removeEventListener('mouseenter', onHoverEnter);
-            });
-            detachLeaveWatch();
-        }
-        function onHoverEnter(e) {
-            const key = e.currentTarget.closest('.mnu_item').dataset.menu;
-            if (activeKey && activeKey !== key) closeSub(activeKey);
-            openSub(key);
-            attachLeaveWatch();
-        }
-        function attachLeaveWatch() {
-            if (leaveWatch) return;
-            leaveWatch = e => {
-                if (!activeKey) return;
-                const overLink = !!e.target.closest(`.mnu_item[data-menu="${activeKey}"] > .menu_lnk`);
-                const overSub = !!e.target.closest(`.submenu_drpdwn[data-menu-open="${activeKey}"]`);
-                if (!overLink && !overSub) {
-                    closeSub(activeKey);
-                    detachLeaveWatch();
-                }
-            };
-            document.addEventListener('mousemove', leaveWatch);
-        }
-        function detachLeaveWatch() {
-            if (!leaveWatch) return;
-            document.removeEventListener('mousemove', leaveWatch);
-            leaveWatch = null;
-        }
+        document.removeEventListener('mousemove', leave);
+      }
+    };
+    document.addEventListener('mousemove', leave);
+  }
 
-        // CLICK MODE
-        function bindClick() {
-            menuLinks.forEach(link => {
-                link.addEventListener('click', onClickToggle);
-            });
-            outsideClick = e => {
-                if (!e.target.closest('.mnu_item') && !e.target.closest('.submenu_drpdwn')) {
-                    if (activeKey) closeSub(activeKey);
-                }
-            };
-            document.addEventListener('click', outsideClick);
+  // ----- CLICK handlers -----
+  function onClick(e) {
+    e.preventDefault();
+    const key = e.currentTarget.dataset.menu;
+    if (activeMenu && activeMenu !== key) {
+      toggleSubMenu(activeMenu, 'remove');
+    }
+    toggleSubMenu(key, 'toggle');
+    activeMenu = (activeMenu === key ? null : key);
+  }
+  function watchOutsideClick() {
+    const outside = e => {
+      if (!e.target.closest('.mnu_item') && !e.target.closest('.submenu_drpdwn')) {
+        if (activeMenu) {
+          toggleSubMenu(activeMenu, 'remove');
+          activeMenu = null;
         }
-        function unbindClick() {
-            menuLinks.forEach(link => {
-                link.removeEventListener('click', onClickToggle);
-            });
-            document.removeEventListener('click', outsideClick);
-            outsideClick = null;
-        }
-        function onClickToggle(e) {
-            e.preventDefault();
-            const key = e.currentTarget.closest('.mnu_item').dataset.menu;
-            if (activeKey && activeKey !== key) closeSub(activeKey);
-            activeKey === key ? closeSub(key) : openSub(key);
-        }
+      }
+    };
+    document.addEventListener('click', outside);
+    return () => document.removeEventListener('click', outside);
+  }
 
-        // INITIALIZE & RESIZE
-        function initMode() {
-            const newMode = window.innerWidth >= BREAKPOINT ? 'hover' : 'click';
-            if (newMode === mode) return;
-            if (mode === 'hover') unbindHover();
-            else if (mode === 'click') unbindClick();
+  let detachOutside = null;
 
-            if (newMode === 'hover') bindHover();
-            else bindClick();
+  // ----- (re)bind based on width -----
+  function init() {
+    const useHover = window.innerWidth >= BREAKPOINT;
+    if (useHover && mode === 'hover') return;
+    if (!useHover && mode === 'click') return;
 
-            mode = newMode;
-        }
+    // teardown
+    menuItems.forEach(el => {
+      el.replaceWith(el.cloneNode(true)); // remove all old listeners
+    });
+    subMenuItems.forEach(i => i.classList.remove('submenu_active'));
+    activeMenu = null;
+    if (detachOutside) detachOutside();
 
-        initMode();
-        window.addEventListener('resize', () => {
-            clearTimeout(window._menuResizeTmr);
-            window._menuResizeTmr = setTimeout(initMode, 150);
-        });
-    })();
+    // re-query because we cloned
+    const freshMenuItems = document.querySelectorAll('[data-menu]');
+
+    if (useHover) {
+      freshMenuItems.forEach(el => el.addEventListener('mouseenter', onHover));
+      // once you open, watch for pointer leaving both menu and its submenu
+      freshMenuItems.forEach(() => watchLeave());
+      mode = 'hover';
+    } else {
+      freshMenuItems.forEach(el => el.addEventListener('click', onClick));
+      detachOutside = watchOutsideClick();
+      mode = 'click';
+    }
+  }
+
+  init();
+  window.addEventListener('resize', () => {
+    clearTimeout(window._menuResize);
+    window._menuResize = setTimeout(init, 150);
+  });
+})();
 
 
 
