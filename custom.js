@@ -794,45 +794,103 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Custom Menu With Submenu
-    let subMenuItem = document.querySelectorAll('[data-menu-open]');
-    let menuItem = document.querySelectorAll('[data-menu]');
+    const subMenuItems = document.querySelectorAll('[data-menu-open]');
+    const menuItems = document.querySelectorAll('[data-menu]');
+    const BREAKPOINT = 1025;
+
     let activeMenuItem = null;
+    let mode = null; 
 
     function toggleSubMenu(menuAttr, action) {
-        let submenu = Array.from(subMenuItem).find(item => item.getAttribute('data-menu-open') === menuAttr);
-        let menu = Array.from(menuItem).find(item => item.getAttribute('data-menu') === menuAttr);
+        const submenu = [...subMenuItems].find(it => it.dataset.menuOpen === menuAttr);
+        const menu = [...menuItems].find(it => it.dataset.menu === menuAttr);
+        if (submenu) submenu.classList[action]('submenu_active');
+        if (menu) menu.classList[action]('submenu_active');
+    }
+    function bindHover(menuEl) {
+        const menuAttr = menuEl.dataset.menu;
+        const wrapper = menuEl.closest('.mnu_item');
+        if (!wrapper) return;
 
-        if (submenu) {
-            submenu.classList[action]('submenu_active');
-        }
-        if (menu) {
-            menu.classList[action]('submenu_active');
+        const onEnter = () => toggleSubMenu(menuAttr, 'add');
+        const onLeave = () => toggleSubMenu(menuAttr, 'remove');
+
+        wrapper.addEventListener('mouseenter', onEnter);
+        wrapper.addEventListener('mouseleave', onLeave);
+        wrapper._hoverHandlers = { onEnter, onLeave };
+    }
+
+    function unbindHover(menuEl) {
+        const wrapper = menuEl.closest('.mnu_item');
+        if (wrapper && wrapper._hoverHandlers) {
+            wrapper.removeEventListener('mouseenter', wrapper._hoverHandlers.onEnter);
+            wrapper.removeEventListener('mouseleave', wrapper._hoverHandlers.onLeave);
+            delete wrapper._hoverHandlers;
         }
     }
 
-    menuItem.forEach((el) => {
-        let menuAttr = el.getAttribute('data-menu');
-
-        el.addEventListener('click', (e) => {
+    function bindClick(menuEl) {
+        const menuAttr = menuEl.dataset.menu;
+        const onClick = e => {
             e.preventDefault();
-            if (activeMenuItem && activeMenuItem !== el) {
-                let prevMenuAttr = activeMenuItem.getAttribute('data-menu');
-                toggleSubMenu(prevMenuAttr, 'remove');
+            if (activeMenuItem && activeMenuItem !== menuEl) {
+                toggleSubMenu(activeMenuItem.dataset.menu, 'remove');
             }
             toggleSubMenu(menuAttr, 'toggle');
-            activeMenuItem = el;
-        });
-    });
+            activeMenuItem = menuEl;
+        };
 
-    document.addEventListener('click', (e) => {
+        menuEl.addEventListener('click', onClick);
+        menuEl._clickHandler = onClick;
+    }
+
+    function unbindClick(menuEl) {
+        if (menuEl._clickHandler) {
+            menuEl.removeEventListener('click', menuEl._clickHandler);
+            delete menuEl._clickHandler;
+        }
+    }
+
+    function onDocumentClick(e) {
         if (!e.target.closest('.mnu_item') && !e.target.closest('.submenu_drpdwn')) {
             if (activeMenuItem) {
-                let prevMenuAttr = activeMenuItem.getAttribute('data-menu');
-                toggleSubMenu(prevMenuAttr, 'remove');
+                toggleSubMenu(activeMenuItem.dataset.menu, 'remove');
                 activeMenuItem = null;
             }
         }
+    }
+    function initMode() {
+        const width = window.innerWidth;
+        const newMode = width >= BREAKPOINT ? 'hover' : 'click';
+        if (newMode === mode) return; // no change
+
+        // Clean up previous
+        if (mode === 'hover') {
+            menuItems.forEach(unbindHover);
+        } else if (mode === 'click') {
+            menuItems.forEach(unbindClick);
+            document.removeEventListener('click', onDocumentClick);
+        }
+
+        // Set up new
+        if (newMode === 'hover') {
+            menuItems.forEach(bindHover);
+        } else {
+            menuItems.forEach(bindClick);
+            document.addEventListener('click', onDocumentClick);
+        }
+
+        mode = newMode;
+    }
+
+    initMode();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(initMode, 150);
     });
+
 
     // Dark Menu Animation
     let menuRow = document.querySelectorAll('.menu_drk_row');
