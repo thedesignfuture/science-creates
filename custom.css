@@ -3823,7 +3823,7 @@ body.dark_mode .drk_mde_pln_img {
     opacity: 1;
     visibility: visible;
 }
-.drk_menu_lnk:hover .dark_menu_arrw svg,.drk_menu_lnk.w--current .dark_menu_arrw svg{
+.drk_menu_lnk:hover .dark_menu_arrw svg path,.drk_menu_lnk.w--current .dark_menu_arrw svg path{
     fill: currentColor;
 }
 /* Responsive CSS */
