@@ -1267,10 +1267,13 @@ body.dark_mode .cmnty_logo {
     color: var(--pure-white);
 }
 
-.huse_sldr_box:hover .mmbr_logo_img,
 .huse_sldr_box:hover .bttn_icon {
     -webkit-filter: brightness(1000%);
-    filter: brightness(1000%);
+    filter: brightness(1000%);    
+}
+
+.huse_sldr_box:hover .mmbr_logo_img {
+    filter: invert(1);
 }
 
 .huse_sldr_box:hover .page_lnk {
