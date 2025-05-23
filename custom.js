@@ -1704,19 +1704,19 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function stripSrcOnMobile() {
+    function disableLinksOnMobile() {
         const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
         pllrLinks.forEach(link => {
             if (isMobile) {
-                link.removeAttribute('src');
+                link.setAttribute('href', 'javascript:void(0)');
             }
         });
     }
-
-    // initialize
     pllrLinks.forEach(applyHoverLogic);
-    stripSrcOnMobile();
-    window.addEventListener('resize', stripSrcOnMobile);
+
+    disableLinksOnMobile();
+    window.addEventListener('resize', disableLinksOnMobile);
+
 
 
     // Add #data-url
