@@ -1267,12 +1267,14 @@ body.dark_mode .cmnty_logo {
     color: var(--pure-white);
 }
 
-.huse_sldr_box:hover .mmbr_logo_img,
 .huse_sldr_box:hover .bttn_icon {
     -webkit-filter: brightness(1000%);
     filter: brightness(1000%);
 }
-
+.huse_mmbr_sldr .huse_sldr_box:hover .mmbr_logo_box .mmbr_logo_img,body.dark_mode [data-bg-color=grey] .huse_sldr_box:not(:hover) * img.mmbr_logo_img {
+    -webkit-filter: invert(1);
+    filter: invert(1);
+}
 .huse_sldr_box:hover .page_lnk {
     color: var(--pure-white);
 }
