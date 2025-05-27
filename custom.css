@@ -2952,9 +2952,9 @@ body.dark_mode .eco_lft_logo {
     border-color: var(--pure-white);
 }
 
-body.dark_mode .cmnty_logo {
-    -webkit-filter: brightness(1000%);
-    filter: brightness(1000%);
+body.dark_mode .cmpny_logo_inner .cmnty_logo {
+  -webkit-filter: invert(1);
+    filter: invert(1);
 }
 
 .evnts_ttle_box:last-child {
