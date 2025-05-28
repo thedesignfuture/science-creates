@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 slidesToShow: 1,
                 slidesToScroll: 1,
                 arrows: false,
-                fade: true,
+                fade: false,
                 lazyLoad: 'progressive',
                 cssEase: 'ease-in',
                 dots: false,
