@@ -3794,6 +3794,9 @@ body.dark_mode .drk_mde_pln_img {
     fill: currentColor;
 }
 .tem_tmbnl_box:hover::before{
+    opacity: 0;
+}
+.tem_tmbnl_box:hover .tem_thmbnl_img{
     opacity: 1;
 }
 /* Responsive CSS */
