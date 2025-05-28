@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 lazyLoad: 'progressive',
                 cssEase: 'ease-in',
                 dots: false,
-                speed: 500,
+                speed: 5000,
                 asNavFor: slider2,
             });
         });
