@@ -86,8 +86,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 slidesToScroll: 1,
                 arrows: false,
                 fade: true,
-                // lazyLoad: 'progressive',
-                // cssEase: 'ease-in',
                 dots: false,
                 speed: 500,
                 asNavFor: slider2,
@@ -1022,74 +1020,86 @@ document.addEventListener('DOMContentLoaded', function () {
             if ($('[data-anim="parent-anim-sec"]').length) {
                 const parentAnimation = document.querySelectorAll('[data-anim="parent-anim-sec"]');
                 parentAnimation.forEach((elem, index) => {
-                    // Create a timeline for the animations of child elements
-                    let moveUpElem = elem.querySelectorAll("[data-move]");
-                    let slideElem = elem.querySelectorAll("[data-slide]");
-                    let growElem = elem.querySelectorAll("[data-grow]");
-                    let flipElem = elem.querySelectorAll("[data-flip]");
-                    let shtrElem = elem.querySelectorAll("[data-shutter]");
+                    // Create timelines for the animations of child elements
+                    const moveUpElem = elem.querySelectorAll("[data-move]");
+                    const slideElem = elem.querySelectorAll("[data-slide]");
+                    const growElem = elem.querySelectorAll("[data-grow]");
+                    const flipElem = elem.querySelectorAll("[data-flip]");
+                    const shtrElem = elem.querySelectorAll("[data-shutter]");
 
-                    let moveTl = gsap.timeline({ paused: true });
-                    let slideTl = gsap.timeline({ paused: true });
-                    let growTl = gsap.timeline({ paused: true });
-                    let flipTl = gsap.timeline({ paused: true });
-                    let shutterTl = gsap.timeline({ paused: true });
+                    const moveTl = gsap.timeline({ paused: true });
+                    const slideTl = gsap.timeline({ paused: true });
+                    const growTl = gsap.timeline({ paused: true });
+                    const flipTl = gsap.timeline({ paused: true });
+                    const shutterTl = gsap.timeline({ paused: true });
+
+                    // Helper to read delay attribute (in seconds)
+                    const getDelay = el => {
+                        const d = parseFloat(el.dataset.delay);
+                        return isNaN(d) ? 0 : d;
+                    };
 
                     // Set animations for moveUpElem
-                    moveUpElem.forEach(function (elem2) {
-                        if (elem2.dataset.move == "up") {
+                    moveUpElem.forEach(elem2 => {
+                        const delay = getDelay(elem2);
+                        if (elem2.dataset.move === "up") {
                             gsap.set(elem2, { y: 50, opacity: 0 });
-                            moveTl.to(elem2, { ease: "none", duration: 0.2, y: 0, opacity: 1 });
+                            moveTl.to(elem2, { ease: "none", duration: 0.2, y: 0, opacity: 1, delay });
                         }
-                        if (elem2.dataset.move == "down") {
+                        if (elem2.dataset.move === "down") {
                             gsap.set(elem2, { y: -50, opacity: 0 });
-                            moveTl.to(elem2, { ease: "none", duration: 0.2, y: 0, opacity: 1 });
+                            moveTl.to(elem2, { ease: "none", duration: 0.2, y: 0, opacity: 1, delay });
                         }
-                        if (elem2.dataset.move == "scale-up") {
-                            gsap.set(elem2, { y: 50, scale: 0 });
-                            moveTl.to(elem2, { ease: "Power3.easeOut", duration: 1, scale: 1, opacity: 1, y: 0 });
+                        if (elem2.dataset.move === "scale-up") {
+                            gsap.set(elem2, { y: 50, scale: 0, opacity: 0 });
+                            moveTl.to(elem2, { ease: "Power3.easeOut", duration: 1, scale: 1, opacity: 1, y: 0, delay });
                         }
                     });
 
                     // Set animations for slideElem
-                    slideElem.forEach(function (elem2) {
-                        if (elem2.dataset.slide == "right") {
+                    slideElem.forEach(elem2 => {
+                        const delay = getDelay(elem2);
+                        if (elem2.dataset.slide === "right") {
                             gsap.set(elem2, { x: -100, opacity: 0 });
-                            slideTl.to(elem2, { ease: "Power3.easeOut", duration: 1, opacity: 1, x: 0 });
+                            slideTl.to(elem2, { ease: "Power3.easeOut", duration: 1, opacity: 1, x: 0, delay });
                         }
-                        if (elem2.dataset.slide == "left") {
+                        if (elem2.dataset.slide === "left") {
                             gsap.set(elem2, { x: 100, opacity: 0 });
-                            slideTl.to(elem2, { ease: "Power3.easeOut", duration: 1, opacity: 1, x: 0 });
+                            slideTl.to(elem2, { ease: "Power3.easeOut", duration: 1, opacity: 1, x: 0, delay });
                         }
                     });
 
                     // Set animations for growElem
-                    growElem.forEach(function (elem2) {
+                    growElem.forEach(elem2 => {
+                        const delay = getDelay(elem2);
                         gsap.set(elem2, { scale: 0, opacity: 0 });
-                        growTl.to(elem2, { ease: "Power3.easeOut", duration: 1, opacity: 1, scale: 1 });
+                        growTl.to(elem2, { ease: "Power3.easeOut", duration: 1, scale: 1, opacity: 1, delay });
                     });
 
                     // Set animations for flipElem
-                    flipElem.forEach(function (elem2) {
-                        gsap.set(elem2, { rotateY: 90 });
-                        flipTl.to(elem2, { ease: "Power3.easeOut", duration: 1, opacity: 1, rotateY: 0 });
+                    flipElem.forEach(elem2 => {
+                        const delay = getDelay(elem2);
+                        gsap.set(elem2, { rotateY: 90, opacity: 0 });
+                        flipTl.to(elem2, { ease: "Power3.easeOut", duration: 1, rotateY: 0, opacity: 1, delay });
                     });
 
                     // Set animations for shutterElem
-                    shtrElem.forEach(function (elem2) {
-                        if (elem2.dataset.shutter == "right") {
+                    shtrElem.forEach(elem2 => {
+                        const delay = getDelay(elem2);
+                        if (elem2.dataset.shutter === "right") {
                             gsap.set(elem2, { clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)", opacity: 1 });
-                            shutterTl.to(elem2, { ease: "Power3.easeOut", duration: 1, clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" });
+                            shutterTl.to(elem2, { ease: "Power3.easeOut", duration: 1, clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", delay });
                         }
-                        if (elem2.dataset.shutter == "left") {
+                        if (elem2.dataset.shutter === "left") {
                             gsap.set(elem2, { clipPath: "polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)", opacity: 1 });
-                            shutterTl.to(elem2, { ease: "Power3.easeOut", duration: 1, clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" });
+                            shutterTl.to(elem2, { ease: "Power3.easeOut", duration: 1, clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", delay });
                         }
-                        if (elem2.dataset.shutter == "center") {
+                        if (elem2.dataset.shutter === "center") {
                             gsap.set(elem2, { clipPath: "inset(45% round 0)", opacity: 0 });
-                            shutterTl.to(elem2, { ease: "power1.inOut", opacity: 1, duration: 0.5, clipPath: "inset(0% round 0)" });
+                            shutterTl.to(elem2, { ease: "power1.inOut", duration: 0.5, clipPath: "inset(0% round 0)", opacity: 1, delay });
                         }
                     });
+
                     ScrollTrigger.create({
                         trigger: elem,
                         start: "top bottom",
@@ -1105,24 +1115,29 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Additional individual element animations
-            let indvlElem = document.querySelectorAll("[data-indv]");
-            indvlElem.forEach(function (elem2) {
-                let indvlTl = gsap.timeline({ paused: true });
-                if (elem2.dataset.indv == "up") {
-                    gsap.set(elem2, { y: 50, opacity: 0 });
-                    indvlTl.to(elem2, { ease: "none", duration: 0.5, y: 0, opacity: 1 });
-                }
-                if (elem2.dataset.indv == "down") {
-                    gsap.set(elem2, { y: -50, opacity: 0 });
-                    indvlTl.to(elem2, { ease: "none", duration: 0.5, y: 0, opacity: 1 });
-                }
-                if (elem2.dataset.indv == "left") {
-                    gsap.set(elem2, { x: 50, opacity: 0 });
-                    indvlTl.to(elem2, { ease: "none", duration: 0.5, x: 0, opacity: 1 });
-                }
-                if (elem2.dataset.indv == "right") {
-                    gsap.set(elem2, { x: -50, opacity: 0 });
-                    indvlTl.to(elem2, { ease: "none", duration: 0.5, x: 0, opacity: 1 });
+            const indvlElem = document.querySelectorAll("[data-indv]");
+            indvlElem.forEach(elem2 => {
+                const indvlTl = gsap.timeline({ paused: true });
+                const delay = parseFloat(elem2.dataset.delay) || 0;
+                gsap.set(elem2, { opacity: 0 });
+
+                switch (elem2.dataset.indv) {
+                    case "up":
+                        gsap.set(elem2, { y: 50 });
+                        indvlTl.to(elem2, { ease: "none", duration: 0.5, y: 0, opacity: 1, delay });
+                        break;
+                    case "down":
+                        gsap.set(elem2, { y: -50 });
+                        indvlTl.to(elem2, { ease: "none", duration: 0.5, y: 0, opacity: 1, delay });
+                        break;
+                    case "left":
+                        gsap.set(elem2, { x: 50 });
+                        indvlTl.to(elem2, { ease: "none", duration: 0.5, x: 0, opacity: 1, delay });
+                        break;
+                    case "right":
+                        gsap.set(elem2, { x: -50 });
+                        indvlTl.to(elem2, { ease: "none", duration: 0.5, x: 0, opacity: 1, delay });
+                        break;
                 }
 
                 ScrollTrigger.create({
@@ -1133,6 +1148,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }, 500);
     }
+
     // Swiper Global Variable
     let swiper3 = null;
 
