@@ -2303,14 +2303,6 @@ body.dark_mode .shape_bttn.inhuse_shpe_bttn {
     border-color: var(--charcoal-black);
 }
 
-.mmbr_img_sldr .mmbr_sldr_cvr_img {
-     -webkit-clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
-    clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
-    -webkit-transition: all 0.5s ease-in-out;
-    -o-transition: all 0.5s ease-in-out;
-    transition: all 0.5s ease-in-out;
-}
-
 
 .footr_lnk::after,
 .drk_menu_lnk::after,
