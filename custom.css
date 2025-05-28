@@ -393,17 +393,6 @@ body.darkMenu_active .main_header .header_top_nav {
     width: 265%;
 }
 
-.lnk_arrw_img {
-    -webkit-transition: all 0.4s ease-in-out;
-    -o-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
-}
-
-.submenu_drpdwn .submnu_scnd_lnk_box:hover .lnk_arrw_img {
-    -webkit-transform: rotate(15deg);
-    -ms-transform: rotate(15deg);
-    transform: rotate(15deg);
-}
 
 .main_header .submenu_drpdwn .submnu_scnd_lnk_box:hover .ech_sulink_txt {
     display: block;
