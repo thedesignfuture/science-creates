@@ -3793,7 +3793,7 @@ body.dark_mode .drk_mde_pln_img {
 .drk_menu_lnk:hover .dark_menu_arrw svg path,.drk_menu_lnk.w--current .dark_menu_arrw svg path{
     fill: currentColor;
 }
-.tem_tmbnl_box:hover::before{
+.tem_thmbnl_item:hover .tem_tmbnl_box::before{
     opacity: 1;
 }
 /* Responsive CSS */
