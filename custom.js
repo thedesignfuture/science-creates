@@ -86,9 +86,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 slidesToScroll: 1,
                 arrows: false,
                 fade: true,
-                lazyLoad: 'progressive',
-                cssEase: 'ease-in',
+                // lazyLoad: 'progressive',
+                // cssEase: 'ease-in',
                 dots: false,
+                speed: 500,
                 asNavFor: slider2,
             });
         });
