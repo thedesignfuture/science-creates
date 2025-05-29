@@ -1999,13 +1999,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 const primaryTag = post.primary_tag?.name || 'Article';
                 const postExcerpt = post.excerpt || post.title;
                 const postTitle  = post.title || 'Title'
-
+                const featureImageCaption = post.feature_image_caption || 'Image';
+                
                 const elements = {
                     date: document.getElementById('single-post-date'),
                     image: document.getElementById('kn_singe_post_image'),
                     tag: document.getElementById('kh_tag'),
                     excerpt: document.getElementById('kh_custom_excerpt'),
                     title: document.getElementById('kh_title'),
+                    feature: document.getElementById('kh_feature_img'),
                 };
 
                 elements.date.textContent = postDate;
@@ -2013,6 +2015,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 elements.tag.textContent = primaryTag;
                 elements.excerpt.textContent = postExcerpt;
                 elements.title.textContent = postTitle;
+                elements.feature.textContent = featureImageCaption;
 
                 const metaTags = {
                     title: (document.title = post.title),
