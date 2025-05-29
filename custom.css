@@ -3426,7 +3426,7 @@ body.dark_mode .acc_icon_box:hover {
     background: var(--pure-white);
 }
 
-body.dark_mode .acc_icon_box:hover img,.submenu_drpdwn .hdr_info_bttn .info_icon,.main_header .submenu_inner_hdr .basic_bttn.hdr_bttn:hover .info_icon,.main_header .submenu_drpdwn .basic_bttn.hdr_bttn.hdr_bttn2 .info_icon{
+body.dark_mode .acc_icon_box:hover img,.submenu_drpdwn .hdr_info_bttn .info_icon,.main_header .submenu_inner_hdr .basic_bttn.hdr_bttn:hover .info_icon,.main_header .submenu_drpdwn .basic_bttn.hdr_bttn.hdr_bttn2 .info_icon,.main_header .submenu_inner_hdr .hdr_info_bttn.hdr_info_bttn_alt .info_icon{
     -webkit-filter: brightness(0) saturate(100%) invert(3%) sepia(4%) saturate(4145%) hue-rotate(298deg) brightness(92%) contrast(81%);
     filter: brightness(0) saturate(100%) invert(3%) sepia(4%) saturate(4145%) hue-rotate(298deg) brightness(92%) contrast(81%);
 }
