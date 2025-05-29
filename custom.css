@@ -3807,7 +3807,17 @@ body.dark_mode .drk_mde_pln_img {
     background: var(--charcoal-black);
     color: var(--pure-white);
 }
-
+.main_header .submenu_inner_hdr .hdr_info_bttn:hover::before{
+    background: var(--charcoal-black);
+}
+.main_header .submenu_inner_hdr .hdr_info_bttn:hover .info_icon, .main_header .submenu_inner_hdr .basic_bttn.hdr_bttn:hover{
+       -webkit-filter: brightness(1000%);
+    filter: brightness(1000%);
+}
+ .main_header .submenu_inner_hdr .basic_bttn.hdr_bttn.hdr_bttn2:hover {
+    background: rgba(35, 30, 31, 0.53);
+    color: var(--pure-white);
+}
 /* Responsive CSS */
 @media(max-width:1199px) {
     html {
