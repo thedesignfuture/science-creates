@@ -3814,7 +3814,7 @@ body.dark_mode .drk_mde_pln_img {
        -webkit-filter: brightness(1000%);
     filter: brightness(1000%);
 }
- .main_header .submenu_inner_hdr .basic_bttn.hdr_bttn.hdr_bttn2:hover {
+ .main_header .submenu_inner_hdr .basic_bttn.hdr_bttn:hover {
     background: rgba(35, 30, 31, 0.53);
     color: var(--pure-white);
 }
