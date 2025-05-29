@@ -3800,7 +3800,8 @@ body.dark_mode .drk_mde_pln_img {
     opacity: 1;
 }
 .submenu_drpdwn .hdr_info_bttn{
-    background: var(--charcoal-black);
+    border-color: var(--charcoal-black);
+    background: transparent;
 }
 /* Responsive CSS */
 @media(max-width:1199px) {
