@@ -793,7 +793,7 @@ document.addEventListener('DOMContentLoaded', function () {
         subtree: true,
     });
 
-    / / / Custom Menu With Submenu
+    //  Custom Menu With Submenu
     let subMenuItem = document.querySelectorAll('[data-menu-open]');
     let menuItem = document.querySelectorAll('[data-menu]');
     let activeMenuItem = null;
