@@ -716,7 +716,7 @@ body.dark_mode .submenu_drpdwn .basic_bttn.hdr_bttn .bttn_icon {
     filter: brightness(0) saturate(100%) invert(3%) sepia(4%) saturate(4145%) hue-rotate(298deg) brightness(92%) contrast(81%);
 }
 
-.hdr_info_bttn.hdr_info_bttn_alt:hover .info_icon {
+.hdr_info_bttn.hdr_info_bttn_alt:hover .info_icon,.submenu_drpdwn .bttn_icon.bttn_icon_drk {
     -webkit-filter: brightness(1000%);
     filter: brightness(1000%);
 }
@@ -3426,7 +3426,7 @@ body.dark_mode .acc_icon_box:hover {
     background: var(--pure-white);
 }
 
-body.dark_mode .acc_icon_box:hover img,.submenu_drpdwn .hdr_info_bttn .info_icon,.submenu_drpdwn .bttn_icon.bttn_icon_drk {
+body.dark_mode .acc_icon_box:hover img,.submenu_drpdwn .hdr_info_bttn .info_icon{
     -webkit-filter: brightness(0) saturate(100%) invert(3%) sepia(4%) saturate(4145%) hue-rotate(298deg) brightness(92%) contrast(81%);
     filter: brightness(0) saturate(100%) invert(3%) sepia(4%) saturate(4145%) hue-rotate(298deg) brightness(92%) contrast(81%);
 }
@@ -3807,6 +3807,7 @@ body.dark_mode .drk_mde_pln_img {
     background: var(--charcoal-black);
     color: var(--pure-white);
 }
+
 /* Responsive CSS */
 @media(max-width:1199px) {
     html {
