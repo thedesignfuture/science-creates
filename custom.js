@@ -1999,7 +1999,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const primaryTag = post.primary_tag?.name || 'Article';
                 const postExcerpt = post.excerpt || post.title;
                 const postTitle  = post.title || 'Title'
-                const featureImageCaption = post.feature_image_caption || 'Image';
+                const featureImageCaption = post.feature_image_caption || '';
                 
                 const elements = {
                     date: document.getElementById('single-post-date'),
