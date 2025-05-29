@@ -2015,7 +2015,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 elements.tag.textContent = primaryTag;
                 elements.excerpt.textContent = postExcerpt;
                 elements.title.textContent = postTitle;
-                elements.feature.innerHTML(featureImageCaption);
+                elements.feature.innerHTML = featureImageCaption;
 
                 const metaTags = {
                     title: (document.title = post.title),
