@@ -3799,7 +3799,7 @@ body.dark_mode .drk_mde_pln_img {
 .tem_tmbnl_box:hover .tem_thmbnl_img{
     opacity: 1;
 }
-.submenu_drpdwn .hdr_info_bttn,.submenu_drpdwn .hdr_info_bttn.hdr_info_bttn_alt,.submenu_drpdwn .hdr_info_bttn.hdr_info_bttn_alt{
+.submenu_drpdwn .hdr_info_bttn,.submenu_drpdwn .hdr_info_bttn.hdr_info_bttn_alt,.main_header .submenu_drpdwn .hdr_info_bttn.hdr_info_bttn_alt{
     border-color: var(--charcoal-black);
     background: transparent;
 }
