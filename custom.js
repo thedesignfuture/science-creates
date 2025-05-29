@@ -1998,16 +1998,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
                 const primaryTag = post.primary_tag?.name || 'Article';
                 const postExcerpt = post.excerpt || post.title;
+                const postTitle  = post.title || 'Title'
 
                 const elements = {
                     date: document.getElementById('single-post-date'),
                     image: document.getElementById('kn_singe_post_image'),
-                    tag: document.getElementById('kh_tag')
+                    tag: document.getElementById('kh_tag'),
+                    excerpt: document.getElementById('kh_custom_excerpt'),
+                    title: document.getElementById('kh_title'),
                 };
 
                 elements.date.textContent = postDate;
                 elements.image.style.backgroundImage = `url(${featureImage})`;
                 elements.tag.textContent = primaryTag;
+                elements.excerpt.textContent = postExcerpt;
+                elements.title.textContent = postTitle;
 
                 const metaTags = {
                     title: (document.title = post.title),
