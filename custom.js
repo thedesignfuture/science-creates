@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 slidesToScroll: 1,
                 arrows: false,
                 lazyLoad: 'progressive',
-                 cssEase: 'ease-in',
+                cssEase: 'ease-in',
                 fade: true,
                 dots: false,
                 speed: 500,
@@ -793,76 +793,46 @@ document.addEventListener('DOMContentLoaded', function () {
         subtree: true,
     });
 
-    // Custom Menu With Submenu
-    (function () {
-        const BREAK = 1025;
-        const menuItems = document.querySelectorAll('[data-menu]');
-        const subMenus = document.querySelectorAll('[data-menu-open]');
-        let activeKey = null;
+    / / / Custom Menu With Submenu
+    let subMenuItem = document.querySelectorAll('[data-menu-open]');
+    let menuItem = document.querySelectorAll('[data-menu]');
+    let activeMenuItem = null;
 
-        function toggleSubMenu(key, action) {
-            const menu = document.querySelector(`[data-menu="${key}"]`);
-            const submenu = document.querySelector(`[data-menu-open="${key}"]`);
-            menu && menu.classList[action]('submenu_active');
-            submenu && submenu.classList[action]('submenu_active');
+    function toggleSubMenu(menuAttr, action) {
+        let submenu = Array.from(subMenuItem).find(item => item.getAttribute('data-menu-open') === menuAttr);
+        let menu = Array.from(menuItem).find(item => item.getAttribute('data-menu') === menuAttr);
+
+        if (submenu) {
+            submenu.classList[action]('submenu_active');
         }
-
-        function open(key) {
-            if (activeKey && activeKey !== key) toggleSubMenu(activeKey, 'remove');
-            toggleSubMenu(key, 'add');
-            activeKey = key;
+        if (menu) {
+            menu.classList[action]('submenu_active');
         }
+    }
 
-        function close(key) {
-            toggleSubMenu(key, 'remove');
-            if (activeKey === key) activeKey = null;
-        }
+    menuItem.forEach((el) => {
+        let menuAttr = el.getAttribute('data-menu');
 
-        menuItems.forEach(el => {
-            el.addEventListener('mouseenter', e => {
-                if (window.innerWidth < BREAK) return;
-                const key = e.currentTarget.dataset.menu;
-                open(key);
-            });
-        });
-
-        subMenus.forEach(sm => {
-            const key = sm.dataset.menuOpen;
-            sm.addEventListener('mouseleave', e => {
-                if (window.innerWidth < BREAK) return;
-                close(key);
-            });
-        });
-
-        menuItems.forEach(el => {
-            el.addEventListener('click', e => {
-                if (window.innerWidth >= BREAK) return;
-                e.preventDefault();
-                const key = e.currentTarget.dataset.menu;
-                if (activeKey === key) close(key);
-                else open(key);
-            });
-        });
-
-        document.addEventListener('click', e => {
-            if (window.innerWidth >= BREAK) return;
-            if (!e.target.closest('.mnu_item') && !e.target.closest('.submenu_drpdwn')) {
-                if (activeKey) close(activeKey);
+        el.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (activeMenuItem && activeMenuItem !== el) {
+                let prevMenuAttr = activeMenuItem.getAttribute('data-menu');
+                toggleSubMenu(prevMenuAttr, 'remove');
             }
+            toggleSubMenu(menuAttr, 'toggle');
+            activeMenuItem = el;
         });
+    });
 
-        window.addEventListener('resize', () => {
-            if (activeKey) {
-                if ((window.innerWidth < BREAK && document.querySelector('.submenu_active')) ||
-                    (window.innerWidth >= BREAK && document.querySelector('.submenu_active'))) {
-                    close(activeKey);
-                }
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.mnu_item') && !e.target.closest('.submenu_drpdwn')) {
+            if (activeMenuItem) {
+                let prevMenuAttr = activeMenuItem.getAttribute('data-menu');
+                toggleSubMenu(prevMenuAttr, 'remove');
+                activeMenuItem = null;
             }
-        });
-    })();
-
-
-
+        }
+    });
 
     // Dark Menu Animation
     let menuRow = document.querySelectorAll('.menu_drk_row');
@@ -1998,24 +1968,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
                 const primaryTag = post.primary_tag?.name || 'Article';
                 const postExcerpt = post.excerpt || post.title;
-                const postTitle  = post.title || 'Title'
-                const featureImageCaption = post?.feature_image_caption || '';
-                
+
                 const elements = {
                     date: document.getElementById('single-post-date'),
                     image: document.getElementById('kn_singe_post_image'),
-                    tag: document.getElementById('kh_tag'),
-                    excerpt: document.getElementById('kh_custom_excerpt'),
-                    title: document.getElementById('kh_title'),
-                    feature: document.getElementById('kh_feature_img'),
+                    tag: document.getElementById('kh_tag')
                 };
 
                 elements.date.textContent = postDate;
                 elements.image.style.backgroundImage = `url(${featureImage})`;
                 elements.tag.textContent = primaryTag;
-                elements.excerpt.textContent = postExcerpt;
-                elements.title.textContent = postTitle;
-                elements.feature.innerHTML = featureImageCaption;
 
                 const metaTags = {
                     title: (document.title = post.title),
