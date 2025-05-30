@@ -1501,7 +1501,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Sticky Bottom Box
-    const parentSection = document.querySelector('.invst_ntce_parent_section');
+    // Commented out for now , because we do not need to overcomplicate it.
+    /* const parentSection = document.querySelector('.invst_ntce_parent_section'); 
     if (parentSection) {
         let lastScrollY = window.scrollY;
         let ticking = false;
@@ -1537,7 +1538,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         window.addEventListener('scroll', onScroll);
-    }
+    } */
 
     // Select Filtering - Community/ Resources
     let selectedGroups = new Set();
