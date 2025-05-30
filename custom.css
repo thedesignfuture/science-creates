@@ -640,7 +640,8 @@ body.dark_mode .submenu_drpdwn .basic_bttn.hdr_bttn .bttn_icon {
     opacity: 1;
 }
 
-.ba_enabled .submenu_inner {
+.ba_enabled .submenu_inner,
+.ba_enabled .menu_dark_innr {
     padding-top: 4.4rem;
 }
 
