@@ -1495,44 +1495,44 @@ document.addEventListener('DOMContentLoaded', function () {
         progressBar.style.width = validPercentage + '%';
     }
 
-    // Sticky Bottom Box
-    const parentSection = document.querySelector('.invst_ntce_parent_section');
-    if (parentSection) {
-        let lastScrollY = window.scrollY;
-        let ticking = false;
+    // // Sticky Bottom Box
+    // const parentSection = document.querySelector('.invst_ntce_parent_section');
+    // if (parentSection) {
+    //     let lastScrollY = window.scrollY;
+    //     let ticking = false;
 
-        const updateClass = () => {
-            const currentScrollY = window.scrollY;
-            const scrollingUp = currentScrollY < lastScrollY;
-            lastScrollY = currentScrollY;
+    //     const updateClass = () => {
+    //         const currentScrollY = window.scrollY;
+    //         const scrollingUp = currentScrollY < lastScrollY;
+    //         lastScrollY = currentScrollY;
 
-            const parentTop = parentSection.getBoundingClientRect().top;
-            const parentBottom = parentSection.getBoundingClientRect().bottom;
-            const viewportHeight = window.innerHeight;
+    //         const parentTop = parentSection.getBoundingClientRect().top;
+    //         const parentBottom = parentSection.getBoundingClientRect().bottom;
+    //         const viewportHeight = window.innerHeight;
 
-            if (scrollingUp) {
-                if (parentTop <= viewportHeight && parentTop >= viewportHeight - 100) {
-                    parentSection.classList.add('ntfctn_actve_onscroll_up');
-                }
-            } else {
-                if (parentBottom > 0 && parentTop < viewportHeight) {
-                    parentSection.classList.remove('ntfctn_actve_onscroll_up');
-                }
-            }
-        };
+    //         if (scrollingUp) {
+    //             if (parentTop <= viewportHeight && parentTop >= viewportHeight - 100) {
+    //                 parentSection.classList.add('ntfctn_actve_onscroll_up');
+    //             }
+    //         } else {
+    //             if (parentBottom > 0 && parentTop < viewportHeight) {
+    //                 parentSection.classList.remove('ntfctn_actve_onscroll_up');
+    //             }
+    //         }
+    //     };
 
-        const onScroll = () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    updateClass();
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        };
+    //     const onScroll = () => {
+    //         if (!ticking) {
+    //             requestAnimationFrame(() => {
+    //                 updateClass();
+    //                 ticking = false;
+    //             });
+    //             ticking = true;
+    //         }
+    //     };
 
-        window.addEventListener('scroll', onScroll);
-    }
+    //     window.addEventListener('scroll', onScroll);
+    // }
 
     // Select Filtering - Community/ Resources
     let selectedGroups = new Set();
