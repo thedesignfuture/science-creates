@@ -1792,7 +1792,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
 
             return `
-                <div data-move="up" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
+                <div data-move="up" data-delay="0.2" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
                     <div class="row knwldge_hub_row">
                         <div class="col col-3 knwldge_hub_img_col">
                             <div class="knwldge_hub_img_box">
