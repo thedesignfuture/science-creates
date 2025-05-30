@@ -591,6 +591,11 @@ document.addEventListener('DOMContentLoaded', function () {
     invisibleElements2.forEach(el => {
         el.remove();
     });
+     const invisibleElements3 = document.querySelectorAll('.innr_bnnr_section.w-condition-invisible');
+
+    invisibleElements2.forEach(el => {
+        el.remove();
+    });
     // Lab Slider
     let labWrppr = document?.querySelectorAll('.lab_sldr_wrppr');
     if (labWrppr.length > 0) {
