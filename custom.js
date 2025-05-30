@@ -1533,12 +1533,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         window.addEventListener('scroll', onScroll);
     }
-    // if (!document.body.classList.contains("vc_page")) {
-    //     const section = document.querySelector(".invst_ntce_parent_section");
-    //     if (section) {
-    //         section.remove();
-    //     }
-    // }
 
     // Select Filtering - Community/ Resources
     let selectedGroups = new Set();
