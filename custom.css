@@ -3527,13 +3527,6 @@ body.dark_mode .vlue_rch_txt li strong {
     padding-left: 0.868rem;
 }
 
-.invst_ntce_parent_section.ntfctn_actve_onscroll_up .invst_ntce_section {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-
 .evnt_dtls_bnnr_lft::before,
 .evnt_dtls_bnnr_rght::before {
     background: var(--grey);
