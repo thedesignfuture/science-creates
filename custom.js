@@ -1495,7 +1495,7 @@ document.addEventListener('DOMContentLoaded', function () {
         progressBar.style.width = validPercentage + '%';
     }
 
-    // // Sticky Bottom Box
+    // Sticky Bottom Box
     // const parentSection = document.querySelector('.invst_ntce_parent_section');
     // if (parentSection) {
     //     let lastScrollY = window.scrollY;
@@ -1533,6 +1533,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //     window.addEventListener('scroll', onScroll);
     // }
+    if (!document.body.classList.contains("vc_page")) {
+        const section = document.querySelector(".invst_ntce_parent_section");
+        if (section !== null) { 
+            section.remove();
+        }
+    }
 
     // Select Filtering - Community/ Resources
     let selectedGroups = new Set();
