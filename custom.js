@@ -593,7 +593,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
      const invisibleElements3 = document.querySelectorAll('.innr_bnnr_section.w-condition-invisible');
 
-    invisibleElements2.forEach(el => {
+    invisibleElements3.forEach(el => {
         el.remove();
     });
     // Lab Slider
