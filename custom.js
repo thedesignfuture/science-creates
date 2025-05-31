@@ -359,36 +359,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function initializeMainSliders(wrapperSelector) {
-        initializeSlider('.img_sldr', {
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            fade: true,
-            lazyLoad: 'progressive',
-            cssEase: 'ease-in',
-            dots: false,
-            infinite: true,
-            speed: 500,
-            asNavFor: $(wrapperSelector).find('.tem_thmbnl_sldr.slick-slider, .txt_tm_sldr'),
-        }, wrapperSelector);
-
-        initializeSlider('.txt_tm_sldr', {
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: true,
-            dots: false,
-            fade: true,
-            prevArrow: $(wrapperSelector).find('.sldr_custm_arrw .arrw_prev'),
-            nextArrow: $(wrapperSelector).find('.sldr_custm_arrw .arrw_next'),
-            lazyLoad: 'progressive',
-            cssEase: 'ease-in',
-            infinite: true,
-            speed: 500,
-            asNavFor: $(wrapperSelector)?.find('.img_sldr, .tem_thmbnl_sldr.slick-slider'),
-        }, wrapperSelector);
-    }
-
     function initializeThumbnailSlider(wrapperSelector, slidesToShow) {
         const $thumbSldr = $(wrapperSelector).find('.tem_thmbnl_sldr');
 
@@ -431,6 +401,36 @@ document.addEventListener('DOMContentLoaded', function () {
         $(wrapperSelector).find('.sldr_custm_arrw .arrw_next')
             .off('click')
             .on('click', () => $thumbSldr.slick('slickNext'));
+    }
+
+    function initializeMainSliders(wrapperSelector) {
+        initializeSlider('.img_sldr', {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            lazyLoad: 'progressive',
+            cssEase: 'ease-in',
+            dots: false,
+            infinite: true,
+            speed: 500,
+            asNavFor: $(wrapperSelector).find('.tem_thmbnl_sldr.slick-slider, .txt_tm_sldr'),
+        }, wrapperSelector);
+
+        initializeSlider('.txt_tm_sldr', {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: true,
+            dots: false,
+            fade: true,
+            prevArrow: $(wrapperSelector).find('.sldr_custm_arrw .arrw_prev'),
+            nextArrow: $(wrapperSelector).find('.sldr_custm_arrw .arrw_next'),
+            lazyLoad: 'progressive',
+            cssEase: 'ease-in',
+            infinite: true,
+            speed: 500,
+            asNavFor: $(wrapperSelector)?.find('.img_sldr, .tem_thmbnl_sldr.slick-slider'),
+        }, wrapperSelector);
     }
 
     function setThumbnailNavigation(wrapperSelector) {
