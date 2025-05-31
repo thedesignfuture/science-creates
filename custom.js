@@ -361,7 +361,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function initializeMainSliders(wrapperSelector) {
 
-        const as_nav_thumb = $(wrapperSelector).find('.tem_thmbnl_sldr .slick-slider').length ? '.tem_thmbnl_sldr' : '';
+        const as_nav_thumb = $(wrapperSelector).find('.tem_thmbnl_sldr .slick-slider').length ? ', .tem_thmbnl_sldr' : '';
         
         initializeSlider('.img_sldr', {
             slidesToShow: 1,
@@ -373,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function () {
             dots: false,
             infinite: true,
             speed: 500,
-            asNavFor: $(wrapperSelector).find(`${as_nav_thumb}, .txt_tm_sldr`),
+            asNavFor: $(wrapperSelector).find(`.txt_tm_sldr ${as_nav_thumb}`),
         }, wrapperSelector);
 
         initializeSlider('.txt_tm_sldr', {
@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded', function () {
             cssEase: 'ease-in',
             infinite: true,
             speed: 500,
-            asNavFor: $(wrapperSelector)?.find(`.img_sldr, ${as_nav_thumb}`),
+            asNavFor: $(wrapperSelector)?.find(`.img_sldr ${as_nav_thumb}`),
         }, wrapperSelector);
     }
 
