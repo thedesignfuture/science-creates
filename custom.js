@@ -370,7 +370,7 @@ document.addEventListener('DOMContentLoaded', function () {
             dots: false,
             infinite: true,
             speed: 500,
-            asNavFor: $(wrapperSelector).find('.txt_tm_sldr'),
+            asNavFor: `${$(wrapperSelector)?.find('.txt_tm_sldr')}, ${$(wrapperSelector)?.find('.tem_thmbnl_sldr')}`,
         }, wrapperSelector);
 
         initializeSlider('.txt_tm_sldr', {
@@ -385,7 +385,7 @@ document.addEventListener('DOMContentLoaded', function () {
             cssEase: 'ease-in',
             infinite: true,
             speed: 500,
-            asNavFor: $(wrapperSelector).find('.img_sldr'),
+            asNavFor: $(wrapperSelector)?.find('.img_sldr'),
         }, wrapperSelector);
     }
 
