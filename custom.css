@@ -2691,11 +2691,6 @@ body.dark_mode .hdng_icon_box {
     border-color: var(--pure-white);
 }
 
-body.dark_mode .hdng_icon_box .hdng_icon {
-    -webkit-filter: brightness(1000%);
-    filter: brightness(1000%);
-}
-
 body.dark_mode .drop_heading {
     color: rgba(255, 255, 255, 0.55);
 }
