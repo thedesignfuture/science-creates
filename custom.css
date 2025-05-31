@@ -1000,7 +1000,8 @@ body.dark_mode [data-bg-color='charcoal-black'] {
     color: var(--charcoal-black);
 }
 
-body.dark_mode [data-bg-color='charcoal-black'] .strtup_logo_box {
+body.dark_mode [data-bg-color='charcoal-black'] .strtup_logo_box,
+body.dark_mode [data-bg-color='charcoal-black'] .strtup_logo_box img {
     filter: invert(1);
 }
 
