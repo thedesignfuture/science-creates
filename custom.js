@@ -363,7 +363,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let as_nav_thumb = '';
         
-        if(wrapperSelector.find('.tem_thmbnl_sldr .slick-slider'))
+        if($(wrapperSelector}.find('.tem_thmbnl_sldr .slick-slider'))
         {
             as_nav_thumb = '.tem_thmbnl_sldr';
         }
