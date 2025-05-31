@@ -1000,6 +1000,10 @@ body.dark_mode [data-bg-color='charcoal-black'] {
     color: var(--charcoal-black);
 }
 
+body.dark_mode [data-bg-color='charcoal-black'] .strtup_logo_box {
+    filter: invert(1);
+}
+
 body.dark_mode [data-bg-color=grey],
 body.dark_mode .prgrmme_dte_box {
     background: var(--dark-grey);
