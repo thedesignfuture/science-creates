@@ -370,6 +370,7 @@ document.addEventListener('DOMContentLoaded', function () {
             dots: false,
             infinite: true,
             speed: 500,
+            asNavFor: $(wrapperSelector).find('.txt_tm_sldr'),
         }, wrapperSelector);
 
         initializeSlider('.txt_tm_sldr', {
