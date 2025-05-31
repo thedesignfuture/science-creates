@@ -905,8 +905,8 @@ body.dark_mode .hdng_icon_box {
 }
 
 body.dark_mode .hdng_icon_box .hdng_icon {
-    -webkit-filter: brightness(1000%);
-    filter: brightness(1000%);
+    -webkit-filter: invert(1);
+    filter: invert(1);
 }
 
 body.dark_mode .drop_heading {
