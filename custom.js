@@ -219,6 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
             dots: false,
             infinite: true,
             speed: 500,
+            asNavFor: $wrapper.find('.mmbr_optn_txt_sldr')
         }, wrapperSelector);
 
         initializeSliderAlt('.mmbr_optn_txt_sldr', {
