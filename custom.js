@@ -361,12 +361,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function initializeMainSliders(wrapperSelector) {
 
-        let as_nav_thumb = '';
-        
-        if($(wrapperSelector}.find('.tem_thmbnl_sldr .slick-slider'))
-        {
-            as_nav_thumb = '.tem_thmbnl_sldr';
-        }
+        const as_nav_thumb = $(wrapperSelector).find('.tem_thmbnl_sldr .slick-slider').length ? '.tem_thmbnl_sldr' : '';
         
         initializeSlider('.img_sldr', {
             slidesToShow: 1,
