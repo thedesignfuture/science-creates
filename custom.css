@@ -1002,7 +1002,7 @@ body.dark_mode [data-bg-color='charcoal-black'] {
 
 body.dark_mode [data-bg-color='charcoal-black'] .strtup_logo_box,
 body.dark_mode [data-bg-color='charcoal-black'] .strtup_logo_box img,
-body.dark_mode [data-bg-color='white'] .strtup_logo_box {
+body.dark_mode [data-bg-color='white'] .strtup_logo_box:not(.strup_logo_funder) {
     filter: invert(1);
 }
 
