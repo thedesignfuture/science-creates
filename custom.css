@@ -1001,12 +1001,13 @@ body.dark_mode [data-bg-color='charcoal-black'] {
 }
 
 body.dark_mode [data-bg-color='charcoal-black'] .strtup_logo_box,
-body.dark_mode [data-bg-color='charcoal-black'] .strtup_logo_box img {
+body.dark_mode [data-bg-color='charcoal-black'] .strtup_logo_box img,
+body.dark_mode [data-bg-color='white'] .strtup_logo_box {
     filter: invert(1);
 }
 
-body.dark_mode [data-bg-color='white'] .strtup_logo_box {
-    filter: invert(1);
+body.dark_mode [data-bg-color=white] .indvdl_mmbr_cntnt_box div {
+    color: #fff;
 }
 
 body.dark_mode [data-bg-color=grey],
