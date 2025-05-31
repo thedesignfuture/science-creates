@@ -362,7 +362,9 @@ document.addEventListener('DOMContentLoaded', function () {
     function initializeMainSliders(wrapperSelector) {
 
         const as_nav_thumb = (defaultSelector) => $(wrapperSelector).find('.tem_thmbnl_sldr .slick-slider').length ? $(wrapperSelector).find(`${defaultSelector}, .tem_thmbnl_sldr.slick-slider`) : $(wrapperSelector).find(defaultSelector);
-        console.log(as_nav_thumb);
+        console.log(as_nav_thumb());
+        console.log('correct' ,$(wrapperSelector).find('.tem_thmbnl_sldr, .txt_tm_sldr'));
+        console.log('failed' ,$(wrapperSelector).find(`${defaultSelector}, .tem_thmbnl_sldr.slick-slider`));
         initializeSlider('.img_sldr', {
             slidesToShow: 1,
             slidesToScroll: 1,
