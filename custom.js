@@ -2065,4 +2065,16 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    if(document.querySelectorAll('.popup-vimeo').length)
+    {
+        $('.popup-vimeo').magnificPopup({
+            disableOn: 700,
+            type: 'iframe',
+            mainClass: 'mfp-fade',
+            removalDelay: 160,
+            preloader: false,
+            fixedContentPos: false
+        });
+    }
 });
