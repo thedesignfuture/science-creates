@@ -3834,6 +3834,10 @@ body.dark_mode .drk_mde_pln_img {
         padding-right: 1.333rem;
     }
 
+    .outrch_chrty_othr_rchtxt strong {
+        font-size: 2.472rem;
+    }
+
     .eco_row .eco_col:nth-child(even) {
         padding-left: 1.333rem;
     }
