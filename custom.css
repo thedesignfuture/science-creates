@@ -1006,7 +1006,7 @@ body.dark_mode [data-bg-color='white'] .strtup_logo_box {
     filter: invert(1);
 }
 
-body.dark_mode [data-bg-color=white] .indvdl_mmbr_cntnt_box div {
+body.dark_mode [data-bg-color=white] .indvdl_mmbr_cntnt_box div:not(.bttn_txt) {
     color: #fff;
 }
 
