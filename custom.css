@@ -3858,11 +3858,11 @@ body.dark_mode .drk_mde_pln_img {
         top: 0.6rem;
     }
 
-    .fundng_tem_section .listitem {
+    .fundng_tem_section .fundng_tem_col {
         padding: .579rem;
     }
 
-    .fundng_tem_section .listitem .fundng_mmbr_box {
+    .fundng_tem_section .fundng_tem_col .fundng_mmbr_box {
         padding-bottom: 2rem;
     }
     
