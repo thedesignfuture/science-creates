@@ -1691,11 +1691,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         link.addEventListener('mouseleave', () => {
-            if (!link.classList.contains('w--current')) {
                 link.style.color = '';
-            } else {
-                link.style.color = color;
-            }
         });
     }
     function menuTabBttn() {
@@ -1714,10 +1710,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     pllrLinks.forEach(applyHoverLogic);
 
-    disableLinksOnMobile();
     menuTabBttn();
-    window.addEventListener('resize', disableLinksOnMobile);
-    window.addEventListener('load', disableLinksOnMobile);
     window.addEventListener('resize', menuTabBttn);
     window.addEventListener('load', menuTabBttn);
 
