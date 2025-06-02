@@ -1697,10 +1697,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 link.style.color = color;
             }
         });
-
-        if (link.classList.contains('w--current')) {
-            link.style.color = color;
-        }
     }
 
     function disableLinksOnMobile() {
