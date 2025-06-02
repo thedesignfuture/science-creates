@@ -3814,6 +3814,13 @@ body.dark_mode .drk_mde_pln_img {
     background: rgba(35, 30, 31, 0.53);
     color: var(--pure-white);
 }
+/* CSS 02.06.25 */
+.yr_ttle::before{
+    content: '/';
+    padding-left: 0.289rem;
+}
+/* CSS 02.06.25 */
+
 /* Responsive CSS */
 @media(max-width:1199px) {
     html {
