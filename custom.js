@@ -1374,7 +1374,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const swiper2 = new Swiper(swiperElement, {
                 slidesPerView: 1,
                 loop: totalSlides > 1,
-                spaceBetween:16,
+                spaceBetween: 16,
                 navigation: {
                     nextEl: nextBtn,
                     prevEl: prevBtn,
@@ -1389,7 +1389,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         loop: totalSlides > 2,
                     },
                     1200: {
-                        spaceBetween:0,
+                        spaceBetween: 0,
+                        slidesPerView: 2,
+                        loop: totalSlides > 2,
                     },
                 },
                 on: {
