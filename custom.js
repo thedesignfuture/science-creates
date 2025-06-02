@@ -1680,6 +1680,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const MOBILE_BREAKPOINT = 768;
     const pllrLinks = document.querySelectorAll('[link-color]');
     const indvdlSubMenu = document.querySelectorAll('.indvdl_submenu');
+    const moblePllrLinks = document.querySelectorAll('.pllr_menu_lstng .mob_menu_bttn');
+    const indvdlSubMenus = document.querySelectorAll('.mobile_sub_menu .indvdl_submenu')
 
     function applyHoverLogic(link) {
         const color = link.getAttribute('link-color');
@@ -1709,15 +1711,19 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
     function menuTabBttn() {
-        const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
-        pllrLinks.forEach((link, idx) => {
-            if (isMobile) {
-                indvdlSubMenu.forEach(sub => sub.classList.remove('active'));
-                if (indvdlSubMenu[idx]) {
-                    indvdlSubMenu[idx].classList.add('active');
+        moblePllrLinks.forEach((link, idx) => {
+
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth < MOBILE_BREAKPOINT) {
+                    e.preventDefault();
+                    indvdlSubMenus.forEach((sub) => sub.classList.remove('active'));
+                    if (indvdlSubMenus[idx]) {
+                        indvdlSubMenus[idx].classList.add('active');
+                    }
                 }
-            }
+            });
         });
     }
     pllrLinks.forEach(applyHoverLogic);
