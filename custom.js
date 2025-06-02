@@ -1371,8 +1371,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const totalSlides = swiperElement?.querySelectorAll('.swiper-slide')?.length || 0;
 
             const swiper2 = new Swiper(swiperElement, {
-                slidesPerView: 2,
-                loop: totalSlides > 2,
+                slidesPerView: 1,
+                loop: totalSlides > 1,
                 navigation: {
                     nextEl: nextBtn,
                     prevEl: prevBtn,
@@ -1404,6 +1404,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
                     }
                 },
+                 breakpoints: {
+                    768: {
+                        slidesPerView: 2,
+                         loop: totalSlides > 2,
+                    },
+                }
             });
         });
     }
