@@ -1679,31 +1679,44 @@ document.addEventListener('DOMContentLoaded', function () {
     // Dark Menu Hover Color
     const MOBILE_BREAKPOINT = 768;
     const pllrLinks = document.querySelectorAll('[link-color]');
-    const indvdlSubMenu = document.querySelectorAll('.indvdl_submenu');
     const moblePllrLinks = document.querySelectorAll('.pllr_menu_lstng .mob_menu_bttn');
-    const indvdlSubMenus = document.querySelectorAll('.mobile_sub_menu .indvdl_submenu')
+    const indvdlSubMenus = document.querySelectorAll('.mobile_sub_menu .indvdl_submenu');
 
     function applyHoverLogic(link) {
         const color = link.getAttribute('link-color');
-
         link.addEventListener('mouseenter', () => {
             link.style.color = color;
         });
-
         link.addEventListener('mouseleave', () => {
+            if (!link.classList.contains('mobile-clicked')) {
                 link.style.color = '';
+            }
         });
     }
     function menuTabBttn() {
         moblePllrLinks.forEach((link, idx) => {
+            if (link._hasMobileListener) return;
+            link._hasMobileListener = true;
 
             link.addEventListener('click', (e) => {
-                if (window.innerWidth < MOBILE_BREAKPOINT) {
-                    e.preventDefault();
-                    indvdlSubMenus.forEach((sub) => sub.classList.remove('active'));
-                    if (indvdlSubMenus[idx]) {
-                        indvdlSubMenus[idx].classList.add('active');
-                    }
+                const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+                if (!isMobile) {
+                    return;
+                }
+                e.preventDefault();
+                indvdlSubMenus.forEach((sub) => sub.classList.remove('active'));
+                moblePllrLinks.forEach((otherLink) => {
+                    otherLink.classList.remove('mobile-clicked');
+                    otherLink.style.color = '';
+                });
+                const targetSub = indvdlSubMenus[idx];
+                if (targetSub) {
+                    targetSub.classList.add('active');
+                }
+                const color = link.getAttribute('link-color');
+                if (color) {
+                    link.style.color = color;
+                    link.classList.add('mobile-clicked');
                 }
             });
         });
@@ -1713,8 +1726,6 @@ document.addEventListener('DOMContentLoaded', function () {
     menuTabBttn();
     window.addEventListener('resize', menuTabBttn);
     window.addEventListener('load', menuTabBttn);
-
-
 
     // Add #data-url
     document.querySelectorAll('[data-url]').forEach(el => {
