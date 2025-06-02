@@ -1717,6 +1717,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     pllrLinks.forEach(applyHoverLogic);
+
     function menuTabBttn() {
         moblePllrLinks.forEach((link, idx) => {
             if (link._hasMobileListener) return;
@@ -1735,7 +1736,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     otherLink.classList.remove('mobile-clicked');
                     otherLink.style.color = '';
                 });
-
                 const targetSub = indvdlSubMenus[idx];
                 if (targetSub) {
                     targetSub.classList.add('active');
@@ -1752,7 +1752,6 @@ document.addEventListener('DOMContentLoaded', function () {
     menuTabBttn();
     window.addEventListener('resize', menuTabBttn);
     window.addEventListener('load', menuTabBttn);
-
     indvdlSubMenus.forEach((submenu, idx) => {
         const innerLinks = submenu.querySelectorAll('a');
         innerLinks.forEach((inner) => {
@@ -1765,6 +1764,18 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     });
+
+    document.addEventListener('click', (e) => {
+        const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+        if (!isMobile) return;
+        const clickedOnButton = e.target.closest('.pllr_menu_lstng .mob_menu_bttn');
+        if (clickedOnButton) return;
+        moblePllrLinks.forEach((btn) => {
+            btn.classList.remove('mobile-clicked');
+            btn.style.color = '';
+        });
+    });
+
 
     // Add #data-url
     document.querySelectorAll('[data-url]').forEach(el => {
