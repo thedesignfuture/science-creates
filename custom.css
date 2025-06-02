@@ -3860,23 +3860,6 @@ body.dark_mode .drk_mde_pln_img {
         margin-left: 0;
         margin-right: 0;
     }
-
-    /* CSS 02.06.25 */
-    .yr_ttle::before {
-        content: '/';
-    }
-
-    .prgrmms_sldr_wrppr .huse_sldr_item.swiper-slide {
-        padding-left: .579rem;
-        padding-right: .579rem;
-    }
-
-    .prgrmms_sldr_wrppr .inhuse_cmpny_wrppr.swiper-wrapper {
-        margin-left: -.579rem;
-        margin-right: -.579rem;
-    }
-
-    /* CSS 02.06.25 */
 }
 
 @media(max-width:991px) {
