@@ -3817,7 +3817,6 @@ body.dark_mode .drk_mde_pln_img {
 /* CSS 02.06.25 */
 .yr_ttle::before{
     content: '/';
-    padding-left: 0.289rem;
 }
 /* CSS 02.06.25 */
 
