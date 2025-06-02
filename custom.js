@@ -1705,7 +1705,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const pllrLinks = document.querySelectorAll('[link-color]');
     const moblePllrLinks = document.querySelectorAll('.pllr_menu_lstng .mob_menu_bttn');
     const indvdlSubMenus = document.querySelectorAll('.mobile_sub_menu .indvdl_submenu');
-
     function applyHoverLogic(link) {
         const color = link.getAttribute('link-color');
         link.addEventListener('mouseenter', () => {
@@ -1717,6 +1716,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    pllrLinks.forEach(applyHoverLogic);
     function menuTabBttn() {
         moblePllrLinks.forEach((link, idx) => {
             if (link._hasMobileListener) return;
@@ -1728,11 +1728,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     return;
                 }
                 e.preventDefault();
+
                 indvdlSubMenus.forEach((sub) => sub.classList.remove('active'));
+
                 moblePllrLinks.forEach((otherLink) => {
                     otherLink.classList.remove('mobile-clicked');
                     otherLink.style.color = '';
                 });
+
                 const targetSub = indvdlSubMenus[idx];
                 if (targetSub) {
                     targetSub.classList.add('active');
@@ -1745,11 +1748,23 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
-    pllrLinks.forEach(applyHoverLogic);
 
     menuTabBttn();
     window.addEventListener('resize', menuTabBttn);
     window.addEventListener('load', menuTabBttn);
+
+    indvdlSubMenus.forEach((submenu, idx) => {
+        const innerLinks = submenu.querySelectorAll('a');
+        innerLinks.forEach((inner) => {
+            inner.addEventListener('click', () => {
+                const btn = moblePllrLinks[idx];
+                if (btn) {
+                    btn.classList.remove('mobile-clicked');
+                    btn.style.color = '';
+                }
+            });
+        });
+    });
 
     // Add #data-url
     document.querySelectorAll('[data-url]').forEach(el => {
