@@ -484,17 +484,17 @@ body.dark_mode .shape_bttn.inhuse_shpe_bttn {
     border-color: var(--charcoal-black);
 }
 
-.img_sldr .mmbr_sldr_cvr_img{
+.img_sldr .mmbr_sldr_cvr_img {
     -webkit-clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
-    clip-path:polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+    clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
     -webkit-transition: all 0.5s ease-in-out;
     -o-transition: all 0.5s ease-in-out;
     transition: all 0.5s ease-in-out;
 }
 
-.img_sldr .slick-current .mmbr_sldr_cvr_img{
-    -webkit-clip-path:polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-    clip-path:  polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+.img_sldr .slick-current .mmbr_sldr_cvr_img {
+    -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
 }
 
 .footr_lnk::after,
@@ -721,7 +721,8 @@ body.dark_mode .submenu_drpdwn .basic_bttn.hdr_bttn .bttn_icon {
     filter: brightness(0) saturate(100%) invert(3%) sepia(4%) saturate(4145%) hue-rotate(298deg) brightness(92%) contrast(81%);
 }
 
-.hdr_info_bttn.hdr_info_bttn_alt:hover .info_icon,.submenu_drpdwn .bttn_icon.bttn_icon_drk {
+.hdr_info_bttn.hdr_info_bttn_alt:hover .info_icon,
+.submenu_drpdwn .bttn_icon.bttn_icon_drk {
     -webkit-filter: brightness(1000%);
     filter: brightness(1000%);
 }
@@ -1275,10 +1276,13 @@ body.dark_mode .cmnty_logo {
     -webkit-filter: brightness(1000%);
     filter: brightness(1000%);
 }
-.huse_mmbr_sldr .huse_sldr_box:hover .mmbr_logo_box .mmbr_logo_img,body.dark_mode [data-bg-color=grey].huse_sldr_box:not(:hover) img.mmbr_logo_img {
+
+.huse_mmbr_sldr .huse_sldr_box:hover .mmbr_logo_box .mmbr_logo_img,
+body.dark_mode [data-bg-color=grey].huse_sldr_box:not(:hover) img.mmbr_logo_img {
     -webkit-filter: invert(1);
     filter: invert(1);
 }
+
 .huse_sldr_box:hover .page_lnk {
     color: var(--pure-white);
 }
@@ -2921,7 +2925,7 @@ body.dark_mode .eco_lft_logo {
 }
 
 body.dark_mode .cmpny_logo_inner .cmnty_logo {
-  -webkit-filter: invert(1);
+    -webkit-filter: invert(1);
     filter: invert(1);
 }
 
@@ -3429,7 +3433,11 @@ body.dark_mode .acc_icon_box:hover {
     background: var(--pure-white);
 }
 
-body.dark_mode .acc_icon_box:hover img,.submenu_drpdwn .hdr_info_bttn .info_icon,.main_header .submenu_inner_hdr .basic_bttn.hdr_bttn:hover .info_icon,.main_header .submenu_drpdwn .basic_bttn.hdr_bttn.hdr_bttn2 .info_icon,.main_header .submenu_inner_hdr .hdr_info_bttn.hdr_info_bttn_alt .info_icon{
+body.dark_mode .acc_icon_box:hover img,
+.submenu_drpdwn .hdr_info_bttn .info_icon,
+.main_header .submenu_inner_hdr .basic_bttn.hdr_bttn:hover .info_icon,
+.main_header .submenu_drpdwn .basic_bttn.hdr_bttn.hdr_bttn2 .info_icon,
+.main_header .submenu_inner_hdr .hdr_info_bttn.hdr_info_bttn_alt .info_icon {
     -webkit-filter: brightness(0) saturate(100%) invert(3%) sepia(4%) saturate(4145%) hue-rotate(298deg) brightness(92%) contrast(81%);
     filter: brightness(0) saturate(100%) invert(3%) sepia(4%) saturate(4145%) hue-rotate(298deg) brightness(92%) contrast(81%);
 }
@@ -3786,38 +3794,56 @@ body.dark_mode .drk_mde_pln_img {
     opacity: 1;
     visibility: visible;
 }
-.drk_menu_lnk:hover .dark_menu_arrw svg path,.drk_menu_lnk.w--current .dark_menu_arrw svg path{
+
+.drk_menu_lnk:hover .dark_menu_arrw svg path,
+.drk_menu_lnk.w--current .dark_menu_arrw svg path {
     fill: currentColor;
 }
-.tem_tmbnl_box:hover::before{
+
+.tem_tmbnl_box:hover::before {
     opacity: 0;
 }
-.tem_tmbnl_box:hover .tem_thmbnl_img{
+
+.tem_tmbnl_box:hover .tem_thmbnl_img {
     opacity: 1;
 }
-.submenu_drpdwn .hdr_info_bttn,.submenu_drpdwn .hdr_info_bttn.hdr_info_bttn_alt,.main_header .submenu_drpdwn .hdr_info_bttn.hdr_info_bttn_alt{
+
+.submenu_drpdwn .hdr_info_bttn,
+.submenu_drpdwn .hdr_info_bttn.hdr_info_bttn_alt,
+.main_header .submenu_drpdwn .hdr_info_bttn.hdr_info_bttn_alt {
     border-color: var(--charcoal-black);
     background: transparent;
 }
-.submenu_drpdwn .basic_bttn.hdr_bttn,.main_header .submenu_inner_hdr .basic_bttn.hdr_bttn.hdr_bttn2{
+
+.submenu_drpdwn .basic_bttn.hdr_bttn,
+.main_header .submenu_inner_hdr .basic_bttn.hdr_bttn.hdr_bttn2 {
     background: var(--charcoal-black);
     color: var(--pure-white);
 }
-.main_header .submenu_inner_hdr .hdr_info_bttn:hover::before,.main_header .submenu_drpdwn .hdr_info_bttn.hdr_info_bttn_alt:hover::before{
+
+.main_header .submenu_inner_hdr .hdr_info_bttn:hover::before,
+.main_header .submenu_drpdwn .hdr_info_bttn.hdr_info_bttn_alt:hover::before {
     background: var(--charcoal-black);
 }
-.main_header .submenu_inner_hdr .hdr_info_bttn:hover .info_icon,.main_header .submenu_drpdwn .hdr_info_bttn.hdr_info_bttn_alt:hover .info_icon,.main_header .submenu_inner_hdr .basic_bttn.hdr_bttn.hdr_bttn2 .bttn_icon{
-       -webkit-filter: brightness(1000%);
+
+.main_header .submenu_inner_hdr .hdr_info_bttn:hover .info_icon,
+.main_header .submenu_drpdwn .hdr_info_bttn.hdr_info_bttn_alt:hover .info_icon,
+.main_header .submenu_inner_hdr .basic_bttn.hdr_bttn.hdr_bttn2 .bttn_icon {
+    -webkit-filter: brightness(1000%);
     filter: brightness(1000%);
 }
- .main_header .submenu_inner_hdr .basic_bttn.hdr_bttn:hover,.main_header .submenu_drpdwn .basic_bttn.hdr_bttn.hdr_bttn2:hover {
+
+.main_header .submenu_inner_hdr .basic_bttn.hdr_bttn:hover,
+.main_header .submenu_drpdwn .basic_bttn.hdr_bttn.hdr_bttn2:hover {
     background: rgba(35, 30, 31, 0.53);
     color: var(--pure-white);
 }
+
 /* CSS 02.06.25 */
-.yr_ttle::before{
+.yr_ttle::before {
     content: '/';
 }
+
 /* CSS 02.06.25 */
 
 /* Responsive CSS */
@@ -3829,10 +3855,28 @@ body.dark_mode .drk_mde_pln_img {
     .mmbr_sldr_tab_hldr {
         display: none;
     }
+
     .inhuse_cmpny_wrppr.swiper-wrapper {
         margin-left: 0;
         margin-right: 0;
     }
+
+    /* CSS 02.06.25 */
+    .yr_ttle::before {
+        content: '/';
+    }
+
+    .prgrmms_sldr_wrppr .huse_sldr_item.swiper-slide {
+        padding-left: .579rem;
+        padding-right: .579rem;
+    }
+
+    .prgrmms_sldr_wrppr .inhuse_cmpny_wrppr.swiper-wrapper {
+        margin-left: -.579rem;
+        margin-right: -.579rem;
+    }
+
+    /* CSS 02.06.25 */
 }
 
 @media(max-width:991px) {
@@ -3871,7 +3915,7 @@ body.dark_mode .drk_mde_pln_img {
     .fundng_tem_section .fundng_tem_col .fundng_mmbr_box {
         padding-bottom: 2rem;
     }
-    
+
     .hdr_lft_txt {
         padding-top: 0.9rem;
     }
@@ -3900,10 +3944,11 @@ body.dark_mode .drk_mde_pln_img {
         display: none;
     }
 
-    .sldr_outr_hldr{
+    .sldr_outr_hldr {
         margin-left: 0;
         margin-right: 0;
     }
+
     .slick-list {
         margin-left: -0.667rem;
         margin-right: -0.667rem;
