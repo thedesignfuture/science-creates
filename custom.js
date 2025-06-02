@@ -593,7 +593,7 @@ document.addEventListener('DOMContentLoaded', function () {
     invisibleElements2.forEach(el => {
         el.remove();
     });
-     const invisibleElements3 = document.querySelectorAll('.innr_bnnr_section.w-condition-invisible');
+    const invisibleElements3 = document.querySelectorAll('.innr_bnnr_section.w-condition-invisible');
 
     invisibleElements3.forEach(el => {
         el.remove();
@@ -1679,7 +1679,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Dark Menu Hover Color
     const MOBILE_BREAKPOINT = 768;
     const pllrLinks = document.querySelectorAll('[link-color]');
-     const indvdlSubMenu = document.querySelectorAll('.indvdl_submenu');
+    const indvdlSubMenu = document.querySelectorAll('.indvdl_submenu');
 
     function applyHoverLogic(link) {
         const color = link.getAttribute('link-color');
@@ -1711,14 +1711,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     function menuTabBttn() {
         const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
-        pllrLinks.forEach(mobBttn => {
+        pllrLinks.forEach((link, idx) => {
             if (isMobile) {
-                mobBttn.addEventListener('click',function(elem){
-                   indvdlSubMenu.forEach(function(ele){
-                    indvdlSubMenu.forEach(function(e){e.classList.remove('active')})
-                    ele.classList.add("active");
-                   })
-                })
+                indvdlSubMenu.forEach(sub => sub.classList.remove('active'));
+                if (indvdlSubMenu[idx]) {
+                    indvdlSubMenu[idx].classList.add('active');
+                }
             }
         });
     }
@@ -1994,7 +1992,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
                 const primaryTag = post.primary_tag?.name || 'Article';
                 const postExcerpt = post.excerpt || post.title;
-                const postTitle  = post.title || 'Title'
+                const postTitle = post.title || 'Title'
                 const featureImageCaption = post?.feature_image_caption || '';
 
                 const elements = {
@@ -2084,8 +2082,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    if(document.querySelectorAll('.popup-vimeo').length)
-    {
+    if (document.querySelectorAll('.popup-vimeo').length) {
         $('.popup-vimeo').magnificPopup({
             disableOn: 700,
             type: 'iframe',
