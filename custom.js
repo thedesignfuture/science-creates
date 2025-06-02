@@ -1716,7 +1716,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 mobBttn.addEventListener('click',function(elem){
                    indvdlSubMenu.forEach(function(ele){
                     indvdlSubMenu.forEach(function(e){e.classList.remove('active')})
-                    this.classList.add("active");
+                    ele.classList.add("active");
                    })
                 })
             }
