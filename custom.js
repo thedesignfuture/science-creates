@@ -1679,6 +1679,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Dark Menu Hover Color
     const MOBILE_BREAKPOINT = 768;
     const pllrLinks = document.querySelectorAll('[link-color]');
+     const indvdlSubMenu = document.querySelectorAll('.indvdl_submenu');
 
     function applyHoverLogic(link) {
         const color = link.getAttribute('link-color');
@@ -1708,10 +1709,27 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    function menuTabBttn() {
+        const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+        pllrLinks.forEach(mobBttn => {
+            if (isMobile) {
+                mobBttn.addEventListener('click',function(elem){
+                   indvdlSubMenu.forEach(function(ele){
+                    indvdlSubMenu.forEach(function(e){e.classList.remove('active')})
+                    this.classList.add("active");
+                   })
+                })
+            }
+        });
+    }
     pllrLinks.forEach(applyHoverLogic);
 
     disableLinksOnMobile();
+    menuTabBttn();
     window.addEventListener('resize', disableLinksOnMobile);
+    window.addEventListener('load', disableLinksOnMobile);
+    window.addEventListener('resize', menuTabBttn);
+    window.addEventListener('load', menuTabBttn);
 
 
 
