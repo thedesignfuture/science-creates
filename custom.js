@@ -1698,16 +1698,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
-    function disableLinksOnMobile() {
-        const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
-        pllrLinks.forEach(link => {
-            if (isMobile) {
-                link.setAttribute('href', 'javascript:void(0)');
-            }
-        });
-    }
-
     function menuTabBttn() {
         moblePllrLinks.forEach((link, idx) => {
 
