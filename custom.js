@@ -1364,23 +1364,34 @@ document.addEventListener('DOMContentLoaded', function () {
         prgrmsSldrWrppr.forEach((el) => {
             const swiperElement = el?.querySelector('.prgrmss_sldr');
             const fractionContainer = el?.querySelector('.sldr_pgntn');
+            const progressBar = el?.querySelector('.sldr_prgrss_bg');
+            const nextBtn = el?.querySelector(".arrw_next");
+            const prevBtn = el?.querySelector(".arrw_prev");
+
+            const totalSlides = swiperElement?.querySelectorAll('.swiper-slide')?.length || 0;
 
             const swiper2 = new Swiper(swiperElement, {
                 slidesPerView: 2,
-                loop: true,
+                loop: totalSlides > 2,
                 navigation: {
-                    nextEl: el?.querySelector(".arrw_next"),
-                    prevEl: el?.querySelector(".arrw_prev"),
+                    nextEl: nextBtn,
+                    prevEl: prevBtn,
                 },
                 pagination: {
-                    el: el?.querySelector('.sldr_prgrss_bg'),
+                    el: progressBar,
                     type: 'progressbar',
                 },
                 on: {
                     init: function () {
-                        const totalSlides = swiperElement?.querySelectorAll('.swiper-slide').length;
-                        const currentSlide = this.realIndex + 1;
+                        if (totalSlides <= 2) {
+                            nextBtn?.classList.add('hidden');
+                            prevBtn?.classList.add('hidden');
+                            progressBar?.classList.add('hidden');
+                            fractionContainer?.classList.add('hidden');
+                            return;
+                        }
 
+                        const currentSlide = this.realIndex + 1;
                         fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
 
                         this.on('slideChange', function () {
@@ -1389,7 +1400,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         });
                     },
                     slideChange: function () {
-                        const totalSlides = swiperElement?.querySelectorAll('.swiper-slide').length;
                         const currentSlide = this.realIndex + 1;
                         fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
                     }
@@ -1397,7 +1407,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
-
 
     // Programme Date Slider
     document.querySelectorAll('.prgrmme_dte_sldr_wrppr').forEach(wrapper => {
