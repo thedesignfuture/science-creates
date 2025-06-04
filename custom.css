@@ -3845,7 +3845,11 @@ body.dark_mode .drk_mde_pln_img {
 }
 
 /* CSS 02.06.25 */
-
+/* CSS 04.06.25 */
+body.dark_mode .indvdl_rght_tme_context{
+    border-color: var(--pure-white);
+}
+/* CSS 04.06.25 */
 /* Responsive CSS */
 @media(max-width:1199px) {
     html {
