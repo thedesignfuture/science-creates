@@ -3846,23 +3846,29 @@ body.dark_mode .drk_mde_pln_img {
 
 /* CSS 02.06.25 */
 /* CSS 04.06.25 */
-body.dark_mode .indvdl_rght_tme_context{
+body.dark_mode .indvdl_rght_tme_context {
     border-color: var(--pure-white);
 }
-.sts_item.tags_item:last-child .tag-wrapper{
+
+.sts_item.tags_item:last-child .tag-wrapper {
     border-right: 0;
     margin-right: 0;
     padding-right: 0;
 }
+
 .sts_item.tags_item:last-child {
     margin-right: 0;
     padding-right: 0;
 }
+
 /* CSS 04.06.25 */
 /* CSS 05.06.25 */
-.mmbr_img_sldr_out .mmbr_img_sldr .slick-slide,.mmbr_img_sldr_out .mmbr_img_sldr .slick-track,.mmbr_img_sldr_out .mmbr_img_sldr .slick-list{
+.mmbr_img_sldr_out .mmbr_img_sldr .slick-slide,
+.mmbr_img_sldr_out .mmbr_img_sldr .slick-track,
+.mmbr_img_sldr_out .mmbr_img_sldr .slick-list {
     height: 100%;
 }
+
 /* CSS 05.06.25 */
 /* Responsive CSS */
 @media(max-width:1199px) {
@@ -3902,6 +3908,13 @@ body.dark_mode .indvdl_rght_tme_context{
         margin-left: 0.667rem;
         margin-right: 0.667rem;
     }
+
+    /* CSS 05.06.25 */
+    .hdng_txt_inn::before {
+        display: none;
+    }
+
+    /* CSS 05.06.25 */
 }
 
 @media(max-width:767px) {
@@ -3927,10 +3940,6 @@ body.dark_mode .indvdl_rght_tme_context{
 
     .eco_row .eco_col:nth-child(even) {
         padding-left: 0;
-    }
-
-    .hdng_txt_inn::before {
-        display: none;
     }
 
     .hdr_lft_txt {
