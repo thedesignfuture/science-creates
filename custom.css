@@ -4034,3 +4034,9 @@ body.dark_mode .indvdl_rght_tme_context {
         margin-right: 0.533rem;
     }
 }
+
+@media(max-width:374px) {
+    .sldr_custom_dots>li button {
+        width: 2.55rem;
+    }
+}
