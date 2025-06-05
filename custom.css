@@ -3859,6 +3859,11 @@ body.dark_mode .indvdl_rght_tme_context{
     padding-right: 0;
 }
 /* CSS 04.06.25 */
+/* CSS 05.06.25 */
+.mmbr_img_sldr_out .mmbr_img_sldr .slick-slide{
+    height: auto;
+}
+/* CSS 05.06.25 */
 /* Responsive CSS */
 @media(max-width:1199px) {
     html {
