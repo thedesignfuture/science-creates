@@ -3884,6 +3884,11 @@ body.dark_mode .indvdl_rght_tme_context {
         margin-left: 0;
         margin-right: 0;
     }
+    /* CSS 05.06.25 */
+    .hdr_lft_txt.w_58{
+        width: 47%;
+    }
+    /* CSS 05.06.25 */
 }
 
 @media(max-width:991px) {
@@ -3913,7 +3918,9 @@ body.dark_mode .indvdl_rght_tme_context {
     .hdng_txt_inn::before {
         display: none;
     }
-
+     .hdr_lft_txt.w_58{
+        width: 100%;
+    }
     /* CSS 05.06.25 */
 }
 
