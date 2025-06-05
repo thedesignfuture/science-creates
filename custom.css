@@ -3953,6 +3953,40 @@ body.dark_mode .indvdl_rght_tme_context {
         width: 100%;
     }
 
+    .lab_img_box_lft::before {
+        height: 100%;
+    }
+
+    .lab_img_box_lft::after {
+        position: absolute;
+        content: "";
+        width: 100vw;
+        left: 100%;
+        top: 0;
+        height: 100%;
+        z-index: -1;
+    }
+
+    .lab_dtls_txt_box::after {
+        position: absolute;
+        content: "";
+        width: 100vw;
+        right: 100%;
+        top: 0;
+        bottom: 0;
+        z-index: -1;
+    }
+
+    .lab_dtls_section[data-available="Coming soon"] .lab_img_box_lft::after,
+    .lab_dtls_section[data-available="Coming soon"] .lab_dtls_txt_box::after {
+        background: var(--charcoal-black);
+    }
+
+    .lab_dtls_section[data-available="Available"] .lab_img_box_lft::after,
+    .lab_dtls_section[data-available="Available"] .lab_dtls_txt_box::after {
+        background: var(--incubators-yellow);
+    }
+
     /* CSS 05.06.25 */
 }
 
