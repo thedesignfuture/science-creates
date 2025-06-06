@@ -640,11 +640,6 @@ body.dark_mode .submenu_drpdwn .basic_bttn.hdr_bttn .bttn_icon {
     opacity: 1;
 }
 
-.ba_enabled .submenu_inner,
-.ba_enabled .menu_dark_innr {
-    padding-top: 4.4rem;
-}
-
 .main_header.sticky_header .hdr_info_bttn:hover::before,
 .menu_dark.darkMenu_active_open .hdr_info_bttn:hover::before,
 .main_header .submenu_inner_hdr .hdr_info_bttn:hover::before {
