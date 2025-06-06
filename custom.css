@@ -3910,6 +3910,12 @@ body.dark_mode .indvdl_rght_tme_context {
     }
 
     /* CSS 05.06.25 */
+    /* CSS 06.06.25 */
+    .hdr_lft_txt.w_56 {
+        width: 48.3%;
+    }
+
+    /* CSS 06.06.25 */
 }
 
 @media(max-width:991px) {
@@ -3983,6 +3989,12 @@ body.dark_mode .indvdl_rght_tme_context {
     }
 
     /* CSS 05.06.25 */
+    /* CSS 06.06.25 */
+    .hdr_lft_txt.w_56 {
+        width: 100%;
+    }
+
+    /* CSS 06.06.25 */
 }
 
 @media(max-width:767px) {
