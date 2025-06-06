@@ -1776,11 +1776,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    const LegalBanner = document.querySelector('.invst_ntce_parent_section')
+    const LegalBanner = document.querySelectorAll('.invst_ntce_parent_section')
     const LegalBannerEnable = document.querySelector('.ba_enabled');
-    if(!LegalBannerEnable){
-        LegalBanner.remove();
-    }
+    LegalBanner.forEach(function(elem){
+        if(!elem){
+            elem.remove();
+        }
+    })
     // Add #data-url
     document.querySelectorAll('[data-url]').forEach(el => {
         let url = el.getAttribute('href');
