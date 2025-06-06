@@ -1779,7 +1779,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const LegalBanner = document.querySelectorAll('.invst_ntce_parent_section')
     const LegalBannerEnable = document.querySelector('.ba_enabled');
     LegalBanner.forEach(function(elem){
-        if(!elem){
+        if(!LegalBannerEnable){
             elem.remove();
         }
     })
