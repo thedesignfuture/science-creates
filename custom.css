@@ -3924,7 +3924,7 @@ body.dark_mode .indvdl_rght_tme_context {
 
     /* CSS 06.06.25 */
     /* CSS 09.06.25 */
-    .mmbr_cntrl_optn .outrch_cntrl_bttn_rght{
+    .mmbr_cntrl_optn .outrch_cntrl_bttn_rght {
         display: none;
     }
 
@@ -4023,6 +4023,10 @@ body.dark_mode .indvdl_rght_tme_context {
         height: 100%;
     }
 
+    .outrch_chrty_othr_rchtxt.outrch_chrty_othr_rchtxt_alt {
+        font-size: 2.133rem;
+    }
+
     /* CSS 09.06.25 */
 }
 
@@ -4077,6 +4081,13 @@ body.dark_mode .indvdl_rght_tme_context {
         margin-left: 0.667rem;
         margin-right: 0.667rem;
     }
+
+    /* CSS 09.06.25 */
+    .outrch_chrty_othr_rchtxt.outrch_chrty_othr_rchtxt_alt {
+        font-size: 1.6rem;
+    }
+
+    /* CSS 09.06.25 */
 }
 
 @media(max-width:479px) {
@@ -4103,6 +4114,13 @@ body.dark_mode .indvdl_rght_tme_context {
         margin-left: 0.533rem;
         margin-right: 0.533rem;
     }
+
+    /* CSS 09.06.25 */
+    .outrch_chrty_othr_rchtxt.outrch_chrty_othr_rchtxt_alt {
+        font-size: 1.042rem;
+    }
+
+    /* CSS 09.06.25 */
 }
 
 @media(max-width:374px) {
