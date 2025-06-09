@@ -4009,9 +4009,11 @@ body.dark_mode .indvdl_rght_tme_context {
     .mmbr_img_sldr_out .img_sldr .slick-track,
     .mmbr_img_sldr_out .mmbr_img_sldr .slick-list,
     .mmbr_img_sldr_out .img_sldr .slick-list {
-        height: inherit;
+        height: auto;
     }
-
+    .mmbr_img_sldr_out .mmbr_img_sldr .slick-slide,.mmbr_img_sldr_out .img_sldr .slick-slide{
+        height: 100%;
+    }
     /* CSS 09.06.25 */
 }
 
