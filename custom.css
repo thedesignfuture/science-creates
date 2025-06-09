@@ -3923,6 +3923,12 @@ body.dark_mode .indvdl_rght_tme_context {
     }
 
     /* CSS 06.06.25 */
+    /* CSS 09.06.25 */
+    .mmbr_cntrl_optn .outrch_cntrl_bttn_rght{
+        display: none;
+    }
+
+    /* CSS 09.06.25 */
 }
 
 @media(max-width:991px) {
@@ -4011,9 +4017,12 @@ body.dark_mode .indvdl_rght_tme_context {
     .mmbr_img_sldr_out .img_sldr .slick-list {
         height: auto;
     }
-    .mmbr_img_sldr_out .mmbr_img_sldr .slick-slide,.mmbr_img_sldr_out .img_sldr .slick-slide{
+
+    .mmbr_img_sldr_out .mmbr_img_sldr .slick-slide,
+    .mmbr_img_sldr_out .img_sldr .slick-slide {
         height: 100%;
     }
+
     /* CSS 09.06.25 */
 }
 
