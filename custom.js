@@ -582,6 +582,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    // Remove Condition Visible Element From DOM
     const invisibleElements = document.querySelectorAll('.lab_sldr_wrppr.w-condition-invisible');
 
     invisibleElements.forEach(el => {
@@ -598,6 +600,12 @@ document.addEventListener('DOMContentLoaded', function () {
     invisibleElements3.forEach(el => {
         el.remove();
     });
+
+    const invisibleElements4 = document.querySelectorAll('.cndtn_vsble.w-condition-invisible');
+    invisibleElements4.forEach(el => {
+        el.remove();
+    });
+
     // Lab Slider
     let labWrppr = document?.querySelectorAll('.lab_sldr_wrppr');
     if (labWrppr.length > 0) {
@@ -1778,8 +1786,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const LegalBanner = document.querySelectorAll('.invst_ntce_parent_section')
     const LegalBannerEnable = document.querySelector('.ba_enabled');
-    LegalBanner.forEach(function(elem){
-        if(!LegalBannerEnable){
+    LegalBanner.forEach(function (elem) {
+        if (!LegalBannerEnable) {
             elem.remove();
         }
     })
