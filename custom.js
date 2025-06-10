@@ -468,6 +468,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     wrappers.forEach(wrapper => {
         const remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
+        const pillarBg = wrapper.querySelector('.pillar_bg')
         const items = wrapper.querySelectorAll('.cntct_box_item');
         const buttons = wrapper.querySelectorAll('.pllr_bttn');
 
@@ -479,7 +480,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (i === index) {
                     item.classList.add('active');
                     item.style.maxHeight = `${item.scrollHeight / remVal}rem`;
-                    wrapper.style.backgroundColor = color;
+                    pillarBg.style.backgroundColor = color;
                     btn.classList.add('active');
                     btn.style.backgroundColor = color;
                 } else {
