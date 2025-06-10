@@ -4044,6 +4044,11 @@ body.dark_mode .indvdl_rght_tme_context {
         }
 
         /* CSS 09.06.25 */
+        /* CSS 10.06.25 */
+        .evnt_dtls_bnnr_lft::after{
+            background: var(--grey);
+        }
+         /* CSS 10.06.25 */
     }
 
     @media(max-width:767px) {
