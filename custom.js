@@ -488,6 +488,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     item.classList.remove('active');
                     item.style.maxHeight = '0px';
                     btn.classList.remove('active');
+                    pillarBg.style.backgroundColor = '';
                     btn.style.borderColor = '';
                 }
             });
