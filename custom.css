@@ -3906,7 +3906,7 @@ body.dark_mode .indvdl_rght_tme_context {
     }
 
     [data-bg-color="charcoal-black"] .sldr_custom_dots>li.slick-active button {
-        color: rgba(255, 255, 255, 1_);
+        color: rgba(255, 255, 255, 1);
     }
 
     [data-bg-color="charcoal-black"] .sldr_custom_dots>li.slick-active button::before {
