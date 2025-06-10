@@ -483,11 +483,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     pillarBg.style.backgroundColor = color;
                     btn.classList.add('active');
                     btn.style.backgroundColor = color;
+                     btn.style.borderColor = color;
                 } else {
                     item.classList.remove('active');
                     item.style.maxHeight = '0px';
                     btn.classList.remove('active');
-                    btn.style.backgroundColor = '';
+                    btn.style.borderColor = '';
                 }
             });
         }
