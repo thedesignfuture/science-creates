@@ -4173,6 +4173,12 @@ body.dark_mode .indvdl_rght_tme_context {
     }
 
     /* CSS 09.06.25 */
+    /* CSS 11.06.25 */
+    .lctn_bttn_item:last-child{
+        margin-bottom: 0;
+    }
+
+    /* CSS 11.06.25 */
 }
 
 @media(max-width:374px) {
