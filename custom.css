@@ -3874,6 +3874,13 @@ body.dark_mode .indvdl_rght_tme_context {
 }
 
 /* CSS 05.06.25 */
+/* CSS 11.06.25 */
+.fundng_tem_row .fundng_tem_col:nth-last-child(-n+2) .fundng_mmbr_box {
+    margin-bottom: 0;
+}
+
+/* CSS 11.06.25 */
+
 /* Responsive CSS */
 @media(max-width:1199px) {
     html {
@@ -3953,7 +3960,7 @@ body.dark_mode .indvdl_rght_tme_context {
     }
 
     .fundng_tem_col:nth-child(even) {
-        padding-left:1.333rem;
+        padding-left: 1.333rem;
     }
 
     /* CSS 11.06.25 */
@@ -4123,6 +4130,16 @@ body.dark_mode .indvdl_rght_tme_context {
     }
 
     /* CSS 09.06.25 */
+    /* CSS 11.06.25 */
+    .fundng_tem_row .fundng_tem_col:nth-last-child(-n+2) .fundng_mmbr_box {
+        margin-bottom: 2rem;
+    }
+
+    .fundng_tem_row .fundng_tem_col:last-child .fundng_mmbr_box {
+        margin-bottom: 0;
+    }
+
+    /* CSS 11.06.25 */
 }
 
 @media(max-width:479px) {
