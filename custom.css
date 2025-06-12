@@ -3930,6 +3930,23 @@ body.dark_mode .indvdl_rght_tme_context {
     background-color: var(--charcoal-black);
     color: var(--pure-white);
 }
+body.dark_mode .cat_select, body.dark_mode .mob_radio_label::before {
+    border-color: var(--pure-white);
+}
+body.dark_mode .selct_drop_box{
+    background: var(--dark-grey);
+    border-color: var(--pure-white);
+}
+body.dark_mode .mob_cat_select.active .cat_select {
+    background: var(--dark-grey);
+}
+body.dark_mode .mob_radio_label::after {
+    background: var(--pure-white);
+}
+body.dark_mode .fltrng_bttn.mob_fltr_bttn.has_active,body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover{
+    background: transparent;
+    color: var(--pure-white);
+}
 /* CSS 12.06.25 */
 
 /* Responsive CSS */
