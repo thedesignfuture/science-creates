@@ -1808,21 +1808,17 @@ document.addEventListener('DOMContentLoaded', function () {
         selectDrop.style.maxHeight = '0rem';
         selectDrop.style.transition = 'max-height 0.3s ease';
 
-        function toggleDropdown() {
+        catSelect.addEventListener('click', () => {
             const remVal = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-            if (wrapper.classList.contains('active')) {
-                selectDrop.style.maxHeight = '0rem';
-                wrapper.classList.remove('active');
-            } else {
-                const heightRem = selectDrop.scrollHeight / remVal;
+            const isActive = wrapper.classList.toggle('active');
+            if (isActive) {
+                const scrollH = selectDrop.scrollHeight;
+                const heightRem = scrollH / remVal;
                 selectDrop.style.maxHeight = `${heightRem}rem`;
-                wrapper.classList.add('active');
+            } else {
+                // Close
+                selectDrop.style.maxHeight = '0rem';
             }
-        }
-
-        catSelect.addEventListener('click', e => {
-            e.stopPropagation();
-            toggleDropdown();
         });
 
         const filterButtons = selectDrop.querySelectorAll('.fltrng_bttn.mob_fltr_bttn');
@@ -1860,14 +1856,11 @@ document.addEventListener('DOMContentLoaded', function () {
         })();
 
         filterButtons.forEach(btn => {
-            btn.addEventListener('click', e => {
-                e.preventDefault();
-                e.stopPropagation();
+            btn.addEventListener('click', () => {
                 applySelection(btn);
             });
         });
-
-    })
+    });
 
     // Add #data-url
     document.querySelectorAll('[data-url]').forEach(el => {
