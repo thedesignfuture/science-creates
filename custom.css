@@ -3881,10 +3881,11 @@ body.dark_mode .indvdl_rght_tme_context {
 
 /* CSS 11.06.25 */
 /* CSS 12.06.25 */
-.fltrng_bttn.mob_fltr_bttn.has_active{
-    background-color: transparent;
+.fltrng_bttn.mob_fltr_bttn.has_active,.fltrng_bttn.mob_fltr_bttn:hover{
+    background-color: transparent!important;
     color: var(--charcoal-black);
 }
+
 .mob_radio_label::before {
    position: absolute;
     content: "";
