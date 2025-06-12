@@ -3919,6 +3919,17 @@ body.dark_mode .indvdl_rght_tme_context {
     -ms-transform: scale(0.5);
     transform: scale(0.5);
 }
+.mob_cat_select.active .arrw_dwn{
+      -webkit-transform: translateY(-50%) rotate(180deg);
+    -ms-transform: translateY(-50%) rotate(180deg);
+    transform: translateY(-50%) rotate(180deg);
+    -webkit-filter: brightness(1000%);
+    filter: brightness(1000%);
+}
+.mob_cat_select.active .cat_select{
+    background-color: var(--charcoal-black);
+    color: var(--pure-white);
+}
 /* CSS 12.06.25 */
 
 /* Responsive CSS */
