@@ -483,7 +483,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     pillarBg.style.backgroundColor = color;
                     btn.classList.add('active');
                     btn.style.backgroundColor = color;
-                     btn.style.borderColor = color;
+                    btn.style.borderColor = color;
                 } else {
                     item.classList.remove('active');
                     item.style.maxHeight = '0px';
@@ -1794,6 +1794,81 @@ document.addEventListener('DOMContentLoaded', function () {
             elem.remove();
         }
     })
+
+    // Mobile Select Category Dropdown
+    document.querySelectorAll('.mob_cat_select').forEach(wrapper => {
+        const catSelect = wrapper.querySelector('.cat_select');
+        const selectDrop = wrapper.querySelector('.select_drop');
+        const searchTextBlock = wrapper.querySelector('.srch_txt_block');
+        if (!catSelect || !selectDrop || !searchTextBlock) {
+            console.warn('mob_cat_select missing sub-elements:', wrapper);
+            return;
+        }
+        selectDrop.style.overflow = 'hidden';
+        selectDrop.style.maxHeight = '0rem';
+        selectDrop.style.transition = 'max-height 0.3s ease';
+
+        function toggleDropdown() {
+            const remVal = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+            if (wrapper.classList.contains('active')) {
+                selectDrop.style.maxHeight = '0rem';
+                wrapper.classList.remove('active');
+            } else {
+                const heightRem = selectDrop.scrollHeight / remVal;
+                selectDrop.style.maxHeight = `${heightRem}rem`;
+                wrapper.classList.add('active');
+            }
+        }
+
+        catSelect.addEventListener('click', e => {
+            e.stopPropagation();
+            toggleDropdown();
+        });
+
+        const filterButtons = selectDrop.querySelectorAll('.fltrng_bttn.mob_fltr_bttn');
+        if (filterButtons.length === 0) {
+            return;
+        }
+
+        function applySelection(btn) {
+            filterButtons.forEach(b => b.classList.remove('has_active'));
+            btn.classList.add('has_active');
+
+            const txt = btn.querySelector('.mob_radio_label')?.textContent.trim();
+            if (txt) {
+                searchTextBlock.textContent = txt;
+            }
+
+            wrapper.querySelectorAll('input[type="radio"]').forEach(r => {
+                try { r.checked = false; } catch (_) { }
+            });
+            const input = btn.querySelector('input[type="radio"]');
+            if (input) {
+                try { input.checked = true; } catch (_) { }
+            }
+        }
+
+        (function initializeDefault() {
+            let defaultBtn =
+                wrapper.querySelector('.fltrng_bttn.mob_fltr_bttn.has_active')
+                || wrapper.querySelector('input[type="radio"]:checked')?.closest('.fltrng_bttn.mob_fltr_bttn')
+                || wrapper.querySelector('.fltrng_bttn.mob_fltr_bttn[fs-cmsfilter-element="clear"]')
+                || filterButtons[0];
+            if (defaultBtn) {
+                applySelection(defaultBtn);
+            }
+        })();
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.preventDefault();
+                e.stopPropagation();
+                applySelection(btn);
+            });
+        });
+
+    })
+
     // Add #data-url
     document.querySelectorAll('[data-url]').forEach(el => {
         let url = el.getAttribute('href');
