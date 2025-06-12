@@ -1644,7 +1644,7 @@ document.addEventListener('DOMContentLoaded', function () {
         attachItemListeners(el);
     });
 
-  document.querySelectorAll('.knwldge_hub_listing_sec').forEach(section => {
+  document.querySelectorAll('.resource_filter').forEach(section => {
     const listWrapper = section.querySelector('.resurce_all_box [fs-cmsnest-element="list"]');
     if (!listWrapper) {
       console.warn('Date-sorting script: listWrapper not found in resource-date-sort-section');
