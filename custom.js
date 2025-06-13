@@ -1829,8 +1829,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 item.addEventListener('click', () => {
                     splide.go(i);
-                    if (splide.options.autoplay) {
-                        splide.play();
+                    if (splide.options.autoplay && splide.Components && splide.Components.Autoplay) {
+                        splide.Components.Autoplay.play();
                     }
                 });
                 item.addEventListener('keydown', (e) => {
@@ -1881,8 +1881,8 @@ document.addEventListener('DOMContentLoaded', function () {
         splide.on('moved', (newIndex) => {
             const idx = normalizeIndex(newIndex, splide.length);
             updateActiveClass(idx);
-            if (splide.options.autoplay) {
-                splide.play();
+            if (splide.options.autoplay && splide.Components && splide.Components.Autoplay) {
+                splide.Components.Autoplay.play();
             }
         });
 
