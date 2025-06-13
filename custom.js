@@ -1646,93 +1646,93 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Resource Date Sorting
     document.querySelectorAll('.resource_all_fltering').forEach(section => {
-    const listWrapper = section.querySelector('.resurce_all_box [fs-cmsnest-element="list"]');
-    if (!listWrapper) {
-      console.warn('Date-sorting script: listWrapper not found in .resource_filter');
-      return;
-    }
-
-    function parseDateText(s) {
-      if (!s) return null;
-      const parts = s.trim().split(/\s+/);
-      if (parts.length === 3) {
-        const [dayStr, monStr, yearStr] = parts;
-        const d = parseInt(dayStr, 10);
-        const y = parseInt(yearStr, 10);
-        const monthNames = {
-          Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
-          Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
-        };
-        const monKey = monStr.slice(0, 3).charAt(0).toUpperCase() + monStr.slice(1, 3).toLowerCase();
-        const m = monthNames[monKey];
-        if (!isNaN(d) && !isNaN(y) && typeof m === 'number') {
-          return new Date(y, m, d);
+        const listWrapper = section.querySelector('.resurce_all_box [fs-cmsnest-element="list"]');
+        if (!listWrapper) {
+            console.warn('Date-sorting script: listWrapper not found in .resource_filter');
+            return;
         }
-      }
-      const parsed = new Date(s);
-      if (!isNaN(parsed)) {
-        return parsed;
-      }
-      return null;
-    }
 
-    function getCurrentOrder() {
-      const sel = section.querySelector('input[name="date-sort"]:checked');
-      if (!sel) {
-        return 'desc';
-      }
-      return (sel.id === 'Oldest') ? 'asc' : 'desc';
-    }
+        function parseDateText(s) {
+            if (!s) return null;
+            const parts = s.trim().split(/\s+/);
+            if (parts.length === 3) {
+                const [dayStr, monStr, yearStr] = parts;
+                const d = parseInt(dayStr, 10);
+                const y = parseInt(yearStr, 10);
+                const monthNames = {
+                    Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+                    Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+                };
+                const monKey = monStr.slice(0, 3).charAt(0).toUpperCase() + monStr.slice(1, 3).toLowerCase();
+                const m = monthNames[monKey];
+                if (!isNaN(d) && !isNaN(y) && typeof m === 'number') {
+                    return new Date(y, m, d);
+                }
+            }
+            const parsed = new Date(s);
+            if (!isNaN(parsed)) {
+                return parsed;
+            }
+            return null;
+        }
 
-    function sortByDate(order = 'desc') {
-      const cards = Array.from(listWrapper.querySelectorAll('.w-dyn-item'));
-      cards.sort((a, b) => {
-        const ta = a.querySelector('.rsurce_dte')?.textContent.trim() || '';
-        const tb = b.querySelector('.rsurce_dte')?.textContent.trim() || '';
-        const da = parseDateText(ta);
-        const db = parseDateText(tb);
-        if (da === null && db === null) return 0;
-        if (da === null) return (order === 'desc' ? 1 : -1);
-        if (db === null) return (order === 'desc' ? -1 : 1);
-        const na = da.getTime();
-        const nb = db.getTime();
-        return (order === 'desc') ? (nb - na) : (na - nb);
-      });
-      cards.forEach(c => listWrapper.appendChild(c));
-    }
-    const radioInputs = section.querySelectorAll('input[name="date-sort"]');
-    radioInputs.forEach(radio => {
-      radio.addEventListener('change', () => {
-        section.querySelectorAll('label.w-radio').forEach(lbl => {
-          lbl.classList.remove('w--redirected-checked');
+        function getCurrentOrder() {
+            const sel = section.querySelector('input[name="date-sort"]:checked');
+            if (!sel) {
+                return 'desc';
+            }
+            return (sel.id === 'Oldest') ? 'asc' : 'desc';
+        }
+
+        function sortByDate(order = 'desc') {
+            const cards = Array.from(listWrapper.querySelectorAll('.w-dyn-item'));
+            cards.sort((a, b) => {
+                const ta = a.querySelector('.rsurce_dte')?.textContent.trim() || '';
+                const tb = b.querySelector('.rsurce_dte')?.textContent.trim() || '';
+                const da = parseDateText(ta);
+                const db = parseDateText(tb);
+                if (da === null && db === null) return 0;
+                if (da === null) return (order === 'desc' ? 1 : -1);
+                if (db === null) return (order === 'desc' ? -1 : 1);
+                const na = da.getTime();
+                const nb = db.getTime();
+                return (order === 'desc') ? (nb - na) : (na - nb);
+            });
+            cards.forEach(c => listWrapper.appendChild(c));
+        }
+        const radioInputs = section.querySelectorAll('input[name="date-sort"]');
+        radioInputs.forEach(radio => {
+            radio.addEventListener('change', () => {
+                section.querySelectorAll('label.w-radio').forEach(lbl => {
+                    lbl.classList.remove('w--redirected-checked');
+                });
+                const lab = radio.closest('label');
+                if (lab) {
+                    lab.classList.add('w--redirected-checked');
+                }
+                const order = (radio.id === 'Oldest') ? 'asc' : 'desc';
+                sortByDate(order);
+            });
         });
-        const lab = radio.closest('label');
-        if (lab) {
-          lab.classList.add('w--redirected-checked');
-        }
-        const order = (radio.id === 'Oldest') ? 'asc' : 'desc';
-        sortByDate(order);
-      });
-    });
 
-    const defaultLatestRadio = section.querySelector('#Latest');
-    if (defaultLatestRadio) {
-      if (!section.querySelector('input[name="date-sort"]:checked')) {
-        defaultLatestRadio.checked = true;
-        const lab = defaultLatestRadio.closest('label');
-        if (lab) lab.classList.add('w--redirected-checked');
-      }
-    }
-    const loadMoreBtn = section.querySelector('.load_mre_bttn');
-    if (loadMoreBtn) {
-      loadMoreBtn.addEventListener('click', () => {
-        setTimeout(() => {
-          sortByDate(getCurrentOrder());
-        }, 500);
-      });
-    }
-    sortByDate(getCurrentOrder());
-  });
+        const defaultLatestRadio = section.querySelector('#Latest');
+        if (defaultLatestRadio) {
+            if (!section.querySelector('input[name="date-sort"]:checked')) {
+                defaultLatestRadio.checked = true;
+                const lab = defaultLatestRadio.closest('label');
+                if (lab) lab.classList.add('w--redirected-checked');
+            }
+        }
+        const loadMoreBtn = section.querySelector('.load_mre_bttn');
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', () => {
+                setTimeout(() => {
+                    sortByDate(getCurrentOrder());
+                }, 500);
+            });
+        }
+        sortByDate(getCurrentOrder());
+    });
 
     // clear button
     document.querySelectorAll('[fs-cmsfilter-element="clear"], .all_clr_bttn')
@@ -1758,6 +1758,140 @@ document.addEventListener('DOMContentLoaded', function () {
                 }, 300);
             });
         });
+
+    // Inner Banner Slider
+    const sliderRoots = document.querySelectorAll('.innr_sldr');
+    if (!sliderRoots.length) {
+        return;
+    }
+
+    if (typeof Splide !== 'function') {
+        console.warn('Splide is not loaded; skipping slider initialization.');
+        return;
+    }
+
+    sliderRoots.forEach((splideEl) => {
+        const wrapper = splideEl.closest('.innr_sldr_parent');
+        if (!wrapper) {
+            return;
+        }
+
+        const paginationContainer = wrapper.querySelector('.sldr_custom_dots_hldr > ul');
+        if (!paginationContainer) {
+            return;
+        }
+
+        const baseInterval = parseInt(splideEl.getAttribute('data-interval'), 10) || 3000;
+
+        const splide = new Splide(splideEl, {
+            type: 'loop',
+            perPage: 3,
+            perMove: 1,
+            autoplay: true,
+            interval: baseInterval,
+            pagination: false,
+            arrows: true,
+            pauseOnHover: false,
+            pauseOnFocus: false,
+            resetProgress: true,
+        });
+
+        function normalizeIndex(idx, length) {
+            let normalized = idx % length;
+            if (normalized < 0) normalized += length;
+            return normalized;
+        }
+
+        function setupCustomPagination() {
+            const total = splide.length;
+            paginationContainer.innerHTML = '';
+            for (let i = 0; i < total; i++) {
+                const item = document.createElement('li');
+                item.classList.add('pagination-item');
+                item.setAttribute('data-index', i);
+                item.setAttribute('role', 'button');
+                item.setAttribute('tabindex', '0');
+                item.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+
+                const label = document.createElement('button');
+                label.classList.add('page-number');
+                label.type = 'button';
+                label.textContent = (i + 1);
+                item.appendChild(label);
+
+                const bar = document.createElement('span');
+                bar.classList.add('progress-bar');
+                const inner = document.createElement('span');
+                inner.classList.add('in-progress');
+                inner.style.width = '0%';
+                bar.appendChild(inner);
+                item.appendChild(bar);
+
+                item.addEventListener('click', () => {
+                    splide.go(i);
+                    if (splide.options.autoplay) {
+                        splide.play();
+                    }
+                });
+                item.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        item.click();
+                    }
+                });
+
+                paginationContainer.appendChild(item);
+            }
+        }
+        function updateActiveClass(index) {
+            const items = paginationContainer.querySelectorAll('.pagination-item');
+            items.forEach(el => {
+                const idx = parseInt(el.getAttribute('data-index'), 10);
+                const isActive = (idx === index);
+                el.classList.toggle('active', isActive);
+                if (!isActive) {
+                    const inner = el.querySelector('.in-progress');
+                    if (inner) {
+                        inner.style.width = '0%';
+                    }
+                }
+            });
+        }
+
+        function onAutoplayPlaying(rate) {
+            const idx = normalizeIndex(splide.index, splide.length);
+            updateActiveClass(idx);
+            const activeItem = paginationContainer.querySelector(`.pagination-item[data-index="${idx}"]`);
+            if (!activeItem) {
+                return;
+            }
+            const innerBar = activeItem.querySelector('.in-progress');
+            if (!innerBar) {
+                return;
+            }
+            innerBar.style.width = (rate * 100) + '%';
+        }
+
+        splide.on('mounted', () => {
+            setupCustomPagination();
+            const initIdx = normalizeIndex(splide.index, splide.length);
+            updateActiveClass(initIdx);
+        });
+
+        splide.on('moved', (newIndex) => {
+            const idx = normalizeIndex(newIndex, splide.length);
+            updateActiveClass(idx);
+            if (splide.options.autoplay) {
+                splide.play();
+            }
+        });
+
+        splide.on('autoplay:playing', onAutoplayPlaying);
+
+        splide.mount();
+    });
+
+
 
     // Dark Menu Hover Color
     const MOBILE_BREAKPOINT = 768;
