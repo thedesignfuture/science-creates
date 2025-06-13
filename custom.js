@@ -1785,7 +1785,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const splide = new Splide(splideEl, {
             type: 'loop',
-            perPage: 3,
+            perPage: 1,
             perMove: 1,
             autoplay: true,
             interval: baseInterval,
