@@ -1976,27 +1976,68 @@ document.addEventListener('DOMContentLoaded', function () {
     //         elem.remove();
     //     }
     // })
-    (function () {
-        function shouldEnable() {
-            return !!document.querySelector('body .ba_enabled');
-        }
-        function removeLegalBanners() {
-            if (!shouldEnable()) {
-                const banners = document.querySelectorAll('.invst_ntce_parent_section');
-                if (banners.length) {
-                    console.info(`Removing ${banners.length} .invst_ntce_parent_section elements because .ba_enabled not found`);
-                    banners.forEach(el => el.remove());
-                }
+    // 1. Adjust this if your .ba_enabled lives somewhere else:
+    function shouldEnable() {
+        return document.body.classList.contains('ba_enabled');
+    }
+    function removeExistingBanners() {
+        if (!shouldEnable()) {
+            const banners = document.querySelectorAll('.invst_ntce_parent_section');
+            if (banners.length) {
+                console.info('[LegalBanner] Removing', banners.length, 'existing banner(s) because ba_enabled missing');
+                banners.forEach(el => el.remove());
             }
         }
+    }
 
-        // Run on initial load
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', removeLegalBanners);
-        } else {
-            removeLegalBanners();
+    function handleAddedNode(node) {
+        if (node.nodeType !== Node.ELEMENT_NODE) return;
+        if (node.matches('.invst_ntce_parent_section')) {
+            if (!shouldEnable()) {
+                console.info('[LegalBanner] Removing newly added banner element:', node);
+                node.remove();
+            }
         }
-    })();
+        const inner = node.querySelectorAll && node.querySelectorAll('.invst_ntce_parent_section');
+        if (inner && inner.length) {
+            inner.forEach(el => {
+                if (!shouldEnable()) {
+                    console.info('[LegalBanner] Removing descendant banner element:', el);
+                    el.remove();
+                }
+            });
+        }
+    }
+
+    function setupObserver() {
+        const observer = new MutationObserver(mutations => {
+            for (const m of mutations) {
+                if (m.type === 'childList' && m.addedNodes.length) {
+                    m.addedNodes.forEach(node => handleAddedNode(node));
+                }
+                if (m.type === 'attributes' && m.attributeName === 'class') {
+                    if (m.target === document.body) {
+                        if (!shouldEnable()) {
+                            const banners = document.querySelectorAll('.invst_ntce_parent_section');
+                            if (banners.length) {
+                                console.info('[LegalBanner] Body class changed; removing', banners.length, 'banner(s)');
+                                banners.forEach(el => el.remove());
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    }
+
+    removeExistingBanners();
+    setupObserver();
 
     // Mobile Select Category Dropdown
     document.querySelectorAll('.mob_cat_select').forEach(wrapper => {
