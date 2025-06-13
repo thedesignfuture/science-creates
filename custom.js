@@ -1816,7 +1816,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const label = document.createElement('button');
                 label.classList.add('page-number');
                 label.type = 'button';
-                label.textContent = (i + 1);
+                label.textContent = ('0' + (i + 1));
                 item.appendChild(label);
 
                 const bar = document.createElement('span');
