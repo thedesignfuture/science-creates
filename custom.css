@@ -3954,6 +3954,28 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn.has_active,body.dark_mode .fltrng_bttn
     overflow: hidden;
     max-height: 0rem;
 }
+.page-number::before{
+    display: none;
+}
+.pagination-item * span{
+    display: inline-block;
+}
+.pagination-item .progress-bar{
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 0.058rem;
+    background: rgba(35, 30, 31, 0.25);
+    display: block;
+}
+.pagination-item.active .progress-bar .in-progress{
+    background: var(--charcoal-black);
+}
+.pagination-item.active .page-number{
+    color: var(--charcoal-black);
+}
 /* CSS 13.06.25 */
 
 /* Responsive CSS */
