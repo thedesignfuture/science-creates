@@ -3951,7 +3951,8 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn.has_active,body.dark_mode .fltrng_bttn
 /* CSS 12.06.25 */
 /* CSS 13.06.25 */
 .select_dropdown{
-    display: none;
+    overflow: hidden;
+    max-height: 0rem;
 }
 /* CSS 13.06.25 */
 
