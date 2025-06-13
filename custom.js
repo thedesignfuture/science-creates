@@ -1846,7 +1846,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Mobile Select Category Dropdown
     document.querySelectorAll('.mob_cat_select').forEach(wrapper => {
         const catSelect = wrapper.querySelector('.cat_select');
-        const selectDrop = wrapper.querySelector('.select_drop');
+        const selectDrop = wrapper.querySelector('.select_dropdown');
         const searchTextBlock = wrapper.querySelector('.srch_txt_block');
         if (!catSelect || !selectDrop || !searchTextBlock) {
             console.warn('mob_cat_select missing sub-elements:', wrapper);
