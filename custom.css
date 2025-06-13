@@ -3982,7 +3982,7 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn.has_active,body.dark_mode .fltrng_bttn
 .pagination-item.active .page-number{
     color: var(--charcoal-black);
 }
-.innr_sldr_parent,.indvdl_stes_sldr_wrppr{
+.innr_sldr_parent,.indvdl_stes_sldr_wrppr,.innr_bnnr_sec_box,.indvdl_innr_sldr_wrppr{
     opacity: 0;
 }
 /* CSS 13.06.25 */
