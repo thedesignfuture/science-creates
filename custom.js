@@ -1825,7 +1825,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 inner.classList.add('in-progress');
                 inner.style.width = '0%';
                 bar.appendChild(inner);
-                item.appendChild(bar);
+                label.appendChild(bar);
 
                 item.addEventListener('click', () => {
                     splide.go(i);
