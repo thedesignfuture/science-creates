@@ -1969,166 +1969,187 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    const LegalBanner = document.querySelectorAll('.invst_ntce_parent_section')
-    const LegalBannerEnable = document.querySelector('.ba_enabled');
-    LegalBanner.forEach(function (elem) {
-        if (!LegalBannerEnable) {
-            elem.remove();
+    // const LegalBanner = document.querySelectorAll('.invst_ntce_parent_section')
+    // const LegalBannerEnable = document.querySelector('.ba_enabled');
+    // LegalBanner.forEach(function (elem) {
+    //     if (!LegalBannerEnable) {
+    //         elem.remove();
+    //     }
+    // })
+    (function () {
+        function shouldEnable() {
+            return !!document.querySelector('body .ba_enabled');
         }
-    })
-
-    // Mobile Select Category Dropdown
-    document.querySelectorAll('.mob_cat_select').forEach(wrapper => {
-        const catSelect = wrapper.querySelector('.cat_select');
-        const selectDrop = wrapper.querySelector('.select_dropdown');
-        const searchTextBlock = wrapper.querySelector('.srch_txt_block');
-        if (!catSelect || !selectDrop || !searchTextBlock) {
-            console.warn('mob_cat_select missing sub-elements:', wrapper);
-            return;
+        function removeLegalBanners() {
+            if (!shouldEnable()) {
+                const banners = document.querySelectorAll('.invst_ntce_parent_section');
+                if (banners.length) {
+                    console.info(`Removing ${banners.length} .invst_ntce_parent_section elements because .ba_enabled not found`);
+                    banners.forEach(el => el.remove());
+                }
+            }
         }
-        selectDrop.style.overflow = 'hidden';
-        selectDrop.style.maxHeight = '0rem';
-        selectDrop.style.transition = 'max-height 0.3s ease';
 
-        catSelect.addEventListener('click', () => {
-            const remVal = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-            const isActive = wrapper.classList.toggle('active');
-            if (isActive) {
-                const scrollH = selectDrop.scrollHeight;
-                const heightRem = scrollH / remVal;
-                selectDrop.style.maxHeight = `${heightRem}rem`;
-            } else {
-                // Close
-                selectDrop.style.maxHeight = '0rem';
+        // Run on initial load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', removeLegalBanners);
+        } else {
+            removeLegalBanners();
+        }
+
+
+        // Mobile Select Category Dropdown
+        document.querySelectorAll('.mob_cat_select').forEach(wrapper => {
+            const catSelect = wrapper.querySelector('.cat_select');
+            const selectDrop = wrapper.querySelector('.select_dropdown');
+            const searchTextBlock = wrapper.querySelector('.srch_txt_block');
+            if (!catSelect || !selectDrop || !searchTextBlock) {
+                console.warn('mob_cat_select missing sub-elements:', wrapper);
+                return;
+            }
+            selectDrop.style.overflow = 'hidden';
+            selectDrop.style.maxHeight = '0rem';
+            selectDrop.style.transition = 'max-height 0.3s ease';
+
+            catSelect.addEventListener('click', () => {
+                const remVal = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+                const isActive = wrapper.classList.toggle('active');
+                if (isActive) {
+                    const scrollH = selectDrop.scrollHeight;
+                    const heightRem = scrollH / remVal;
+                    selectDrop.style.maxHeight = `${heightRem}rem`;
+                } else {
+                    // Close
+                    selectDrop.style.maxHeight = '0rem';
+                }
+            });
+
+            const filterButtons = selectDrop.querySelectorAll('.fltrng_bttn.mob_fltr_bttn');
+            if (filterButtons.length === 0) {
+                return;
+            }
+
+            function applySelection(btn) {
+                filterButtons.forEach(b => b.classList.remove('has_active'));
+                btn.classList.add('has_active');
+
+                const txt = btn.querySelector('.mob_radio_label')?.textContent.trim();
+                if (txt) {
+                    searchTextBlock.textContent = txt;
+                }
+
+                wrapper.querySelectorAll('input[type="radio"]').forEach(r => {
+                    try { r.checked = false; } catch (_) { }
+                });
+                const input = btn.querySelector('input[type="radio"]');
+                if (input) {
+                    try { input.checked = true; } catch (_) { }
+                }
+            }
+
+            (function initializeDefault() {
+                let defaultBtn =
+                    wrapper.querySelector('.fltrng_bttn.mob_fltr_bttn.has_active')
+                    || wrapper.querySelector('input[type="radio"]:checked')?.closest('.fltrng_bttn.mob_fltr_bttn')
+                    || wrapper.querySelector('.fltrng_bttn.mob_fltr_bttn[fs-cmsfilter-element="clear"]')
+                    || filterButtons[0];
+                if (defaultBtn) {
+                    applySelection(defaultBtn);
+                }
+            })();
+
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    applySelection(btn);
+                });
+            });
+        });
+
+        // Add #data-url
+        document.querySelectorAll('[data-url]').forEach(el => {
+            let url = el.getAttribute('href');
+            let slug = el.getAttribute('data-url');
+            if (url && slug && url !== '#') {
+                // Avoid duplicate hashes
+                const base = url.split('#')[0];
+                el.setAttribute('href', `${base}#${slug}`);
             }
         });
 
-        const filterButtons = selectDrop.querySelectorAll('.fltrng_bttn.mob_fltr_bttn');
-        if (filterButtons.length === 0) {
-            return;
+        // Get Params from URL
+        function getUrlParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlParamsValue = urlParams.get(param);
+            return urlParamsValue ? `${urlParamsValue}/` : '';
         }
 
-        function applySelection(btn) {
-            filterButtons.forEach(b => b.classList.remove('has_active'));
-            btn.classList.add('has_active');
+        // // Ghost Knowledge Hub
+        const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
+        const API_KEY = '969e9f32437ce35f25af6d1453';
+        const DEFAULT_KN_URL = '/knowledge-hub/post?post_id=';
 
-            const txt = btn.querySelector('.mob_radio_label')?.textContent.trim();
-            if (txt) {
-                searchTextBlock.textContent = txt;
+        async function fetchAndRenderGhostPosts({
+            targetId,
+            initialLimit = 3,
+            enableSearch = false,
+            searchInputId = null,
+            enableSort = false,
+            sortRadioName = null,
+            enableFilter = false,
+            loadMoreId = null,
+            filterContainerSelector = null,
+            renderPostHTML = null,
+            postId = ''
+        }) {
+            const container = document.getElementById(targetId);
+            if (!container) return;
+
+            const loadMoreBtn = loadMoreId ? document.getElementById(loadMoreId) : null;
+            const searchInput = searchInputId ? document.getElementById(searchInputId) : null;
+
+            const filterTagData = container.getAttribute('tag');
+            const filterTagRequest = filterTagData ? `&filter=tag:${filterTagData}` : '';
+
+            let filterButtons = [];
+
+            let activeSearch = '';
+            let activeTag = 'all';
+            let activeSort = 'latest';
+            let cachedPosts = [];
+            let currentVisibleCount = 0;
+            let postsToRender = [];
+
+            async function fetchAllPosts() {
+                const url = `${API_URL}${postId}?key=${API_KEY}&limit=100&include=tags,authors${filterTagRequest}&order=published_at desc`;
+                const response = await fetch(url, { headers: { 'Accept-Version': 'v5.0' } });
+                const data = await response.json();
+
+                cachedPosts = data.posts.map(post => {
+                    const tags = post.tags.map(tag => tag.name.toLowerCase());
+                    return {
+                        ...post,
+                        filterType: tags.length > 0 ? tags[0] : 'uncategorized'
+                    };
+                });
+
+                if (enableFilter && filterContainerSelector) {
+                    filterButtons = Array.from(document.querySelectorAll(
+                        `${filterContainerSelector} .cat_filter_bttn`
+                    ));
+                    filterButtons.forEach(btn => btn.classList.remove('has_active'));
+                    const allBtn = filterButtons.find(btn => btn.dataset.filter === 'all');
+                    if (allBtn) allBtn.classList.add('has_active');
+                }
             }
 
-            wrapper.querySelectorAll('input[type="radio"]').forEach(r => {
-                try { r.checked = false; } catch (_) { }
-            });
-            const input = btn.querySelector('input[type="radio"]');
-            if (input) {
-                try { input.checked = true; } catch (_) { }
-            }
-        }
+            function defaultRenderHTML(post) {
+                const postDate = new Date(post.published_at).toLocaleDateString('en-GB', {
+                    day: 'numeric', month: 'short', year: 'numeric'
+                });
+                const primaryTag = post.primary_tag?.name || 'Article';
+                const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
 
-        (function initializeDefault() {
-            let defaultBtn =
-                wrapper.querySelector('.fltrng_bttn.mob_fltr_bttn.has_active')
-                || wrapper.querySelector('input[type="radio"]:checked')?.closest('.fltrng_bttn.mob_fltr_bttn')
-                || wrapper.querySelector('.fltrng_bttn.mob_fltr_bttn[fs-cmsfilter-element="clear"]')
-                || filterButtons[0];
-            if (defaultBtn) {
-                applySelection(defaultBtn);
-            }
-        })();
-
-        filterButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                applySelection(btn);
-            });
-        });
-    });
-
-    // Add #data-url
-    document.querySelectorAll('[data-url]').forEach(el => {
-        let url = el.getAttribute('href');
-        let slug = el.getAttribute('data-url');
-        if (url && slug && url !== '#') {
-            // Avoid duplicate hashes
-            const base = url.split('#')[0];
-            el.setAttribute('href', `${base}#${slug}`);
-        }
-    });
-
-    // Get Params from URL
-    function getUrlParam(param) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const urlParamsValue = urlParams.get(param);
-        return urlParamsValue ? `${urlParamsValue}/` : '';
-    }
-
-    // // Ghost Knowledge Hub
-    const API_URL = 'https://sciencecreates.ghost.io/ghost/api/content/posts/';
-    const API_KEY = '969e9f32437ce35f25af6d1453';
-    const DEFAULT_KN_URL = '/knowledge-hub/post?post_id=';
-
-    async function fetchAndRenderGhostPosts({
-        targetId,
-        initialLimit = 3,
-        enableSearch = false,
-        searchInputId = null,
-        enableSort = false,
-        sortRadioName = null,
-        enableFilter = false,
-        loadMoreId = null,
-        filterContainerSelector = null,
-        renderPostHTML = null,
-        postId = ''
-    }) {
-        const container = document.getElementById(targetId);
-        if (!container) return;
-
-        const loadMoreBtn = loadMoreId ? document.getElementById(loadMoreId) : null;
-        const searchInput = searchInputId ? document.getElementById(searchInputId) : null;
-
-        const filterTagData = container.getAttribute('tag');
-        const filterTagRequest = filterTagData ? `&filter=tag:${filterTagData}` : '';
-
-        let filterButtons = [];
-
-        let activeSearch = '';
-        let activeTag = 'all';
-        let activeSort = 'latest';
-        let cachedPosts = [];
-        let currentVisibleCount = 0;
-        let postsToRender = [];
-
-        async function fetchAllPosts() {
-            const url = `${API_URL}${postId}?key=${API_KEY}&limit=100&include=tags,authors${filterTagRequest}&order=published_at desc`;
-            const response = await fetch(url, { headers: { 'Accept-Version': 'v5.0' } });
-            const data = await response.json();
-
-            cachedPosts = data.posts.map(post => {
-                const tags = post.tags.map(tag => tag.name.toLowerCase());
-                return {
-                    ...post,
-                    filterType: tags.length > 0 ? tags[0] : 'uncategorized'
-                };
-            });
-
-            if (enableFilter && filterContainerSelector) {
-                filterButtons = Array.from(document.querySelectorAll(
-                    `${filterContainerSelector} .cat_filter_bttn`
-                ));
-                filterButtons.forEach(btn => btn.classList.remove('has_active'));
-                const allBtn = filterButtons.find(btn => btn.dataset.filter === 'all');
-                if (allBtn) allBtn.classList.add('has_active');
-            }
-        }
-
-        function defaultRenderHTML(post) {
-            const postDate = new Date(post.published_at).toLocaleDateString('en-GB', {
-                day: 'numeric', month: 'short', year: 'numeric'
-            });
-            const primaryTag = post.primary_tag?.name || 'Article';
-            const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
-
-            return `
+                return `
                 <div data-move="up" data-delay="0.4" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
                     <div class="row knwldge_hub_row">
                         <div class="col col-3 knwldge_hub_img_col">
@@ -2165,224 +2186,224 @@ document.addEventListener('DOMContentLoaded', function () {
                         </div>
                     </div>
                 </div>`;
-        }
+            }
 
-        function renderNextBatch() {
-            const postsToShow = postsToRender.slice(currentVisibleCount, currentVisibleCount + initialLimit);
-            postsToShow.forEach(post => {
-                const html = renderPostHTML ? renderPostHTML(post) : defaultRenderHTML(post);
-                container.innerHTML += html;
-            });
+            function renderNextBatch() {
+                const postsToShow = postsToRender.slice(currentVisibleCount, currentVisibleCount + initialLimit);
+                postsToShow.forEach(post => {
+                    const html = renderPostHTML ? renderPostHTML(post) : defaultRenderHTML(post);
+                    container.innerHTML += html;
+                });
 
-            currentVisibleCount += postsToShow.length;
+                currentVisibleCount += postsToShow.length;
+                if (loadMoreBtn) {
+                    loadMoreBtn.style.display = currentVisibleCount < postsToRender.length ? 'inline-flex' : 'none';
+                }
+            }
+
+            function applyFilters() {
+                let filtered = [...cachedPosts];
+
+                if (enableSearch && activeSearch) {
+                    filtered = filtered.filter(post =>
+                        post.title.toLowerCase().includes(activeSearch.toLowerCase())
+                    );
+                }
+
+                if (enableFilter && activeTag !== 'all') {
+                    filtered = filtered.filter(post =>
+                        post.tags.some(tag => tag.name.toLowerCase() === activeTag)
+                    );
+                }
+
+                if (enableSort) {
+                    filtered.sort((a, b) => {
+                        return activeSort === 'oldest'
+                            ? new Date(a.published_at) - new Date(b.published_at)
+                            : new Date(b.published_at) - new Date(a.published_at);
+                    });
+                }
+
+                return filtered;
+            }
+
+            function resetAndRender() {
+                container.innerHTML = '';
+                currentVisibleCount = 0;
+                postsToRender = applyFilters();
+                renderNextBatch();
+            }
+
+            await fetchAllPosts();
+            resetAndRender();
+
             if (loadMoreBtn) {
-                loadMoreBtn.style.display = currentVisibleCount < postsToRender.length ? 'inline-flex' : 'none';
-            }
-        }
-
-        function applyFilters() {
-            let filtered = [...cachedPosts];
-
-            if (enableSearch && activeSearch) {
-                filtered = filtered.filter(post =>
-                    post.title.toLowerCase().includes(activeSearch.toLowerCase())
-                );
+                loadMoreBtn.addEventListener('click', () => renderNextBatch());
             }
 
-            if (enableFilter && activeTag !== 'all') {
-                filtered = filtered.filter(post =>
-                    post.tags.some(tag => tag.name.toLowerCase() === activeTag)
-                );
-            }
+            if (enableFilter) {
+                document.addEventListener('click', function (e) {
+                    if (e.target.matches('.cat_filter_bttn')) {
+                        e.preventDefault();
+                        const selected = e.target.getAttribute('data-filter');
+                        if (!selected) return;
 
-            if (enableSort) {
-                filtered.sort((a, b) => {
-                    return activeSort === 'oldest'
-                        ? new Date(a.published_at) - new Date(b.published_at)
-                        : new Date(b.published_at) - new Date(a.published_at);
+                        activeTag = selected;
+                        filterButtons.forEach(b => b.classList.remove('has_active'));
+                        e.target.classList.add('has_active');
+
+                        resetAndRender();
+                    }
                 });
             }
 
-            return filtered;
-        }
-
-        function resetAndRender() {
-            container.innerHTML = '';
-            currentVisibleCount = 0;
-            postsToRender = applyFilters();
-            renderNextBatch();
-        }
-
-        await fetchAllPosts();
-        resetAndRender();
-
-        if (loadMoreBtn) {
-            loadMoreBtn.addEventListener('click', () => renderNextBatch());
-        }
-
-        if (enableFilter) {
-            document.addEventListener('click', function (e) {
-                if (e.target.matches('.cat_filter_bttn')) {
-                    e.preventDefault();
-                    const selected = e.target.getAttribute('data-filter');
-                    if (!selected) return;
-
-                    activeTag = selected;
-                    filterButtons.forEach(b => b.classList.remove('has_active'));
-                    e.target.classList.add('has_active');
-
+            if (enableSearch && searchInput) {
+                searchInput.addEventListener('input', () => {
+                    activeSearch = searchInput.value.trim();
                     resetAndRender();
+                });
+            }
+
+            if (enableSort && sortRadioName) {
+                document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
+                    radio.addEventListener('change', () => {
+                        const label = radio.closest('label')?.querySelector('.fltrs_label')?.textContent.trim().toLowerCase();
+                        activeSort = label === 'oldest' ? 'oldest' : 'latest';
+                        resetAndRender();
+                    });
+                });
+            }
+
+            const searchClearButton = document.getElementById('srch_clear_bttn');
+            if (searchClearButton) {
+                searchClearButton.addEventListener('click', () => {
+                    activeSearch = '';
+                    if (searchInput) searchInput.value = '';
+                    resetAndRender();
+                });
+            }
+
+            document.querySelectorAll('.all_clr_bttn').forEach(el => {
+                el.addEventListener('click', () => {
+                    activeSearch = '';
+                    activeTag = 'all';
+                    activeSort = 'latest';
+
+                    if (searchInput) searchInput.value = '';
+                    filterButtons.forEach(b => b.classList.remove('has_active'));
+                    const defaultBtn = document.querySelector('.cat_filter_bttn[data-filter="all"]');
+                    if (defaultBtn) defaultBtn.classList.add('has_active');
+                    document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
+                        radio.checked = false;
+                    });
+                    resetAndRender();
+                });
+            });
+            if (enableFilter) {
+                const hash = window.location.hash.slice(1);
+                if (hash) {
+                    const deepBtn = Array.from(document.querySelectorAll('.cat_filter_bttn')).find(b => b.getAttribute('data-filter') === hash);
+                    if (deepBtn) deepBtn.click();
+                }
+            }
+        }
+
+        if (document.getElementById('ghost-single-post')) {
+            fetchAndRenderGhostPosts({
+                targetId: 'ghost-single-post',
+                initialLimit: 1,
+                enableSearch: false,
+                enableSort: false,
+                enableFilter: false,
+                postId: getUrlParam('post_id'),
+                renderPostHTML: post => {
+                    const postDate = new Date(post.published_at).toLocaleDateString('en-GB', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: '2-digit'
+                    });
+
+                    const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
+                    const primaryTag = post.primary_tag?.name || 'Article';
+                    const postExcerpt = post.excerpt || post.title;
+                    const postTitle = post.title || 'Title'
+                    const featureImageCaption = post?.feature_image_caption || '';
+
+                    const elements = {
+                        date: document.getElementById('single-post-date'),
+                        image: document.getElementById('kn_singe_post_image'),
+                        tag: document.getElementById('kh_tag'),
+                        excerpt: document.getElementById('kh_custom_excerpt'),
+                        title: document.getElementById('kh_title'),
+                        feature: document.getElementById('kh_feature_img'),
+                    };
+
+                    elements.date.textContent = postDate;
+                    elements.image.style.backgroundImage = `url(${featureImage})`;
+                    elements.tag.textContent = primaryTag;
+                    elements.excerpt.textContent = postExcerpt;
+                    elements.title.textContent = postTitle;
+                    elements.feature.innerHTML = featureImageCaption;
+
+                    const metaTags = {
+                        title: (document.title = post.title),
+                        description: document.querySelector('meta[name="description"]'),
+                        ogTitle: document.querySelector('meta[property="og:title"]'),
+                        ogDescription: document.querySelector('meta[property="og:description"]'),
+                        ogImage: document.querySelector('meta[property="og:image"]')
+                    };
+
+                    metaTags.description?.setAttribute('content', postExcerpt);
+                    metaTags.ogTitle?.setAttribute('content', post.title);
+                    metaTags.ogDescription?.setAttribute('content', postExcerpt);
+                    metaTags.ogImage?.setAttribute('content', featureImage);
+
+                    return post.html;
                 }
             });
         }
 
-        if (enableSearch && searchInput) {
-            searchInput.addEventListener('input', () => {
-                activeSearch = searchInput.value.trim();
-                resetAndRender();
+        if (document.getElementById('ghost_list')) {
+            fetchAndRenderGhostPosts({
+                targetId: 'ghost_list',
+                initialLimit: 3,
+                enableSearch: true,
+                searchInputId: 'search_input',
+                enableSort: true,
+                sortRadioName: 'sort-by-filter',
+                enableFilter: true,
+                loadMoreId: 'load_mre_bttn',
+                filterContainerSelector: '.cmnty_fltr_bttn_lstng'
             });
         }
 
-        if (enableSort && sortRadioName) {
-            document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
-                radio.addEventListener('change', () => {
-                    const label = radio.closest('label')?.querySelector('.fltrs_label')?.textContent.trim().toLowerCase();
-                    activeSort = label === 'oldest' ? 'oldest' : 'latest';
-                    resetAndRender();
-                });
+        if (document.getElementById('ghost-posts')) {
+            fetchAndRenderGhostPosts({
+                targetId: 'ghost-posts',
+                initialLimit: 2,
+                enableSearch: false,
+                enableSort: false,
+                enableFilter: false
             });
         }
 
-        const searchClearButton = document.getElementById('srch_clear_bttn');
-        if (searchClearButton) {
-            searchClearButton.addEventListener('click', () => {
-                activeSearch = '';
-                if (searchInput) searchInput.value = '';
-                resetAndRender();
+        if (document.getElementById('ghost-posts-magazine')) {
+            fetchAndRenderGhostPosts({
+                targetId: 'ghost-posts-magazine',
+                initialLimit: 50,
+                enableSearch: false,
+                enableSort: false,
+                enableFilter: false
             });
         }
 
-        document.querySelectorAll('.all_clr_bttn').forEach(el => {
-            el.addEventListener('click', () => {
-                activeSearch = '';
-                activeTag = 'all';
-                activeSort = 'latest';
-
-                if (searchInput) searchInput.value = '';
-                filterButtons.forEach(b => b.classList.remove('has_active'));
-                const defaultBtn = document.querySelector('.cat_filter_bttn[data-filter="all"]');
-                if (defaultBtn) defaultBtn.classList.add('has_active');
-                document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
-                    radio.checked = false;
-                });
-                resetAndRender();
-            });
-        });
-        if (enableFilter) {
-            const hash = window.location.hash.slice(1);
-            if (hash) {
-                const deepBtn = Array.from(document.querySelectorAll('.cat_filter_bttn')).find(b => b.getAttribute('data-filter') === hash);
-                if (deepBtn) deepBtn.click();
-            }
-        }
-    }
-
-    if (document.getElementById('ghost-single-post')) {
-        fetchAndRenderGhostPosts({
-            targetId: 'ghost-single-post',
-            initialLimit: 1,
-            enableSearch: false,
-            enableSort: false,
-            enableFilter: false,
-            postId: getUrlParam('post_id'),
-            renderPostHTML: post => {
-                const postDate = new Date(post.published_at).toLocaleDateString('en-GB', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: '2-digit'
-                });
-
-                const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
-                const primaryTag = post.primary_tag?.name || 'Article';
-                const postExcerpt = post.excerpt || post.title;
-                const postTitle = post.title || 'Title'
-                const featureImageCaption = post?.feature_image_caption || '';
-
-                const elements = {
-                    date: document.getElementById('single-post-date'),
-                    image: document.getElementById('kn_singe_post_image'),
-                    tag: document.getElementById('kh_tag'),
-                    excerpt: document.getElementById('kh_custom_excerpt'),
-                    title: document.getElementById('kh_title'),
-                    feature: document.getElementById('kh_feature_img'),
-                };
-
-                elements.date.textContent = postDate;
-                elements.image.style.backgroundImage = `url(${featureImage})`;
-                elements.tag.textContent = primaryTag;
-                elements.excerpt.textContent = postExcerpt;
-                elements.title.textContent = postTitle;
-                elements.feature.innerHTML = featureImageCaption;
-
-                const metaTags = {
-                    title: (document.title = post.title),
-                    description: document.querySelector('meta[name="description"]'),
-                    ogTitle: document.querySelector('meta[property="og:title"]'),
-                    ogDescription: document.querySelector('meta[property="og:description"]'),
-                    ogImage: document.querySelector('meta[property="og:image"]')
-                };
-
-                metaTags.description?.setAttribute('content', postExcerpt);
-                metaTags.ogTitle?.setAttribute('content', post.title);
-                metaTags.ogDescription?.setAttribute('content', postExcerpt);
-                metaTags.ogImage?.setAttribute('content', featureImage);
-
-                return post.html;
-            }
-        });
-    }
-
-    if (document.getElementById('ghost_list')) {
-        fetchAndRenderGhostPosts({
-            targetId: 'ghost_list',
-            initialLimit: 3,
-            enableSearch: true,
-            searchInputId: 'search_input',
-            enableSort: true,
-            sortRadioName: 'sort-by-filter',
-            enableFilter: true,
-            loadMoreId: 'load_mre_bttn',
-            filterContainerSelector: '.cmnty_fltr_bttn_lstng'
-        });
-    }
-
-    if (document.getElementById('ghost-posts')) {
-        fetchAndRenderGhostPosts({
-            targetId: 'ghost-posts',
-            initialLimit: 2,
-            enableSearch: false,
-            enableSort: false,
-            enableFilter: false
-        });
-    }
-
-    if (document.getElementById('ghost-posts-magazine')) {
-        fetchAndRenderGhostPosts({
-            targetId: 'ghost-posts-magazine',
-            initialLimit: 50,
-            enableSearch: false,
-            enableSort: false,
-            enableFilter: false
-        });
-    }
-
-    if (document.getElementById('ghost_box')) {
-        fetchAndRenderGhostPosts({
-            targetId: 'ghost_box',
-            initialLimit: 1,
-            renderPostHTML: post => {
-                const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
-                return `
+        if (document.getElementById('ghost_box')) {
+            fetchAndRenderGhostPosts({
+                targetId: 'ghost_box',
+                initialLimit: 1,
+                renderPostHTML: post => {
+                    const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
+                    return `
                     <div class="sptlght_img_box">
                         <a href="${DEFAULT_KN_URL}${post.id}" class="sptlght_img_lnk w-inline-block">
                             <img src="${featureImage}" loading="lazy" alt="${post.title}" class="sptlght_img">
@@ -2391,18 +2412,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="sptlght_ttle_box">
                         <a href="${DEFAULT_KN_URL}${post.id}" class="sptlght_ttle_lnk">${post.title}</a>
                     </div>`;
-            }
-        });
-    }
+                }
+            });
+        }
 
-    if (document.querySelectorAll('.popup-vimeo').length) {
-        $('.popup-vimeo').magnificPopup({
-            disableOn: 700,
-            type: 'iframe',
-            mainClass: 'mfp-fade',
-            removalDelay: 160,
-            preloader: false,
-            fixedContentPos: false
-        });
-    }
-});
+        if (document.querySelectorAll('.popup-vimeo').length) {
+            $('.popup-vimeo').magnificPopup({
+                disableOn: 700,
+                type: 'iframe',
+                mainClass: 'mfp-fade',
+                removalDelay: 160,
+                preloader: false,
+                fixedContentPos: false
+            });
+        }
+    });
