@@ -4002,12 +4002,11 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover {
     color: var(--charcoal-black);
 }
 
-[data-move],
-[data-shutter] {
+/* CSS 13.06.25 */
+/* CSS 16.06.25 */
+.op_0{
     opacity: 0;
 }
-
-/* CSS 13.06.25 */
 .sldr_custm_arrw {
     position: relative;
 }
@@ -4032,7 +4031,7 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover {
     opacity: 1;
     background: transparent;
 }
-
+/* CSS 16.06.25 */
 /* Responsive CSS */
 @media(max-width:1199px) {
     html {
