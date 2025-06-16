@@ -3991,6 +3991,9 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover {
     height: 0.058rem;
     background: rgba(35, 30, 31, 0.25);
     display: block;
+      -webkit-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
 .pagination-item .progress-bar .in-progress {
