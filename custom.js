@@ -1810,10 +1810,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (perPage > 1 && type !== 'fade') {
                 const responsiveConfigs = [
-                    { attr: 'data-per-page-sm', maxWidth: 640 },
-                    { attr: 'data-per-page-md', maxWidth: 768 },
-                    { attr: 'data-per-page-lg', maxWidth: 1024 },
-                    { attr: 'data-per-page-xl', maxWidth: 1200 },
+                    { attr: 'data-per-page-sm', maxWidth: 575 },
+                    { attr: 'data-per-page-md', maxWidth: 767 },
+                    { attr: 'data-per-page-lg', maxWidth: 991 },
+                    { attr: 'data-per-page-xl', maxWidth: 1199 },
                 ];
                 const breakpoints = {};
 
