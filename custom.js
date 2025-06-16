@@ -1776,14 +1776,12 @@ document.addEventListener('DOMContentLoaded', function () {
             const paginationContainer = wrapper.querySelector('.sldr_custom_dots_hldr > ul');
             if (!paginationContainer) return;
 
-            // Interval
             let baseInterval = 3000;
             const intervalAttr = splideEl.getAttribute('data-interval');
             const parsedInterval = parseInt(intervalAttr, 10);
             if (!isNaN(parsedInterval) && parsedInterval > 0) {
                 baseInterval = parsedInterval;
             }
-
             let perPage = 1;
             const perPageAttr = splideEl.getAttribute('data-per-page');
             const parsedPerPage = parseInt(perPageAttr, 10);
@@ -1796,8 +1794,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 type = 'fade';
                 perPage = 1;
             }
-
-            const splide = new Splide(splideEl, {
+            const options = {
                 type,
                 perPage,
                 perMove: 1,
@@ -1809,7 +1806,31 @@ document.addEventListener('DOMContentLoaded', function () {
                 pauseOnFocus: false,
                 resetProgress: true,
                 rewind: true,
-            });
+            };
+
+            if (perPage > 1 && type !== 'fade') {
+                const responsiveConfigs = [
+                    { attr: 'data-per-page-sm', maxWidth: 640 },
+                    { attr: 'data-per-page-md', maxWidth: 768 },
+                    { attr: 'data-per-page-lg', maxWidth: 1024 },
+                    { attr: 'data-per-page-xl', maxWidth: 1200 },
+                ];
+                const breakpoints = {};
+
+                responsiveConfigs.forEach(cfg => {
+                    const attrVal = splideEl.getAttribute(cfg.attr);
+                    const v = parseInt(attrVal, 10);
+                    if (!isNaN(v) && v > 0) {
+                        breakpoints[cfg.maxWidth] = { perPage: v };
+                    }
+                });
+
+                if (Object.keys(breakpoints).length > 0) {
+                    options.breakpoints = breakpoints;
+                }
+            }
+
+            const splide = new Splide(splideEl, options);
 
             function normalizeIndex(idx, length) {
                 let normalized = idx % length;
@@ -1882,7 +1903,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!innerBar) return;
                 innerBar.style.width = (rate * 100) + '%';
             }
-
             splide.on('mounted', () => {
                 setupCustomPagination();
                 updateActiveClass(normalizeIndex(splide.index, splide.length));
