@@ -1227,189 +1227,83 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     //Floor Accordion Mode
-    // const accrdWrppr = document.querySelectorAll('.floor_tab_wrppr');
+    const accrdWrppr = document.querySelectorAll('.floor_tab_wrppr');
 
-    // accrdWrppr.forEach((wrapper) => {
-    //     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-    //     const tabs = wrapper.querySelectorAll('.flloor_tab');
-    //     tabs.forEach((tab, i) => {
-    //         tab.classList.toggle('active', i === 0);
-    //         tab.style.maxHeight = i === 0
-    //             ? `${tab.scrollHeight / rem}rem`
-    //             : '0px';
-    //     });
-    //     wrapper.querySelectorAll('.flloor_tab').forEach((tab) => {
-    //         tab.querySelectorAll('.flr_swtchng_bttn')[0].classList.add('active');
-    //     });
-
-    //     wrapper.querySelectorAll('.flr_swtchng_bttn')
-    //         .forEach((btn) => {
-    //             btn.addEventListener('click', () => {
-    //                 const panelBtns = btn.closest('.flloor_tab')
-    //                     .querySelectorAll('.flr_swtchng_bttn');
-    //                 const idx = Array.from(panelBtns).indexOf(btn);
-
-    //                 tabs.forEach((t) => {
-    //                     t.classList.remove('active');
-    //                     t.style.maxHeight = '0px';
-    //                 });
-    //                 wrapper.querySelectorAll('.flr_swtchng_bttn')
-    //                     .forEach((b) => b.classList.remove('active'));
-    //                 const targetTab = tabs[idx];
-    //                 targetTab.classList.add('active');
-    //                 targetTab.style.maxHeight = `${targetTab.scrollHeight / rem}rem`;
-    //                 tabs.forEach((t) => {
-    //                     t.querySelectorAll('.flr_swtchng_bttn')[idx]
-    //                         .classList.add('active');
-    //                 });
-    //             });
-    //         });
-    // });
-
-
-    // // Add Id To Each Floor Tab
-    // let ftab = document.querySelectorAll('.flloor_tab');
-
-    // ftab.forEach((el) => {
-    //     const ftBttn = el.querySelectorAll('.floor_zone_bttn');
-    //     const fpanel = el.querySelectorAll('.img_indvdl_box');
-
-    //     ftBttn.forEach((elem, i) => {
-    //         elem.setAttribute("data-rel", i + 1);
-
-    //         let dataRelValue = elem.getAttribute("data-rel");
-
-    //         if (fpanel[i]) {
-    //             fpanel[i].id = dataRelValue;
-    //         }
-    //     });
-    // });
-    document.querySelectorAll('.floor_tab_wrppr').forEach((wrapper) => {
-        // Find panels and switch buttons
-        const floorPanels = Array.from(wrapper.querySelectorAll('.flloor_tab'));
-        const switchButtons = Array.from(wrapper.querySelectorAll('.flr_swtchng_bttn'));
-
-        // If no panels or no switch buttons, skip this wrapper entirely
-        if (floorPanels.length === 0 || switchButtons.length === 0) {
-            return;
-        }
-
-        // (Rest of initialization as before...)
-        switchButtons.forEach((btn, idx) => {
-            btn.setAttribute('data-floor-index', idx);
+    accrdWrppr.forEach((wrapper) => {
+        const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+        const tabs = wrapper.querySelectorAll('.flloor_tab');
+        tabs.forEach((tab, i) => {
+            tab.classList.toggle('active', i === 0);
+            tab.style.maxHeight = i === 0
+                ? `${tab.scrollHeight / rem}rem`
+                : '0px';
         });
-        floorPanels.forEach((panel) => {
-            panel.style.transition = 'opacity 300ms ease';
-        });
-        // Initial visibility / active classes
-        floorPanels.forEach((panel, idx) => {
-            if (idx === 0) {
-                panel.style.display = 'block';
-                panel.style.opacity = '1';
-                panel.classList.add('active');
-            } else {
-                panel.style.display = 'none';
-                panel.style.opacity = '0';
-                panel.classList.remove('active');
-            }
-        });
-        switchButtons.forEach((btn, idx) => {
-            if (idx === 0) btn.classList.add('active');
-            else btn.classList.remove('active');
+        wrapper.querySelectorAll('.flloor_tab').forEach((tab) => {
+            tab.querySelectorAll('.flr_swtchng_bttn')[0].classList.add('active');
         });
 
-        // Click listeners for floor switching
-        switchButtons.forEach((btn) => {
-            btn.addEventListener('click', async () => {
-                const targetIndex = parseInt(btn.getAttribute('data-floor-index'), 10);
-                if (isNaN(targetIndex) || targetIndex < 0 || targetIndex >= floorPanels.length) {
-                    return;
-                }
-                const activePanel = wrapper.querySelector('.flloor_tab.active');
-                const targetPanel = floorPanels[targetIndex];
-                if (activePanel === targetPanel) {
-                    // Just sync button active classes
-                    switchButtons.forEach((b) => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    return;
-                }
-                switchButtons.forEach((b) => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                // Fade out current
-                if (activePanel) {
-                    activePanel.classList.remove('active');
-                    await fadeOut(activePanel, 300);
-                }
-                // Fade in target
-                targetPanel.classList.add('active');
-                await fadeIn(targetPanel, 300);
-
-                // Initialize zones in the newly shown panel
-                initializeZoneForPanel(targetPanel);
-            });
-        });
-
-        // Zone init function
-        function initializeZoneForPanel(panel) {
-            const zoneButtons = Array.from(panel.querySelectorAll('.floor_zone_bttn'));
-            const zoneImages = Array.from(panel.querySelectorAll('.img_indvdl_box'));
-            if (zoneButtons.length === 0 || zoneImages.length === 0) {
-                return;
-            }
-            zoneButtons.forEach((btn, idx) => {
-                btn.setAttribute('data-zone-index', idx);
-                // Optionally assign IDs if needed
-                if (zoneImages[idx]) {
-                    zoneImages[idx].setAttribute('id', `floor${floorPanels.indexOf(panel)}-zone${idx}`);
-                }
-            });
-            zoneImages.forEach((imgBox, idx) => {
-                imgBox.style.display = (idx === 0) ? 'block' : 'none';
-            });
-            zoneButtons.forEach((btn, idx) => {
-                if (idx === 0) btn.classList.add('active');
-                else btn.classList.remove('active');
-            });
-            zoneButtons.forEach((btn) => {
+        wrapper.querySelectorAll('.flr_swtchng_bttn')
+            .forEach((btn) => {
                 btn.addEventListener('click', () => {
-                    const idx = parseInt(btn.getAttribute('data-zone-index'), 10);
-                    if (isNaN(idx)) return;
-                    zoneButtons.forEach((b) => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    zoneImages.forEach((imgBox, j) => {
-                        imgBox.style.display = (j === idx) ? 'block' : 'none';
+                    const panelBtns = btn.closest('.flloor_tab')
+                        .querySelectorAll('.flr_swtchng_bttn');
+                    const idx = Array.from(panelBtns).indexOf(btn);
+
+                    tabs.forEach((t) => {
+                        t.classList.remove('active');
+                        t.style.maxHeight = '0px';
+                    });
+                    wrapper.querySelectorAll('.flr_swtchng_bttn')
+                        .forEach((b) => b.classList.remove('active'));
+                    const targetTab = tabs[idx];
+                    targetTab.classList.add('active');
+                    targetTab.style.maxHeight = `${targetTab.scrollHeight / rem}rem`;
+                    tabs.forEach((t) => {
+                        t.querySelectorAll('.flr_swtchng_bttn')[idx]
+                            .classList.add('active');
                     });
                 });
             });
-        }
+    });
 
-        // Initialize first panel’s zones
-        const firstPanel = floorPanels[0];
-        if (firstPanel) {
-            initializeZoneForPanel(firstPanel);
-        }
+
+    // Add Id To Each Floor Tab
+    let ftab = document.querySelectorAll('.flloor_tab');
+
+    ftab.forEach((el) => {
+        const ftBttn = el.querySelectorAll('.floor_zone_bttn');
+        const fpanel = el.querySelectorAll('.img_indvdl_box');
+
+        ftBttn.forEach((elem, i) => {
+            elem.setAttribute("data-rel", i + 1);
+
+            let dataRelValue = elem.getAttribute("data-rel");
+
+            if (fpanel[i]) {
+                fpanel[i].id = dataRelValue;
+            }
+        });
     });
     // Loop through each .flloor_tab container
-    // $('.flloor_tab').each(function () {
-    //     let $currentTab = $(this);
-    //     let $buttons = $currentTab.find('.floor_zone_bttn');
-    //     let $images = $currentTab.find('.img_indvdl_box');
-    //     $buttons.on('click', function () {
-    //         let target = $(this).attr('data-rel');
-    //         $buttons.parent().removeClass('active');
-    //         $(this).parent().addClass('active');
-    //         $images.each(function () {
-    //             if ($(this).attr('id') === target) {
-    //                 $(this).fadeIn('slow');
-    //             } else {
-    //                 $(this).hide();
-    //             }
-    //         });
-    //         return false;
-    //     });
-    //     $buttons.eq(0).trigger('click');
-    // });
+    $('.flloor_tab').each(function () {
+        let $currentTab = $(this);
+        let $buttons = $currentTab.find('.floor_zone_bttn');
+        let $images = $currentTab.find('.img_indvdl_box');
+        $buttons.on('click', function () {
+            let target = $(this).attr('data-rel');
+            $buttons.parent().removeClass('active');
+            $(this).parent().addClass('active');
+            $images.each(function () {
+                if ($(this).attr('id') === target) {
+                    $(this).fadeIn('slow');
+                } else {
+                    $(this).hide();
+                }
+            });
+            return false;
+        });
+        $buttons.eq(0).trigger('click');
+    });
 
     // Lab Bg Height
     if (document.querySelector('.lab_dtls_txt_box .lab_bg_color') !== null) {
