@@ -3881,13 +3881,14 @@ body.dark_mode .indvdl_rght_tme_context {
 
 /* CSS 11.06.25 */
 /* CSS 12.06.25 */
-.fltrng_bttn.mob_fltr_bttn.has_active,.fltrng_bttn.mob_fltr_bttn:hover{
-    background-color: transparent!important;
+.fltrng_bttn.mob_fltr_bttn.has_active,
+.fltrng_bttn.mob_fltr_bttn:hover {
+    background-color: transparent !important;
     color: var(--charcoal-black);
 }
 
 .mob_radio_label::before {
-   position: absolute;
+    position: absolute;
     content: "";
     left: 0;
     top: 0.038rem;
@@ -3896,6 +3897,7 @@ body.dark_mode .indvdl_rght_tme_context {
     border-radius: 100%;
     border: 0.058rem solid var(--charcoal-black);
 }
+
 .mob_radio_label::after {
     position: absolute;
     content: "";
@@ -3914,53 +3916,67 @@ body.dark_mode .indvdl_rght_tme_context {
     -o-transition: all 0.3s ease-in;
     transition: all 0.3s ease-in;
 }
+
 .fltrng_bttn.mob_fltr_bttn.has_active .mob_radio_label::after {
     opacity: 1;
     -webkit-transform: scale(0.5);
     -ms-transform: scale(0.5);
     transform: scale(0.5);
 }
-.mob_cat_select.active .arrw_dwn{
-      -webkit-transform: translateY(-50%) rotate(180deg);
+
+.mob_cat_select.active .arrw_dwn {
+    -webkit-transform: translateY(-50%) rotate(180deg);
     -ms-transform: translateY(-50%) rotate(180deg);
     transform: translateY(-50%) rotate(180deg);
     -webkit-filter: brightness(1000%);
     filter: brightness(1000%);
 }
-.mob_cat_select.active .cat_select{
+
+.mob_cat_select.active .cat_select {
     background-color: var(--charcoal-black);
     color: var(--pure-white);
 }
-body.dark_mode .cat_select, body.dark_mode .mob_radio_label::before {
+
+body.dark_mode .cat_select,
+body.dark_mode .mob_radio_label::before {
     border-color: var(--pure-white);
 }
-body.dark_mode .selct_drop_box{
+
+body.dark_mode .selct_drop_box {
     background: var(--dark-grey);
     border-color: var(--pure-white);
 }
+
 body.dark_mode .mob_cat_select.active .cat_select {
     background: var(--dark-grey);
 }
+
 body.dark_mode .mob_radio_label::after {
     background: var(--pure-white);
 }
-body.dark_mode .fltrng_bttn.mob_fltr_bttn.has_active,body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover{
+
+body.dark_mode .fltrng_bttn.mob_fltr_bttn.has_active,
+body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover {
     background: transparent;
     color: var(--pure-white);
 }
+
 /* CSS 12.06.25 */
 /* CSS 13.06.25 */
-.select_dropdown{
+.select_dropdown {
     overflow: hidden;
     max-height: 0rem;
 }
-.page-number::before{
+
+.page-number::before {
     display: none;
 }
-.pagination-item * span{
+
+.pagination-item * span {
     display: inline-block;
 }
-.pagination-item .progress-bar{
+
+.pagination-item .progress-bar {
     position: absolute;
     content: "";
     top: 0;
@@ -3970,22 +3986,52 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn.has_active,body.dark_mode .fltrng_bttn
     background: rgba(35, 30, 31, 0.25);
     display: block;
 }
-.pagination-item .progress-bar .in-progress{
+
+.pagination-item .progress-bar .in-progress {
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
 }
-.pagination-item.active .progress-bar .in-progress{
+
+.pagination-item.active .progress-bar .in-progress {
     background: var(--charcoal-black);
 }
-.pagination-item.active .page-number{
+
+.pagination-item.active .page-number {
     color: var(--charcoal-black);
 }
-.innr_sldr_parent,.indvdl_stes_sldr_wrppr,.innr_bnnr_sec_box,.indvdl_innr_sldr_wrppr{
+
+[data-move],
+[data-shutter] {
     opacity: 0;
 }
+
 /* CSS 13.06.25 */
+.sldr_custm_arrw {
+    position: relative;
+}
+
+.sldr_arrw.splide__arrow {
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    width: .868rem;
+    height: .868rem;
+    font-size: 0;
+    display: inline-flex;
+    position: relative;
+    overflow: hidden;
+    position: relative;
+    -webkit-transform: none;
+    -ms-transform: none;
+    transform: none;
+    left: inherit;
+    right: inherit;
+    top: inherit;
+    opacity: 1;
+    background: transparent;
+}
 
 /* Responsive CSS */
 @media(max-width:1199px) {
@@ -4280,7 +4326,7 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn.has_active,body.dark_mode .fltrng_bttn
 
     /* CSS 09.06.25 */
     /* CSS 11.06.25 */
-    .lctn_bttn_item:last-child{
+    .lctn_bttn_item:last-child {
         margin-bottom: 0;
     }
 
