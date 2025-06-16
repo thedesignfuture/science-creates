@@ -2425,7 +2425,7 @@ document.addEventListener('DOMContentLoaded', function () {
             sortRadioName: 'sort-by-filter',
             enableFilter: true,
             loadMoreId: 'load_mre_bttn',
-            filterContainerSelector: '.cmnty_fltr_bttn_lstng'
+            filterContainerSelector: '.dsktop_flter_lstng,.mob_flter_lstng'
         });
     }
 
