@@ -1391,25 +1391,25 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
     // Loop through each .flloor_tab container
-    $('.flloor_tab').each(function () {
-        let $currentTab = $(this);
-        let $buttons = $currentTab.find('.floor_zone_bttn');
-        let $images = $currentTab.find('.img_indvdl_box');
-        $buttons.on('click', function () {
-            let target = $(this).attr('data-rel');
-            $buttons.parent().removeClass('active');
-            $(this).parent().addClass('active');
-            $images.each(function () {
-                if ($(this).attr('id') === target) {
-                    $(this).fadeIn('slow');
-                } else {
-                    $(this).hide();
-                }
-            });
-            return false;
-        });
-        $buttons.eq(0).trigger('click');
-    });
+    // $('.flloor_tab').each(function () {
+    //     let $currentTab = $(this);
+    //     let $buttons = $currentTab.find('.floor_zone_bttn');
+    //     let $images = $currentTab.find('.img_indvdl_box');
+    //     $buttons.on('click', function () {
+    //         let target = $(this).attr('data-rel');
+    //         $buttons.parent().removeClass('active');
+    //         $(this).parent().addClass('active');
+    //         $images.each(function () {
+    //             if ($(this).attr('id') === target) {
+    //                 $(this).fadeIn('slow');
+    //             } else {
+    //                 $(this).hide();
+    //             }
+    //         });
+    //         return false;
+    //     });
+    //     $buttons.eq(0).trigger('click');
+    // });
 
     // Lab Bg Height
     if (document.querySelector('.lab_dtls_txt_box .lab_bg_color') !== null) {
