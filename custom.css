@@ -3991,7 +3991,7 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover {
     height: 0.058rem;
     background: rgba(35, 30, 31, 0.25);
     display: block;
-      -webkit-transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
@@ -4011,25 +4011,31 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover {
     color: var(--charcoal-black);
 }
 
-.pagination-item:hover .page-number .progress-bar,.pagination-item.active .progress-bar {
+.pagination-item:hover .page-number .progress-bar,
+.pagination-item.active .progress-bar {
     background: rgba(35, 30, 31, 1);
 }
 
 .pagination-item:hover .page-number {
     color: var(--charcoal-black);
 }
-[data-bg-color = incubators] .pagination-item.active .progress-bar .in-progress {
+
+[data-bg-color=incubators] .pagination-item.active .progress-bar .in-progress {
     background: var(--incubators-yellow);
 }
-[data-bg-color = vc] .pagination-item.active .progress-bar .in-progress {
+
+[data-bg-color=vc] .pagination-item.active .progress-bar .in-progress {
     background: var(--vc-blue);
 }
-[data-bg-color = platform] .pagination-item.active .progress-bar .in-progress {
+
+[data-bg-color=platform] .pagination-item.active .progress-bar .in-progress {
     background: var(--platform-green);
 }
-[data-bg-color = outreach] .pagination-item.active .progress-bar .in-progress {
+
+[data-bg-color=outreach] .pagination-item.active .progress-bar .in-progress {
     background: var(--outreach-purple);
 }
+
 /* CSS 13.06.25 */
 /* CSS 16.06.25 */
 [data-opacity] {
@@ -4321,6 +4327,12 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover {
     }
 
     /* CSS 11.06.25 */
+    /* CSS 16.06.25 */
+    .drk_menu_lstng.pllr_menu_lstng .drk_menu_lnk::after {
+        display: none;
+    }
+
+    /* CSS 16.06.25 */
 }
 
 @media(max-width:479px) {
