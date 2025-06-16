@@ -4011,7 +4011,7 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover {
     color: var(--charcoal-black);
 }
 
-.pagination-item:hover .page-number .progress-bar {
+.pagination-item:hover .page-number .progress-bar,.pagination-item.active .progress-bar {
     background: rgba(35, 30, 31, 1);
 }
 
