@@ -4018,7 +4018,7 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover {
 .pagination-item .ppage-number:hover {
     color: var(--charcoal-black);
 }
-[data-bg-color = incubators].pagination-item.active .progress-bar .in-progress {
+[data-bg-color = incubators] .pagination-item.active .progress-bar .in-progress {
     background: var(--incubators-yellow);
 }
 /* CSS 13.06.25 */
