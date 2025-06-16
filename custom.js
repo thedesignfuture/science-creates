@@ -1802,7 +1802,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 interval: baseInterval,
                 speed: 1000,
                 pagination: false,
-                gap:'0.579rem',
+                gap: '0.579rem',
                 arrows: true,
                 pauseOnHover: false,
                 pauseOnFocus: false,
@@ -2122,13 +2122,33 @@ document.addEventListener('DOMContentLoaded', function () {
         const filterTagRequest = filterTagData ? `&filter=tag:${filterTagData}` : '';
 
         let filterButtons = [];
-
         let activeSearch = '';
         let activeTag = 'all';
         let activeSort = 'latest';
         let cachedPosts = [];
         let currentVisibleCount = 0;
         let postsToRender = [];
+
+        function collectFilterButtons() {
+            filterButtons = [];
+            if (!filterContainerSelector) return;
+            if (typeof filterContainerSelector === 'string') {
+                const selectors = filterContainerSelector
+                    .split(',')
+                    .map(s => s.trim())
+                    .filter(s => s.length > 0)
+                    .map(s => `${s} .cat_filter_bttn`);
+                if (selectors.length) {
+                    const combined = selectors.join(', ');
+                    filterButtons = Array.from(document.querySelectorAll(combined));
+                }
+            } else if (Array.isArray(filterContainerSelector)) {
+                filterContainerSelector.forEach(sel => {
+                    const btns = Array.from(document.querySelectorAll(`${sel} .cat_filter_bttn`));
+                    filterButtons.push(...btns);
+                });
+            }
+        }
 
         async function fetchAllPosts() {
             const url = `${API_URL}${postId}?key=${API_KEY}&limit=100&include=tags,authors${filterTagRequest}&order=published_at desc`;
@@ -2144,12 +2164,11 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             if (enableFilter && filterContainerSelector) {
-                filterButtons = Array.from(document.querySelectorAll(
-                    `${filterContainerSelector} .cat_filter_bttn`
-                ));
+                collectFilterButtons();
                 filterButtons.forEach(btn => btn.classList.remove('has_active'));
-                const allBtn = filterButtons.find(btn => btn.dataset.filter === 'all');
-                if (allBtn) allBtn.classList.add('has_active');
+                const allBtns = filterButtons.filter(btn => btn.dataset.filter === 'all');
+                allBtns.forEach(btn => btn.classList.add('has_active'));
+                activeTag = 'all';
             }
         }
 
@@ -2161,42 +2180,42 @@ document.addEventListener('DOMContentLoaded', function () {
             const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
 
             return `
-                <div data-move="up" data-delay="0.4" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
-                    <div class="row knwldge_hub_row">
-                        <div class="col col-3 knwldge_hub_img_col">
-                            <div class="knwldge_hub_img_box">
-                                <a href="${DEFAULT_KN_URL}${post.id}" class="knwldge_hhub_lnk_box w-inline-block">
-                                    <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
-                                </a>
-                            </div>
+            <div data-move="up" data-delay="0.4" role="listitem" class="invdl_knwldge_row_hlder w-dyn-item">
+                <div class="row knwldge_hub_row">
+                    <div class="col col-3 knwldge_hub_img_col">
+                        <div class="knwldge_hub_img_box">
+                            <a href="${DEFAULT_KN_URL}${post.id}" class="knwldge_hhub_lnk_box w-inline-block">
+                                <img src="${featureImage}" loading="lazy" alt="${post.title}" class="knwldge_hub_img">
+                            </a>
                         </div>
-                        <div class="col col-9 knwldge_hub_info_col">
-                            <div class="knwldge_info_box pl_big">
-                                <div class="knwldge_info_box_innr">
-                                    <div class="knwldge_info_hdr">
-                                        <div class="knwldge_dte_box"><div>${postDate}</div></div>
-                                        <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
-                                    </div>
-                                    <div class="knwldge_ttle_box pr_big">
-                                        <a href="${DEFAULT_KN_URL}${post.id}" class="knwldge_ttle_lnk title_h2 w-inline-block">
-                                            <div>${post.title}</div>
-                                        </a>
-                                    </div>
-                                    <div class="knwldge_bttm_bttn_box">
-                                        <a href="${DEFAULT_KN_URL}${post.id}" class="shape_bttn w-inline-block">
-                                            <div class="shpe_cover_one">
-                                                <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
-                                            </div>
-                                            <div class="shpe_cover_two shpe_cover_one">
-                                                <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
-                                            </div>
-                                        </a>
-                                    </div>
+                    </div>
+                    <div class="col col-9 knwldge_hub_info_col">
+                        <div class="knwldge_info_box pl_big">
+                            <div class="knwldge_info_box_innr">
+                                <div class="knwldge_info_hdr">
+                                    <div class="knwldge_dte_box"><div>${postDate}</div></div>
+                                    <div class="knwldge_cat_box"><div class="evnts_type_tag"><div>${primaryTag}</div></div></div>
+                                </div>
+                                <div class="knwldge_ttle_box pr_big">
+                                    <a href="${DEFAULT_KN_URL}${post.id}" class="knwldge_ttle_lnk title_h2 w-inline-block">
+                                        <div>${post.title}</div>
+                                    </a>
+                                </div>
+                                <div class="knwldge_bttm_bttn_box">
+                                    <a href="${DEFAULT_KN_URL}${post.id}" class="shape_bttn w-inline-block">
+                                        <div class="shpe_cover_one">
+                                            <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                                        </div>
+                                        <div class="shpe_cover_two shpe_cover_one">
+                                            <img src="https://cdn.prod.website-files.com/6793cf33c35e2c59ec3c7f51/67ac73219c9a93e810f6683c_arrw_top_rght.svg" class="bttn_shape">
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>`;
+                </div>
+            </div>`;
         }
 
         function renderNextBatch() {
@@ -2252,16 +2271,25 @@ document.addEventListener('DOMContentLoaded', function () {
             loadMoreBtn.addEventListener('click', () => renderNextBatch());
         }
 
-        if (enableFilter) {
-            document.addEventListener('click', function (e) {
-                if (e.target.matches('.cat_filter_bttn')) {
-                    e.preventDefault();
-                    const selected = e.target.getAttribute('data-filter');
-                    if (!selected) return;
 
+        if (enableFilter && filterContainerSelector) {
+            document.addEventListener('click', function (e) {
+                const el = e.target;
+                const btn = el.matches('.cat_filter_bttn') ? el : el.closest('.cat_filter_bttn');
+                if (btn && btn.dataset.filter) {
+                    e.preventDefault();
+                    const selected = btn.dataset.filter;
                     activeTag = selected;
-                    filterButtons.forEach(b => b.classList.remove('has_active'));
-                    e.target.classList.add('has_active');
+
+                    collectFilterButtons();
+
+                    filterButtons.forEach(b => {
+                        if (b.dataset.filter === activeTag) {
+                            b.classList.add('has_active');
+                        } else {
+                            b.classList.remove('has_active');
+                        }
+                    });
 
                     resetAndRender();
                 }
@@ -2301,24 +2329,37 @@ document.addEventListener('DOMContentLoaded', function () {
                 activeSort = 'latest';
 
                 if (searchInput) searchInput.value = '';
-                filterButtons.forEach(b => b.classList.remove('has_active'));
-                const defaultBtn = document.querySelector('.cat_filter_bttn[data-filter="all"]');
-                if (defaultBtn) defaultBtn.classList.add('has_active');
-                document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
-                    radio.checked = false;
+
+                collectFilterButtons();
+                filterButtons.forEach(b => {
+                    if (b.dataset.filter === 'all') {
+                        b.classList.add('has_active');
+                    } else {
+                        b.classList.remove('has_active');
+                    }
                 });
+
+                if (enableSort && sortRadioName) {
+                    document.querySelectorAll(`input[name="${sortRadioName}"]`).forEach(radio => {
+                        radio.checked = false;
+                    });
+                }
+
                 resetAndRender();
             });
         });
+
         if (enableFilter) {
             const hash = window.location.hash.slice(1);
             if (hash) {
-                const deepBtn = Array.from(document.querySelectorAll('.cat_filter_bttn')).find(b => b.getAttribute('data-filter') === hash);
-                if (deepBtn) deepBtn.click();
+                collectFilterButtons();
+                const deepBtn = filterButtons.find(b => b.dataset.filter === hash);
+                if (deepBtn) {
+                    deepBtn.click();
+                }
             }
         }
     }
-
     if (document.getElementById('ghost-single-post')) {
         fetchAndRenderGhostPosts({
             targetId: 'ghost-single-post',
