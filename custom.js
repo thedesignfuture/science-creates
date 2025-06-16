@@ -1760,138 +1760,148 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
     // Inner Banner Slider
-    const sliderRoots = document.querySelectorAll('.innr_sldr');
-    if (!sliderRoots.length) {
-        return;
-    }
+    function initSliders() {
+        const sliderRoots = document.querySelectorAll('.innr_sldr');
+        if (!sliderRoots.length) return;
 
-    if (typeof Splide !== 'function') {
-        console.warn('Splide is not loaded; skipping slider initialization.');
-        return;
-    }
-
-    sliderRoots.forEach((splideEl) => {
-        const wrapper = splideEl.closest('.innr_sldr_parent');
-        if (!wrapper) {
+        if (typeof Splide !== 'function') {
+            console.warn('Splide is not loaded; skipping slider initialization.');
             return;
         }
 
-        const paginationContainer = wrapper.querySelector('.sldr_custom_dots_hldr > ul');
-        if (!paginationContainer) {
-            return;
-        }
+        sliderRoots.forEach((splideEl) => {
+            const wrapper = splideEl.closest('.innr_sldr_parent');
+            if (!wrapper) return;
 
-        const baseInterval = parseInt(splideEl.getAttribute('data-interval'), 10) || 3000;
+            const paginationContainer = wrapper.querySelector('.sldr_custom_dots_hldr > ul');
+            if (!paginationContainer) return;
 
-        const splide = new Splide(splideEl, {
-            type: 'loop',
-            perPage: 1,
-            perMove: 1,
-            autoplay: true,
-            interval: baseInterval,
-            pagination: false,
-            arrows: true,
-            pauseOnHover: false,
-            pauseOnFocus: false,
-            resetProgress: true,
-        });
-
-        function normalizeIndex(idx, length) {
-            let normalized = idx % length;
-            if (normalized < 0) normalized += length;
-            return normalized;
-        }
-
-        function setupCustomPagination() {
-            const total = splide.length;
-            paginationContainer.innerHTML = '';
-            for (let i = 0; i < total; i++) {
-                const item = document.createElement('li');
-                item.classList.add('pagination-item');
-                item.setAttribute('data-index', i);
-                item.setAttribute('role', 'button');
-                item.setAttribute('tabindex', '0');
-                item.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-
-                const label = document.createElement('button');
-                label.classList.add('page-number');
-                label.type = 'button';
-                label.textContent = ('0' + (i + 1));
-                item.appendChild(label);
-
-                const bar = document.createElement('span');
-                bar.classList.add('progress-bar');
-                const inner = document.createElement('span');
-                inner.classList.add('in-progress');
-                inner.style.width = '0%';
-                bar.appendChild(inner);
-                label.appendChild(bar);
-
-                item.addEventListener('click', () => {
-                    splide.go(i);
-                    if (splide.options.autoplay && splide.Components && splide.Components.Autoplay) {
-                        splide.Components.Autoplay.play();
-                    }
-                });
-                item.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        item.click();
-                    }
-                });
-
-                paginationContainer.appendChild(item);
+            // Interval
+            let baseInterval = 3000;
+            const intervalAttr = splideEl.getAttribute('data-interval');
+            const parsedInterval = parseInt(intervalAttr, 10);
+            if (!isNaN(parsedInterval) && parsedInterval > 0) {
+                baseInterval = parsedInterval;
             }
-        }
-        function updateActiveClass(index) {
-            const items = paginationContainer.querySelectorAll('.pagination-item');
-            items.forEach(el => {
-                const idx = parseInt(el.getAttribute('data-index'), 10);
-                const isActive = (idx === index);
-                el.classList.toggle('active', isActive);
-                if (!isActive) {
-                    const inner = el.querySelector('.in-progress');
-                    if (inner) {
-                        inner.style.width = '0%';
+
+            let perPage = 1;
+            const perPageAttr = splideEl.getAttribute('data-per-page');
+            const parsedPerPage = parseInt(perPageAttr, 10);
+            if (!isNaN(parsedPerPage) && parsedPerPage > 0) {
+                perPage = parsedPerPage;
+            }
+            let type = 'loop';
+            const fadeAttr = splideEl.getAttribute('data-fade');
+            if (fadeAttr === 'true') {
+                type = 'fade';
+                perPage = 1;
+            }
+
+            const splide = new Splide(splideEl, {
+                type,
+                perPage,
+                perMove: 1,
+                autoplay: true,
+                interval: baseInterval,
+                pagination: false,
+                arrows: true,
+                pauseOnHover: false,
+                pauseOnFocus: false,
+                resetProgress: true,
+                rewind: true,
+            });
+
+            function normalizeIndex(idx, length) {
+                let normalized = idx % length;
+                if (normalized < 0) normalized += length;
+                return normalized;
+            }
+
+            function setupCustomPagination() {
+                const total = splide.length;
+                paginationContainer.innerHTML = '';
+                for (let i = 0; i < total; i++) {
+                    const item = document.createElement('li');
+                    item.classList.add('pagination-item');
+                    item.setAttribute('data-index', i);
+                    item.setAttribute('role', 'button');
+                    item.setAttribute('tabindex', '0');
+                    item.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+
+                    const label = document.createElement('button');
+                    label.classList.add('page-number');
+                    label.type = 'button';
+                    label.textContent = i + 1 > 9 ? (i + 1) : ('0' + (i + 1));
+                    item.appendChild(label);
+
+                    const bar = document.createElement('span');
+                    bar.classList.add('progress-bar');
+                    const inner = document.createElement('span');
+                    inner.classList.add('in-progress');
+                    inner.style.width = '0%';
+                    bar.appendChild(inner);
+                    label.appendChild(bar);
+
+                    item.addEventListener('click', () => {
+                        splide.go(i);
+                        if (splide.options.autoplay && splide.Components?.Autoplay) {
+                            splide.Components.Autoplay.play();
+                        }
+                    });
+
+                    item.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            item.click();
+                        }
+                    });
+
+                    paginationContainer.appendChild(item);
+                }
+            }
+
+            function updateActiveClass(index) {
+                const items = paginationContainer.querySelectorAll('.pagination-item');
+                items.forEach(el => {
+                    const idx = parseInt(el.getAttribute('data-index'), 10);
+                    const isActive = idx === index;
+                    el.classList.toggle('active', isActive);
+                    if (!isActive) {
+                        const inner = el.querySelector('.in-progress');
+                        if (inner) inner.style.width = '0%';
                     }
+                });
+            }
+
+            function onAutoplayPlaying(rate) {
+                const idx = normalizeIndex(splide.index, splide.length);
+                updateActiveClass(idx);
+                const activeItem = paginationContainer.querySelector(`.pagination-item[data-index="${idx}"]`);
+                if (!activeItem) return;
+                const innerBar = activeItem.querySelector('.in-progress');
+                if (!innerBar) return;
+                innerBar.style.width = (rate * 100) + '%';
+            }
+
+            splide.on('mounted', () => {
+                setupCustomPagination();
+                updateActiveClass(normalizeIndex(splide.index, splide.length));
+            });
+
+            splide.on('moved', (newIndex) => {
+                updateActiveClass(normalizeIndex(newIndex, splide.length));
+                if (splide.options.autoplay && splide.Components?.Autoplay) {
+                    splide.Components.Autoplay.play();
                 }
             });
-        }
 
-        function onAutoplayPlaying(rate) {
-            const idx = normalizeIndex(splide.index, splide.length);
-            updateActiveClass(idx);
-            const activeItem = paginationContainer.querySelector(`.pagination-item[data-index="${idx}"]`);
-            if (!activeItem) {
-                return;
-            }
-            const innerBar = activeItem.querySelector('.in-progress');
-            if (!innerBar) {
-                return;
-            }
-            innerBar.style.width = (rate * 100) + '%';
-        }
+            splide.on('autoplay:playing', onAutoplayPlaying);
 
-        splide.on('mounted', () => {
-            setupCustomPagination();
-            const initIdx = normalizeIndex(splide.index, splide.length);
-            updateActiveClass(initIdx);
+            splide.mount();
         });
+    }
 
-        splide.on('moved', (newIndex) => {
-            const idx = normalizeIndex(newIndex, splide.length);
-            updateActiveClass(idx);
-            if (splide.options.autoplay && splide.Components && splide.Components.Autoplay) {
-                splide.Components.Autoplay.play();
-            }
-        });
-
-        splide.on('autoplay:playing', onAutoplayPlaying);
-
-        splide.mount();
-    });
-
-
+    initSliders();
 
     // Dark Menu Hover Color
     const MOBILE_BREAKPOINT = 768;
