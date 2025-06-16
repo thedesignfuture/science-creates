@@ -4004,7 +4004,7 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover {
 
 /* CSS 13.06.25 */
 /* CSS 16.06.25 */
-.op_0{
+[data-opacity]{
     opacity: 0;
 }
 .sldr_custm_arrw {
