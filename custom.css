@@ -4011,11 +4011,11 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover {
     color: var(--charcoal-black);
 }
 
-.pagination-item .ppage-number:hover .progress-bar {
+.pagination-item:hover .ppage-number .progress-bar {
     background: rgba(35, 30, 31, 1);
 }
 
-.pagination-item .ppage-number:hover {
+.pagination-item:hover .ppage-number {
     color: var(--charcoal-black);
 }
 [data-bg-color = incubators] .pagination-item.active .progress-bar .in-progress {
