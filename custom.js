@@ -1800,6 +1800,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 perMove: 1,
                 autoplay: true,
                 interval: baseInterval,
+                speed: 1000,
                 pagination: false,
                 gap:'0.579rem',
                 arrows: true,
