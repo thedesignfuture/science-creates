@@ -1801,6 +1801,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 autoplay: true,
                 interval: baseInterval,
                 pagination: false,
+                gap:'0.579rem',
                 arrows: true,
                 pauseOnHover: false,
                 pauseOnFocus: false,
