@@ -4021,6 +4021,15 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover {
 [data-bg-color = incubators] .pagination-item.active .progress-bar .in-progress {
     background: var(--incubators-yellow);
 }
+[data-bg-color = vc] .pagination-item.active .progress-bar .in-progress {
+    background: var(--vc-blue);
+}
+[data-bg-color = platform] .pagination-item.active .progress-bar .in-progress {
+    background: var(--platform-green);
+}
+[data-bg-color = outreach] .pagination-item.active .progress-bar .in-progress {
+    background: var(--outreach-purple);
+}
 /* CSS 13.06.25 */
 /* CSS 16.06.25 */
 [data-opacity] {
