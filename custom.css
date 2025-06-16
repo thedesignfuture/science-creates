@@ -3976,6 +3976,12 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover {
     display: inline-block;
 }
 
+.pagination-item .ppage-number {
+    -webkit-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
 .pagination-item .progress-bar {
     position: absolute;
     content: "";
@@ -4002,11 +4008,22 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover {
     color: var(--charcoal-black);
 }
 
+.pagination-item .ppage-number:hover .progress-bar {
+    background: rgba(35, 30, 31, 1);
+}
+
+.pagination-item .ppage-number:hover {
+    color: var(--charcoal-black);
+}
+[data-bg-color = incubators].pagination-item.active .progress-bar .in-progress {
+    background: var(--incubators-yellow);
+}
 /* CSS 13.06.25 */
 /* CSS 16.06.25 */
-[data-opacity]{
+[data-opacity] {
     opacity: 0;
 }
+
 .sldr_custm_arrw {
     position: relative;
 }
@@ -4031,6 +4048,7 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover {
     opacity: 1;
     background: transparent;
 }
+
 /* CSS 16.06.25 */
 /* Responsive CSS */
 @media(max-width:1199px) {
