@@ -4176,7 +4176,7 @@ body.dark_mode .invst_ntce_section.bg_vc {
     color: var(--charcoal-black);
 }
 
-body.dark_mode .sldr_arrw.splide__arrow * img {
+body.dark_mode .sldr_arrw.splide__arrow .sldr_arrw_icon {
     -webkit-filter: invert(1) brightness(1000%)!important;
     filter: invert(1) brightness(1000%)!important;
 }
