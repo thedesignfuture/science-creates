@@ -4082,6 +4082,9 @@ body.dark_mode .pagination-item:hover .page-number .progress-bar,
 body.dark_mode .pagination-item.active .progress-bar {
     background: var(--pure-white);
 }
+body.dark_mode .invst_ntce_section.bg_vc {
+    color: var(--charcoal-black);
+}
 /* CSS 17.06.25 */
 /* Responsive CSS */
 @media(max-width:1199px) {
