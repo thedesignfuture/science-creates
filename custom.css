@@ -4078,7 +4078,7 @@ body.dark_mode .pagination-item .page-number{
 body.dark_mode .pagination-item .progress-bar{
     background: rgba(255, 255, 255, 0.55);
 }
-body.dark_mode .pagination-item:hover .page-number{
+body.dark_mode .pagination-item:hover .page-number,body.dark_mode .pagination-item.active .page-number{
     color: var(--pure-white);
 }
 body.dark_mode .pagination-item:hover .page-number .progress-bar,
