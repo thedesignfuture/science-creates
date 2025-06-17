@@ -4068,6 +4068,21 @@ body.dark_mode .fltrng_bttn.mob_fltr_bttn:hover {
 }
 
 /* CSS 16.06.25 */
+/* CSS 17.06.25 */
+body:not(.ba_enabled) .invst_ntce_parent_section{
+    display: none;
+}
+body.dark_mode .pagination-item .page-number{
+    color: rgba(255, 255, 255, 0.55);
+}
+body.dark_mode .pagination-item:hover .page-number{
+    color: var(--pure-white);
+}
+body.dark_mode .pagination-item:hover .page-number .progress-bar,
+body.dark_mode .pagination-item.active .progress-bar {
+    background: var(--pure-white);
+}
+/* CSS 17.06.25 */
 /* Responsive CSS */
 @media(max-width:1199px) {
     html {
