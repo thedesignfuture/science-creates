@@ -4191,7 +4191,19 @@ body.dark_mode .sldr_arrw.splide__arrow .sldr_arrw_icon {
     filter: invert(1) brightness(1000%) !important;
 }
 
-
+.flr_swtchng_bttn:hover .bttn_icon:not(.bttn_icon_last){
+    -webkit-transform: translateX(100%);
+    -ms-transform: translateX(100%);
+    transform: translateX(100%);
+}
+.flr_swtchng_bttn:hover .bttn_icon.bttn_icon_last{
+    -webkit-transform: translateX(0);
+    -ms-transform: translateX(0);
+    transform: translateX(0);
+    -webkit-transition-delay: .2s;
+    -o-transition-delay: .2s;
+    transition-delay: .2s;
+}
 /* CSS 17.06.25 */
 /* Responsive CSS */
 @media(max-width:1199px) {
