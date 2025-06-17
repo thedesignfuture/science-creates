@@ -464,48 +464,48 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     //  Contact Piller Slider Append Arrows
-    const wrappers = document.querySelectorAll('.cntct_sldr_outr');
+    // const wrappers = document.querySelectorAll('.cntct_sldr_outr');
 
-    wrappers.forEach(wrapper => {
-        const remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
-        const pillarBg = wrapper.querySelector('.pillar_bg')
-        const items = wrapper.querySelectorAll('.cntct_box_item');
-        const buttons = wrapper.querySelectorAll('.pllr_bttn');
+    // wrappers.forEach(wrapper => {
+    //     const remVal = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    //     const pillarBg = wrapper.querySelector('.pillar_bg')
+    //     const items = wrapper.querySelectorAll('.cntct_box_item');
+    //     const buttons = wrapper.querySelectorAll('.pllr_bttn');
 
-        function activate(index) {
-            buttons.forEach((btn, i) => {
-                const item = items[i];
-                const color = btn.getAttribute('data-bg-color') || '';
+    //     function activate(index) {
+    //         buttons.forEach((btn, i) => {
+    //             const item = items[i];
+    //             const color = btn.getAttribute('data-bg-color') || '';
 
-                if (i === index) {
-                    item.classList.add('active');
-                    item.style.maxHeight = `${item.scrollHeight / remVal}rem`;
-                    pillarBg.style.backgroundColor = color;
-                    btn.classList.add('active');
-                    btn.style.backgroundColor = color;
-                    btn.style.borderColor = color;
-                } else {
-                    item.classList.remove('active');
-                    item.style.maxHeight = '0px';
-                    btn.classList.remove('active');
-                    btn.style.backgroundColor = '';
-                    btn.style.borderColor = '';
-                }
-            });
-        }
-        buttons.forEach((btn, i) => {
-            btn.addEventListener('click', () => activate(i));
-        });
-        if (buttons.length) activate(0);
-    });
+    //             if (i === index) {
+    //                 item.classList.add('active');
+    //                 item.style.maxHeight = `${item.scrollHeight / remVal}rem`;
+    //                 pillarBg.style.backgroundColor = color;
+    //                 btn.classList.add('active');
+    //                 btn.style.backgroundColor = color;
+    //                 btn.style.borderColor = color;
+    //             } else {
+    //                 item.classList.remove('active');
+    //                 item.style.maxHeight = '0px';
+    //                 btn.classList.remove('active');
+    //                 btn.style.backgroundColor = '';
+    //                 btn.style.borderColor = '';
+    //             }
+    //         });
+    //     }
+    //     buttons.forEach((btn, i) => {
+    //         btn.addEventListener('click', () => activate(i));
+    //     });
+    //     if (buttons.length) activate(0);
+    // });
 
-    let dataWrapper = document.querySelectorAll('.thmbnl_sldr_wrppr');
-    dataWrapper.forEach((elem, i) => {
-        let dataSlideItem = elem.querySelectorAll('.thmbnl_sldr_wrppr .tem_thmbnl_item');
-        dataSlideItem.forEach((el, i) => {
-            el.setAttribute('data-slide', i + 1);
-        });
-    })
+    // let dataWrapper = document.querySelectorAll('.thmbnl_sldr_wrppr');
+    // dataWrapper.forEach((elem, i) => {
+    //     let dataSlideItem = elem.querySelectorAll('.thmbnl_sldr_wrppr .tem_thmbnl_item');
+    //     dataSlideItem.forEach((el, i) => {
+    //         el.setAttribute('data-slide', i + 1);
+    //     });
+    // })
 
 
     //  Incubators Lab Slider Append Arrows
@@ -1227,181 +1227,181 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     //Floor Accordion Mode
-   function fadeOut(el, duration = 300) {
-                el.style.transition = `opacity ${duration}ms ease`;
-                el.style.opacity = '0';
-                setTimeout(() => {
-                    el.style.display = 'none';
-                }, duration);
+    function fadeOut(el, duration = 300) {
+        el.style.transition = `opacity ${duration}ms ease`;
+        el.style.opacity = '0';
+        setTimeout(() => {
+            el.style.display = 'none';
+        }, duration);
+    }
+
+    function fadeIn(el, duration = 300) {
+        el.style.display = 'block';
+        el.style.opacity = '0';
+        el.style.transition = `opacity ${duration}ms ease`;
+        void el.offsetWidth;
+        el.style.opacity = '1';
+    }
+    document.querySelectorAll('.floor_tab_custom').forEach((wrapper) => {
+        const panels = Array.from(wrapper.querySelectorAll('.flloor_tab'));
+        if (panels.length === 0) return;
+
+        const externalButtons = Array.from(wrapper.querySelectorAll('.fllr_slct_bttn_row .flr_swtchng_bttn'));
+        panels.forEach((panel, i) => {
+            panel.style.transition = 'opacity 0.3s ease';
+            if (i === 0) {
+                panel.style.display = 'block';
+                panel.style.opacity = '1';
+                panel.classList.add('active');
+            } else {
+                panel.style.display = 'none';
+                panel.style.opacity = '0';
+                panel.classList.remove('active');
+            }
+        });
+
+        externalButtons.forEach((btn, i) => {
+            btn.classList.toggle('active', i === 0);
+        });
+
+        function switchToPanel(targetIdx) {
+            const targetPanel = panels[targetIdx];
+            if (!targetPanel) return;
+
+            const activePanel = wrapper.querySelector('.flloor_tab.active');
+            if (targetPanel === activePanel) return;
+
+            externalButtons.forEach((b, i) => b.classList.toggle('active', i === targetIdx));
+
+            if (activePanel) {
+                activePanel.classList.remove('active');
+                fadeOut(activePanel, 300);
             }
 
-            function fadeIn(el, duration = 300) {
-                el.style.display = 'block';
-                el.style.opacity = '0';
-                el.style.transition = `opacity ${duration}ms ease`;
-                void el.offsetWidth;
-                el.style.opacity = '1';
+            targetPanel.classList.add('active');
+            fadeIn(targetPanel, 300);
+
+            const zoneBtns = Array.from(targetPanel.querySelectorAll('.floor_zone_bttn'));
+            const imgBoxes = Array.from(targetPanel.querySelectorAll('.img_indvdl_box'));
+            if (zoneBtns.length && imgBoxes.length) {
+                zoneBtns.forEach((zb, zi) => {
+                    zb.classList.toggle('active', zi === 0);
+                    if (imgBoxes[zi]) {
+                        imgBoxes[zi].style.display = (zi === 0 ? 'block' : 'none');
+                        imgBoxes[zi].style.opacity = (zi === 0 ? '1' : '0');
+                    }
+                });
             }
-            document.querySelectorAll('.floor_tab_custom').forEach((wrapper) => {
-                const panels = Array.from(wrapper.querySelectorAll('.flloor_tab'));
-                if (panels.length === 0) return;
+        }
 
-                const externalButtons = Array.from(wrapper.querySelectorAll('.fllr_slct_bttn_row .flr_swtchng_bttn'));
-                panels.forEach((panel, i) => {
-                    panel.style.transition = 'opacity 0.3s ease';
-                    if (i === 0) {
-                        panel.style.display = 'block';
-                        panel.style.opacity = '1';
-                        panel.classList.add('active');
-                    } else {
-                        panel.style.display = 'none';
-                        panel.style.opacity = '0';
-                        panel.classList.remove('active');
-                    }
-                });
+        externalButtons.forEach((btn, idx) => {
+            btn.addEventListener('click', () => {
+                switchToPanel(idx);
+            });
+        });
 
-                externalButtons.forEach((btn, i) => {
-                    btn.classList.toggle('active', i === 0);
-                });
+        // Zone buttons
+        panels.forEach((panel) => {
+            const zoneBtns = Array.from(panel.querySelectorAll('.floor_zone_bttn'));
+            const imgBoxes = Array.from(panel.querySelectorAll('.img_indvdl_box'));
 
-                function switchToPanel(targetIdx) {
-                    const targetPanel = panels[targetIdx];
-                    if (!targetPanel) return;
-
-                    const activePanel = wrapper.querySelector('.flloor_tab.active');
-                    if (targetPanel === activePanel) return;
-
-                    externalButtons.forEach((b, i) => b.classList.toggle('active', i === targetIdx));
-
-                    if (activePanel) {
-                        activePanel.classList.remove('active');
-                        fadeOut(activePanel, 300);
-                    }
-
-                    targetPanel.classList.add('active');
-                    fadeIn(targetPanel, 300);
-
-                    const zoneBtns = Array.from(targetPanel.querySelectorAll('.floor_zone_bttn'));
-                    const imgBoxes = Array.from(targetPanel.querySelectorAll('.img_indvdl_box'));
-                    if (zoneBtns.length && imgBoxes.length) {
-                        zoneBtns.forEach((zb, zi) => {
-                            zb.classList.toggle('active', zi === 0);
-                            if (imgBoxes[zi]) {
-                                imgBoxes[zi].style.display = (zi === 0 ? 'block' : 'none');
-                                imgBoxes[zi].style.opacity = (zi === 0 ? '1' : '0');
-                            }
-                        });
-                    }
+            zoneBtns.forEach((zb, zi) => {
+                zb.setAttribute('data-rel', zi + 1);
+                if (imgBoxes[zi]) {
+                    imgBoxes[zi].id = String(zi + 1);
                 }
-
-                externalButtons.forEach((btn, idx) => {
-                    btn.addEventListener('click', () => {
-                        switchToPanel(idx);
+                zb.addEventListener('click', () => {
+                    zoneBtns.forEach(b => b.classList.remove('active'));
+                    zb.classList.add('active');
+                    imgBoxes.forEach((box, bidx) => {
+                        box.style.display = (bidx === zi ? 'block' : 'none');
+                        box.style.opacity = (bidx === zi ? '1' : '0');
                     });
-                });
-
-                // Zone buttons
-                panels.forEach((panel) => {
-                    const zoneBtns = Array.from(panel.querySelectorAll('.floor_zone_bttn'));
-                    const imgBoxes = Array.from(panel.querySelectorAll('.img_indvdl_box'));
-
-                    zoneBtns.forEach((zb, zi) => {
-                        zb.setAttribute('data-rel', zi + 1);
-                        if (imgBoxes[zi]) {
-                            imgBoxes[zi].id = String(zi + 1);
-                        }
-                        zb.addEventListener('click', () => {
-                            zoneBtns.forEach(b => b.classList.remove('active'));
-                            zb.classList.add('active');
-                            imgBoxes.forEach((box, bidx) => {
-                                box.style.display = (bidx === zi ? 'block' : 'none');
-                                box.style.opacity = (bidx === zi ? '1' : '0');
-                            });
-                        });
-                    });
-
-                    if (zoneBtns.length && imgBoxes.length) {
-                        zoneBtns.forEach((zb, zi) => zb.classList.toggle('active', zi === 0));
-                        imgBoxes.forEach((box, bi) => {
-                            box.style.display = (bi === 0 ? 'block' : 'none');
-                            box.style.opacity = (bi === 0 ? '1' : '0');
-                        });
-                    }
                 });
             });
 
-            $('.flloor_tab').each(function () {
-                let $currentTab = $(this);
-                let $buttons = $currentTab.find('.floor_zone_bttn');
-                let $images = $currentTab.find('.img_indvdl_box');
-                const duration = 1000;
-                $images.each(function () {
-                    const $img = $(this);
-                    let defaultDisplay = $img.css('display');
-                    if (defaultDisplay === 'none') {
-                        defaultDisplay = 'block';
-                    }
-                    $img.data('default-display', defaultDisplay);
+            if (zoneBtns.length && imgBoxes.length) {
+                zoneBtns.forEach((zb, zi) => zb.classList.toggle('active', zi === 0));
+                imgBoxes.forEach((box, bi) => {
+                    box.style.display = (bi === 0 ? 'block' : 'none');
+                    box.style.opacity = (bi === 0 ? '1' : '0');
+                });
+            }
+        });
+    });
+
+    $('.flloor_tab').each(function () {
+        let $currentTab = $(this);
+        let $buttons = $currentTab.find('.floor_zone_bttn');
+        let $images = $currentTab.find('.img_indvdl_box');
+        const duration = 1000;
+        $images.each(function () {
+            const $img = $(this);
+            let defaultDisplay = $img.css('display');
+            if (defaultDisplay === 'none') {
+                defaultDisplay = 'block';
+            }
+            $img.data('default-display', defaultDisplay);
+            $img.css({
+                display: 'none',
+                opacity: 0
+            });
+            $img.removeClass('active');
+        });
+
+        $buttons.on('click', function () {
+            const $btn = $(this);
+            const target = $btn.attr('data-rel');
+            console.log('Zone click, target=', target);
+            $buttons.parent().removeClass('active');
+            $btn.parent().addClass('active');
+            $images.each(function () {
+                let $img = $(this);
+                const imgId = $img.attr('id');
+                if (imgId === target) {
+                    $img.stop(true, true)
+                        .css('display', $img.data('default-display') || 'block')
+                        .css('opacity', 0)
+                        .animate({ opacity: 1 }, duration, function () {
+                            $img.addClass('active');
+                        });
+                } else {
+                    $img.stop(true, true)
+                        .animate({ opacity: 0 }, duration, function () {
+                            $img.css('display', 'none');
+                            $img.removeClass('active');
+                        });
+                }
+            });
+
+            return false;
+        });
+
+        if ($buttons.length && $images.length) {
+            const $firstBtn = $buttons.eq(0);
+            const firstTarget = $firstBtn.attr('data-rel');
+
+            $buttons.parent().removeClass('active');
+            $firstBtn.parent().addClass('active');
+
+            $images.each(function () {
+                const $img = $(this);
+                if ($img.attr('id') === firstTarget) {
+                    $img.css({
+                        display: $img.data('default-display') || 'block',
+                        opacity: 1
+                    });
+                    $img.addClass('active');
+                } else {
                     $img.css({
                         display: 'none',
                         opacity: 0
                     });
                     $img.removeClass('active');
-                });
-
-                $buttons.on('click', function () {
-                    const $btn = $(this);
-                    const target = $btn.attr('data-rel');
-                    console.log('Zone click, target=', target);
-                    $buttons.parent().removeClass('active');
-                    $btn.parent().addClass('active');
-                    $images.each(function () {
-                        let $img = $(this);
-                        const imgId = $img.attr('id');
-                        if (imgId === target) {
-                            $img.stop(true, true)
-                                .css('display', $img.data('default-display') || 'block')
-                                .css('opacity', 0) 
-                                .animate({ opacity: 1 }, duration, function () {
-                                    $img.addClass('active');
-                                });
-                        } else {
-                            $img.stop(true, true)
-                                .animate({ opacity: 0 }, duration, function () {
-                                    $img.css('display', 'none');
-                                    $img.removeClass('active');
-                                });
-                        }
-                    });
-
-                    return false;
-                });
-
-                if ($buttons.length && $images.length) {
-                    const $firstBtn = $buttons.eq(0);
-                    const firstTarget = $firstBtn.attr('data-rel');
-
-                    $buttons.parent().removeClass('active');
-                    $firstBtn.parent().addClass('active');
-
-                    $images.each(function () {
-                        const $img = $(this);
-                        if ($img.attr('id') === firstTarget) {
-                            $img.css({
-                                display: $img.data('default-display') || 'block',
-                                opacity: 1
-                            });
-                            $img.addClass('active');
-                        } else {
-                            $img.css({
-                                display: 'none',
-                                opacity: 0
-                            });
-                            $img.removeClass('active');
-                        }
-                    });
                 }
             });
+        }
+    });
 
 
     // Add Id To Each Floor Tab
@@ -2613,6 +2613,117 @@ document.addEventListener('DOMContentLoaded', function () {
             removalDelay: 160,
             preloader: false,
             fixedContentPos: false
+        });
+    }
+    // Contact Custom Tab
+    const wrappers = document.querySelectorAll('.cntct_sldr_outr');
+
+    if (wrappers.length) {
+        wrappers.forEach(wrapper => {
+            const pillarBg = wrapper.querySelector('.pillar_bg');
+            const items = wrapper.querySelectorAll('.cntct_box_item');
+            const buttons = wrapper.querySelectorAll('.pllr_bttn');
+            const FADE_DURATION = 300;
+
+            function fadeIn(el, duration = FADE_DURATION) {
+                el.style.transition = '';
+                el.style.display = 'block';
+                el.style.opacity = 0;
+                requestAnimationFrame(() => {
+                    el.style.transition = `opacity ${duration}ms ease`;
+                    el.style.opacity = 1;
+                });
+            }
+
+            function fadeOut(el, duration = FADE_DURATION) {
+                if (getComputedStyle(el).display === 'none') return;
+                el.style.transition = `opacity ${duration}ms ease`;
+                requestAnimationFrame(() => {
+                    el.style.opacity = 0;
+                });
+                const handler = function (e) {
+                    if (e.propertyName === 'opacity') {
+                        el.style.display = 'none';
+                        el.style.transition = '';
+                        el.removeEventListener('transitionend', handler);
+                    }
+                };
+                el.addEventListener('transitionend', handler);
+            }
+
+            function activate(index) {
+                buttons.forEach((btn, i) => {
+                    const item = items[i];
+                    const color = btn.getAttribute('data-bg-color') || '';
+
+                    if (i === index) {
+                        item.classList.add('active');
+                        fadeIn(item);
+                        pillarBg.style.backgroundColor = color;
+                        btn.classList.add('active');
+                        btn.style.backgroundColor = color;
+                        btn.style.borderColor = color;
+                    } else {
+                        item.classList.remove('active');
+                        fadeOut(item);
+                        btn.classList.remove('active');
+                        btn.style.backgroundColor = '';
+                        btn.style.borderColor = '';
+                    }
+                });
+            }
+
+            buttons.forEach((btn, i) => {
+                btn.addEventListener('click', () => activate(i));
+            });
+
+            if (buttons.length) {
+                items.forEach((item, i) => {
+                    if (i === 0) {
+                        item.style.display = 'block';
+                        item.style.opacity = 1;
+                        item.classList.add('active');
+                    } else {
+                        item.style.display = 'none';
+                        item.style.opacity = 0;
+                        item.classList.remove('active');
+                    }
+                });
+
+                const firstBtn = buttons[0];
+                const firstColor = firstBtn.getAttribute('data-bg-color') || '';
+                pillarBg.style.backgroundColor = firstColor;
+                firstBtn.classList.add('active');
+                firstBtn.style.backgroundColor = firstColor;
+                firstBtn.style.borderColor = firstColor;
+            }
+        });
+        document.querySelectorAll('.pllr_bttn').forEach(button => {
+            button.addEventListener('click', () => {
+                const activeItem = document.querySelector('.cntct_box_item.active');
+                if (!activeItem) return;
+
+                const txtSlider = activeItem.querySelector('.mmbr_optn_txt_sldr');
+                const imgSlider = activeItem.querySelector('.mmbr_img_sldr');
+
+                if (txtSlider && $(txtSlider).hasClass('slick-initialized')) {
+                    $(txtSlider).slick('refresh');
+                }
+                if (imgSlider && $(imgSlider).hasClass('slick-initialized')) {
+                    $(imgSlider).slick('refresh');
+                }
+            });
+        });
+    }
+
+    // Thumbnail slider data-slide indexing (safe check)
+    const dataWrappers = document.querySelectorAll('.thmbnl_sldr_wrppr');
+    if (dataWrappers.length) {
+        dataWrappers.forEach(wrapper => {
+            const items = wrapper.querySelectorAll('.tem_thmbnl_item');
+            items.forEach((item, i) => {
+                item.setAttribute('data-slide', i + 1);
+            });
         });
     }
 });
