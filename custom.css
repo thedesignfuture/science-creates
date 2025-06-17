@@ -4204,9 +4204,6 @@ body.dark_mode .sldr_arrw.splide__arrow .sldr_arrw_icon {
     -o-transition-delay: .2s;
     transition-delay: .2s;
 }
-.img_indvdl_box.active{
-    position: relative;
-}
 /* CSS 17.06.25 */
 /* Responsive CSS */
 @media(max-width:1199px) {
