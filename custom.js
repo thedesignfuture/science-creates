@@ -1246,7 +1246,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const panels = Array.from(wrapper.querySelectorAll('.flloor_tab'));
                 if (panels.length === 0) return;
 
-                const externalButtons = Array.from(wrapper.querySelectorAll('.floor_rght_top_box .flr_swtchng_bttn'));
+                const externalButtons = Array.from(wrapper.querySelectorAll('.fllr_slct_bttn_row .flr_swtchng_bttn'));
                 panels.forEach((panel, i) => {
                     panel.style.transition = 'opacity 0.3s ease';
                     if (i === 0) {
