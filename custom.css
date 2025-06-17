@@ -3840,14 +3840,24 @@ body.dark_mode [data-bg-color=white] .evnt_cat_bnnr_tag {
     color: var(--charcoal-black);
 }
 
-.flr_swtchng_bttn.active .floor_nme {
+.flr_swtchng_bttn.active {
     background: var(--charcoal-black);
     color: var(--pure-white);
 }
 
-body.dark_mode .flr_swtchng_bttn.active .floor_nme {
+.flr_swtchng_bttn.active img {
+    -webkit-filter: invert(1) brightness(1000%) !important;
+    filter: invert(1) brightness(1000%) !important;
+}
+
+body.dark_mode .flr_swtchng_bttn.active {
     background: var(--pure-white);
     color: var(--charcoal-black);
+}
+
+body.dark_mode .flr_swtchng_bttn.active img {
+    -webkit-filter: brightness(0) saturate(100%) invert(100%) sepia(2%) saturate(9%) hue-rotate(339deg) brightness(103%) contrast(104%);
+    filter: brightness(0) saturate(100%) invert(100%) sepia(2%) saturate(9%) hue-rotate(339deg) brightness(103%) contrast(104%);
 }
 
 .inbtrs_lab_sldr .slick-track {
@@ -4177,9 +4187,10 @@ body.dark_mode .invst_ntce_section.bg_vc {
 }
 
 body.dark_mode .sldr_arrw.splide__arrow .sldr_arrw_icon {
-    -webkit-filter: invert(1) brightness(1000%)!important;
-    filter: invert(1) brightness(1000%)!important;
+    -webkit-filter: invert(1) brightness(1000%) !important;
+    filter: invert(1) brightness(1000%) !important;
 }
+
 
 /* CSS 17.06.25 */
 /* Responsive CSS */
