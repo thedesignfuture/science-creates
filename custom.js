@@ -1227,44 +1227,181 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     //Floor Accordion Mode
-    const accrdWrppr = document.querySelectorAll('.floor_tab_wrppr');
+   function fadeOut(el, duration = 300) {
+                el.style.transition = `opacity ${duration}ms ease`;
+                el.style.opacity = '0';
+                setTimeout(() => {
+                    el.style.display = 'none';
+                }, duration);
+            }
 
-    accrdWrppr.forEach((wrapper) => {
-        const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-        const tabs = wrapper.querySelectorAll('.flloor_tab');
-        tabs.forEach((tab, i) => {
-            tab.classList.toggle('active', i === 0);
-            tab.style.maxHeight = i === 0
-                ? `${tab.scrollHeight / rem}rem`
-                : '0px';
-        });
-        wrapper.querySelectorAll('.flloor_tab').forEach((tab) => {
-            tab.querySelectorAll('.flr_swtchng_bttn')[0].classList.add('active');
-        });
+            function fadeIn(el, duration = 300) {
+                el.style.display = 'block';
+                el.style.opacity = '0';
+                el.style.transition = `opacity ${duration}ms ease`;
+                void el.offsetWidth;
+                el.style.opacity = '1';
+            }
+            document.querySelectorAll('.floor_tab_custom').forEach((wrapper) => {
+                const panels = Array.from(wrapper.querySelectorAll('.flloor_tab'));
+                if (panels.length === 0) return;
 
-        wrapper.querySelectorAll('.flr_swtchng_bttn')
-            .forEach((btn) => {
-                btn.addEventListener('click', () => {
-                    const panelBtns = btn.closest('.flloor_tab')
-                        .querySelectorAll('.flr_swtchng_bttn');
-                    const idx = Array.from(panelBtns).indexOf(btn);
+                const externalButtons = Array.from(wrapper.querySelectorAll('.floor_rght_top_box .flr_swtchng_bttn'));
+                panels.forEach((panel, i) => {
+                    panel.style.transition = 'opacity 0.3s ease';
+                    if (i === 0) {
+                        panel.style.display = 'block';
+                        panel.style.opacity = '1';
+                        panel.classList.add('active');
+                    } else {
+                        panel.style.display = 'none';
+                        panel.style.opacity = '0';
+                        panel.classList.remove('active');
+                    }
+                });
 
-                    tabs.forEach((t) => {
-                        t.classList.remove('active');
-                        t.style.maxHeight = '0px';
-                    });
-                    wrapper.querySelectorAll('.flr_swtchng_bttn')
-                        .forEach((b) => b.classList.remove('active'));
-                    const targetTab = tabs[idx];
-                    targetTab.classList.add('active');
-                    targetTab.style.maxHeight = `${targetTab.scrollHeight / rem}rem`;
-                    tabs.forEach((t) => {
-                        t.querySelectorAll('.flr_swtchng_bttn')[idx]
-                            .classList.add('active');
+                externalButtons.forEach((btn, i) => {
+                    btn.classList.toggle('active', i === 0);
+                });
+
+                function switchToPanel(targetIdx) {
+                    const targetPanel = panels[targetIdx];
+                    if (!targetPanel) return;
+
+                    const activePanel = wrapper.querySelector('.flloor_tab.active');
+                    if (targetPanel === activePanel) return;
+
+                    externalButtons.forEach((b, i) => b.classList.toggle('active', i === targetIdx));
+
+                    if (activePanel) {
+                        activePanel.classList.remove('active');
+                        fadeOut(activePanel, 300);
+                    }
+
+                    targetPanel.classList.add('active');
+                    fadeIn(targetPanel, 300);
+
+                    const zoneBtns = Array.from(targetPanel.querySelectorAll('.floor_zone_bttn'));
+                    const imgBoxes = Array.from(targetPanel.querySelectorAll('.img_indvdl_box'));
+                    if (zoneBtns.length && imgBoxes.length) {
+                        zoneBtns.forEach((zb, zi) => {
+                            zb.classList.toggle('active', zi === 0);
+                            if (imgBoxes[zi]) {
+                                imgBoxes[zi].style.display = (zi === 0 ? 'block' : 'none');
+                                imgBoxes[zi].style.opacity = (zi === 0 ? '1' : '0');
+                            }
+                        });
+                    }
+                }
+
+                externalButtons.forEach((btn, idx) => {
+                    btn.addEventListener('click', () => {
+                        switchToPanel(idx);
                     });
                 });
+
+                // Zone buttons
+                panels.forEach((panel) => {
+                    const zoneBtns = Array.from(panel.querySelectorAll('.floor_zone_bttn'));
+                    const imgBoxes = Array.from(panel.querySelectorAll('.img_indvdl_box'));
+
+                    zoneBtns.forEach((zb, zi) => {
+                        zb.setAttribute('data-rel', zi + 1);
+                        if (imgBoxes[zi]) {
+                            imgBoxes[zi].id = String(zi + 1);
+                        }
+                        zb.addEventListener('click', () => {
+                            zoneBtns.forEach(b => b.classList.remove('active'));
+                            zb.classList.add('active');
+                            imgBoxes.forEach((box, bidx) => {
+                                box.style.display = (bidx === zi ? 'block' : 'none');
+                                box.style.opacity = (bidx === zi ? '1' : '0');
+                            });
+                        });
+                    });
+
+                    if (zoneBtns.length && imgBoxes.length) {
+                        zoneBtns.forEach((zb, zi) => zb.classList.toggle('active', zi === 0));
+                        imgBoxes.forEach((box, bi) => {
+                            box.style.display = (bi === 0 ? 'block' : 'none');
+                            box.style.opacity = (bi === 0 ? '1' : '0');
+                        });
+                    }
+                });
             });
-    });
+
+            $('.flloor_tab').each(function () {
+                let $currentTab = $(this);
+                let $buttons = $currentTab.find('.floor_zone_bttn');
+                let $images = $currentTab.find('.img_indvdl_box');
+                const duration = 1000;
+                $images.each(function () {
+                    const $img = $(this);
+                    let defaultDisplay = $img.css('display');
+                    if (defaultDisplay === 'none') {
+                        defaultDisplay = 'block';
+                    }
+                    $img.data('default-display', defaultDisplay);
+                    $img.css({
+                        display: 'none',
+                        opacity: 0
+                    });
+                    $img.removeClass('active');
+                });
+
+                $buttons.on('click', function () {
+                    const $btn = $(this);
+                    const target = $btn.attr('data-rel');
+                    console.log('Zone click, target=', target);
+                    $buttons.parent().removeClass('active');
+                    $btn.parent().addClass('active');
+                    $images.each(function () {
+                        let $img = $(this);
+                        const imgId = $img.attr('id');
+                        if (imgId === target) {
+                            $img.stop(true, true)
+                                .css('display', $img.data('default-display') || 'block')
+                                .css('opacity', 0) 
+                                .animate({ opacity: 1 }, duration, function () {
+                                    $img.addClass('active');
+                                });
+                        } else {
+                            $img.stop(true, true)
+                                .animate({ opacity: 0 }, duration, function () {
+                                    $img.css('display', 'none');
+                                    $img.removeClass('active');
+                                });
+                        }
+                    });
+
+                    return false;
+                });
+
+                if ($buttons.length && $images.length) {
+                    const $firstBtn = $buttons.eq(0);
+                    const firstTarget = $firstBtn.attr('data-rel');
+
+                    $buttons.parent().removeClass('active');
+                    $firstBtn.parent().addClass('active');
+
+                    $images.each(function () {
+                        const $img = $(this);
+                        if ($img.attr('id') === firstTarget) {
+                            $img.css({
+                                display: $img.data('default-display') || 'block',
+                                opacity: 1
+                            });
+                            $img.addClass('active');
+                        } else {
+                            $img.css({
+                                display: 'none',
+                                opacity: 0
+                            });
+                            $img.removeClass('active');
+                        }
+                    });
+                }
+            });
 
 
     // Add Id To Each Floor Tab
