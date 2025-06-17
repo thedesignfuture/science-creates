@@ -4177,8 +4177,8 @@ body.dark_mode .invst_ntce_section.bg_vc {
 }
 
 body.dark_mode .sldr_arrw.splide__arrow * img {
-    -webkit-filter: invert(1) brightness(1000%);
-    filter: invert(1) brightness(1000%);
+    -webkit-filter: invert(1) brightness(1000%)!important;
+    filter: invert(1) brightness(1000%)!important;
 }
 
 /* CSS 17.06.25 */
