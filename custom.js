@@ -559,7 +559,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         new Swiper(swiperEl, {
             slidesPerView: perMobile,
-            spaceBetween: 16,
+            spaceBetween: 0,
             loop: true,
             navigation: {
                 nextEl: wrapper.querySelector('.arrw_next'),
@@ -618,7 +618,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const swiper1 = new Swiper(swiperElement, {
                 slidesPerView: 1,
-                spaceBetween: 16,
+                spaceBetween:0,
                 loop: true,
                 navigation: {
                     nextEl: el?.querySelector(".arrw_next"),
@@ -1522,7 +1522,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const swiper2 = new Swiper(swiperElement, {
                 slidesPerView: 1,
                 loop: totalSlides > 1,
-                spaceBetween: 16,
+                spaceBetween: 0,
                 navigation: {
                     nextEl: nextBtn,
                     prevEl: prevBtn,
