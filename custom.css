@@ -4205,6 +4205,12 @@ body.dark_mode .sldr_arrw.splide__arrow .sldr_arrw_icon {
     transition-delay: .2s;
 }
 /* CSS 17.06.25 */
+/* CSS 18.06.25 */
+.huse_sldr_item.swiper-slide.prtnr_sldr_item:last-child{
+    margin-right: 0;
+}
+/* CSS 18.06.25 */
+
 /* Responsive CSS */
 @media(max-width:1199px) {
     html {
