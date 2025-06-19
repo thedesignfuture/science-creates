@@ -546,45 +546,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
-    // Inhouse Members Slider
-    document.querySelectorAll('.huse_sldr_wrppr').forEach((wrapper) => {
-        const swiperEl = wrapper.querySelector('.huse_mmbr_sldr');
-        const fractionCt = wrapper.querySelector('.sldr_pgntn');
-
-        // Read from the slider itself, with cascading fallbacks
-        const perMobile = parseInt(swiperEl.dataset.slidesMobile, 10) || 1;
-        const perSm = parseInt(swiperEl.dataset.slidesSm, 10) || perMobile;
-        const perMd = parseInt(swiperEl.dataset.slidesMd, 10) || perSm;
-        const perLg = parseInt(swiperEl.dataset.slidesLg, 10) || perMd;
-
-        new Swiper(swiperEl, {
-            slidesPerView: perMobile,
-            spaceBetween: 16,
-            loop: true,
-            navigation: {
-                nextEl: wrapper.querySelector('.arrw_next'),
-                prevEl: wrapper.querySelector('.arrw_prev'),
-            },
-            pagination: {
-                el: wrapper.querySelector('.sldr_prgrss_bg'),
-                type: 'progressbar',
-            },
-            breakpoints: {
-                576: { slidesPerView: perSm },
-                768: { slidesPerView: perMd },
-                1200: { slidesPerView: perLg, spaceBetween: 0 },
-            },
-            on: {
-                init() {
-                    const total = swiperEl.querySelectorAll('.swiper-slide').length;
-                    fractionCt.textContent = `${this.realIndex + 1} / ${total}`;
-                    this.on('slideChange', () => {
-                        fractionCt.textContent = `${this.realIndex + 1} / ${total}`;
-                    });
-                }
-            }
-        });
-    });
 
     // Remove Condition Visible Element From DOM
     const invisibleElements = document.querySelectorAll('.lab_sldr_wrppr.w-condition-invisible');
@@ -609,58 +570,6 @@ document.addEventListener('DOMContentLoaded', function () {
         el.remove();
     });
 
-    // Lab Slider
-    let labWrppr = document?.querySelectorAll('.lab_sldr_wrppr');
-    if (labWrppr.length > 0) {
-        labWrppr?.forEach((el) => {
-            const swiperElement = el?.querySelector('.lab_sldr');
-            const fractionContainer = el?.querySelector('.sldr_pgntn_alt');
-
-            const swiper1 = new Swiper(swiperElement, {
-                slidesPerView: 1,
-                spaceBetween: 16,
-                loop: true,
-                navigation: {
-                    nextEl: el?.querySelector(".arrw_next"),
-                    prevEl: el?.querySelector(".arrw_prev"),
-                },
-                pagination: {
-                    el: el?.querySelector('.sldr_prgrss_bg'),
-                    type: 'progressbar',
-                },
-                on: {
-                    init: function () {
-                        const totalSlides = swiperElement?.querySelectorAll('.swiper-slide').length;
-                        const currentSlide = this.realIndex + 1;
-
-                        fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
-
-                        this.on('slideChange', function () {
-                            const currentSlide = this.realIndex + 1;
-                            fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
-                        });
-                    },
-                    slideChange: function () {
-                        const totalSlides = swiperElement?.querySelectorAll('.swiper-slide').length;
-                        const currentSlide = this.realIndex + 1;
-                        fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
-                    }
-                },
-                breakpoints: {
-                    576: {
-                        slidesPerView: 2,
-                    },
-                    768: {
-                        slidesPerView: 3,
-                    },
-                    1200: {
-                        slidesPerView: 4,
-                        spaceBetween: 0,
-                    },
-                }
-            });
-        });
-    }
 
 
     // Header Animation
@@ -1163,12 +1072,227 @@ document.addEventListener('DOMContentLoaded', function () {
         if (sw && typeof sw.update === 'function') sw.update();
     }
 
+    // New Updated Code 
+    function getGapPx(swiperEl) {
+        const rootFs = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+        const raw = parseFloat(swiperEl?.dataset?.gap);
+        const remVal = (!isNaN(raw) && raw >= 0) ? raw : 1.25;
+        return remVal * rootFs;
+    }
+
+    function updateSwiperGap(swiper, swiperEl) {
+        const gapPx = getGapPx(swiperEl);
+        swiper.params.spaceBetween = gapPx;
+        if (swiper.params.breakpoints) {
+            Object.keys(swiper.params.breakpoints).forEach(bpKey => {
+                const bpNum = Number(bpKey);
+                if (!isNaN(bpNum) && swiper.params.breakpoints[bpNum]) {
+                    swiper.params.breakpoints[bpNum].spaceBetween = gapPx;
+                }
+            });
+        }
+        if (typeof swiper.update === 'function') {
+            swiper.update();
+        }
+    }
+    const swiperEntries = [];
+
+    function registerSwiper(swiperInstance, swiperEl) {
+        if (!swiperInstance || !swiperEl) return;
+        swiperEntries.push({ swiper: swiperInstance, el: swiperEl });
+    }
+
+    // ---- Inhouse Members Slider ----
+    document.querySelectorAll('.huse_sldr_wrppr').forEach((wrapper) => {
+        const swiperEl = wrapper.querySelector('.huse_mmbr_sldr');
+        if (!swiperEl) return;
+        const fractionCt = wrapper.querySelector('.sldr_pgntn');
+        const gapPx = getGapPx(swiperEl);
+
+        const perMobile = parseInt(swiperEl.dataset.slidesMobile, 10) || 1;
+        const perSm = parseInt(swiperEl.dataset.slidesSm, 10) || perMobile;
+        const perMd = parseInt(swiperEl.dataset.slidesMd, 10) || perSm;
+        const perLg = parseInt(swiperEl.dataset.slidesLg, 10) || perMd;
+
+        const sw = new Swiper(swiperEl, {
+            slidesPerView: perMobile,
+            spaceBetween: gapPx,
+            loop: true,
+            navigation: {
+                nextEl: wrapper.querySelector('.arrw_next'),
+                prevEl: wrapper.querySelector('.arrw_prev'),
+            },
+            pagination: {
+                el: wrapper.querySelector('.sldr_prgrss_bg'),
+                type: 'progressbar',
+            },
+            breakpoints: {
+                576: { slidesPerView: perSm, spaceBetween: gapPx },
+                768: { slidesPerView: perMd, spaceBetween: gapPx },
+                1200: { slidesPerView: perLg, spaceBetween: gapPx },
+            },
+            on: {
+                init() {
+                    const total = swiperEl.querySelectorAll('.swiper-slide').length;
+                    fractionCt.textContent = `${this.realIndex + 1} / ${total}`;
+                    this.on('slideChange', () => {
+                        fractionCt.textContent = `${this.realIndex + 1} / ${total}`;
+                    });
+                }
+            }
+        });
+        registerSwiper(sw, swiperEl);
+    });
+
+    // ---- Lab Slider ----
+    document.querySelectorAll('.lab_sldr_wrppr').forEach((wrapper) => {
+        const swiperEl = wrapper.querySelector('.lab_sldr');
+        if (!swiperEl) return;
+        const fractionCt = wrapper.querySelector('.sldr_pgntn_alt');
+        const gapPx = getGapPx(swiperEl);
+
+        const sw = new Swiper(swiperEl, {
+            slidesPerView: 1,
+            spaceBetween: gapPx,
+            loop: true,
+            navigation: {
+                nextEl: wrapper.querySelector(".arrw_next"),
+                prevEl: wrapper.querySelector(".arrw_prev"),
+            },
+            pagination: {
+                el: wrapper.querySelector('.sldr_prgrss_bg'),
+                type: 'progressbar',
+            },
+            breakpoints: {
+                576: { slidesPerView: 2, spaceBetween: gapPx },
+                768: { slidesPerView: 3, spaceBetween: gapPx },
+                1200: { slidesPerView: 4, spaceBetween: gapPx },
+            },
+            on: {
+                init() {
+                    const total = swiperEl.querySelectorAll('.swiper-slide').length;
+                    fractionCt.textContent = `${this.realIndex + 1} / ${total}`;
+                    this.on('slideChange', () => {
+                        fractionCt.textContent = `${this.realIndex + 1} / ${total}`;
+                    });
+                },
+                slideChange() {
+                    const total = swiperEl.querySelectorAll('.swiper-slide').length;
+                    fractionCt.textContent = `${this.realIndex + 1} / ${total}`;
+                }
+            }
+        });
+        registerSwiper(sw, swiperEl);
+    });
+
+    // ---- Programmes Slider ----
+    document.querySelectorAll('.prgrmms_sldr_wrppr').forEach((wrapper) => {
+        const swiperEl = wrapper.querySelector('.prgrmss_sldr');
+        if (!swiperEl) return;
+        const fractionCt = wrapper.querySelector('.sldr_pgntn');
+        const progressBar = wrapper.querySelector('.sldr_prgrss_bg');
+        const nextBtn = wrapper.querySelector('.arrw_next');
+        const prevBtn = wrapper.querySelector('.arrw_prev');
+        const totalSlides = swiperEl.querySelectorAll('.swiper-slide').length || 0;
+        const gapPx = getGapPx(swiperEl);
+
+        const sw = new Swiper(swiperEl, {
+            slidesPerView: 1,
+            loop: totalSlides > 1,
+            spaceBetween: gapPx,
+            navigation: {
+                nextEl: nextBtn,
+                prevEl: prevBtn,
+            },
+            pagination: {
+                el: progressBar,
+                type: 'progressbar',
+            },
+            breakpoints: {
+                768: { slidesPerView: 2, loop: totalSlides > 2, spaceBetween: gapPx },
+                1200: { slidesPerView: 2, loop: totalSlides > 2, spaceBetween: gapPx },
+            },
+            on: {
+                init() {
+                    const currentSPV = this.params.slidesPerView;
+                    if (totalSlides <= currentSPV) {
+                        nextBtn?.classList.add('hidden');
+                        prevBtn?.classList.add('hidden');
+                        progressBar?.classList.add('hidden');
+                        fractionCt?.classList.add('hidden');
+                        return;
+                    }
+                    fractionCt.textContent = `${this.realIndex + 1} / ${totalSlides}`;
+                    this.on('slideChange', () => {
+                        fractionCt.textContent = `${this.realIndex + 1} / ${totalSlides}`;
+                    });
+                },
+                slideChange() {
+                    fractionCt.textContent = `${this.realIndex + 1} / ${totalSlides}`;
+                }
+            },
+        });
+        registerSwiper(sw, swiperEl);
+    });
+
+    // ---- Programme Date Slider ----
+    document.querySelectorAll('.prgrmme_dte_sldr_wrppr').forEach(wrapper => {
+        const swiperEl = wrapper.querySelector('.prgrmme_dte_sldr');
+        if (!swiperEl) return;
+        const fractionCt = wrapper.querySelector('.sldr_pgntn');
+        const prevBtn = wrapper.querySelector('.arrw_prev');
+        const nextBtn = wrapper.querySelector('.arrw_next');
+        const totalSlides = swiperEl.querySelectorAll('.swiper-slide').length;
+        const gapPx = getGapPx(swiperEl);
+
+        const sw = new Swiper(swiperEl, {
+            slidesPerView: 'auto',
+            loop: true,
+            centeredSlides: false,
+            spaceBetween: gapPx,
+            speed: 500,
+            slideToClickedSlide: true,
+            preventClicks: false,
+            preventClicksPropagation: false,
+            navigation: {
+                prevEl: prevBtn,
+                nextEl: nextBtn,
+            },
+            pagination: {
+                el: wrapper.querySelector('.sldr_prgrss_bg'),
+                type: 'progressbar',
+            },
+            on: {
+                init() {
+                    sw.navigation.init();
+                    sw.navigation.update();
+                    fractionCt.textContent = `${sw.realIndex + 1} / ${totalSlides}`;
+                },
+                slideChange() {
+                    fractionCt.textContent = `${sw.realIndex + 1} / ${totalSlides}`;
+                    sw.navigation.update();
+                },
+                slideChangeTransitionEnd() {
+                    updateSwiperLayout(sw);
+                },
+                touchEnd() {
+                    updateSwiperLayout(sw);
+                }
+            }
+        });
+        registerSwiper(sw, swiperEl);
+    });
+
+
     updateRootFontSize();
     let resizeTimeout;
     window.addEventListener('resize', function () {
         cancelAnimationFrame(resizeTimeout);
         resizeTimeout = requestAnimationFrame(() => {
             updateRootFontSize();
+            swiperEntries.forEach(({ swiper, el }) => {
+                updateSwiperGap(swiper, el);
+            });
             if (swiper3) {
                 setTimeout(() => {
                     updateSwiperLayout(swiper3);
@@ -1506,117 +1630,6 @@ document.addEventListener('DOMContentLoaded', function () {
             el.closest(".ply_txt_bttn").classList.toggle("play_active");
         })
     })
-    // Programmes  Slider
-    let prgrmsSldrWrppr = document?.querySelectorAll('.prgrmms_sldr_wrppr');
-    if (prgrmsSldrWrppr.length > 0) {
-        prgrmsSldrWrppr.forEach((el) => {
-            const swiperElement = el?.querySelector('.prgrmss_sldr');
-            const fractionContainer = el?.querySelector('.sldr_pgntn');
-            const progressBar = el?.querySelector('.sldr_prgrss_bg');
-            const nextBtn = el?.querySelector('.arrw_next');
-            const prevBtn = el?.querySelector('.arrw_prev');
-
-            // Count slides just once:
-            const totalSlides = swiperElement?.querySelectorAll('.swiper-slide')?.length || 0;
-
-            const swiper2 = new Swiper(swiperElement, {
-                slidesPerView: 1,
-                loop: totalSlides > 1,
-                spaceBetween: 16,
-                navigation: {
-                    nextEl: nextBtn,
-                    prevEl: prevBtn,
-                },
-                pagination: {
-                    el: progressBar,
-                    type: 'progressbar',
-                },
-                breakpoints: {
-                    768: {
-                        slidesPerView: 2,
-                        loop: totalSlides > 2,
-                    },
-                    1200: {
-                        spaceBetween: 0,
-                        slidesPerView: 2,
-                        loop: totalSlides > 2,
-                    },
-                },
-                on: {
-                    init: function () {
-                        const currentSPV = this.params.slidesPerView;
-                        if (totalSlides <= currentSPV) {
-                            nextBtn?.classList.add('hidden');
-                            prevBtn?.classList.add('hidden');
-                            progressBar?.classList.add('hidden');
-                            fractionContainer?.classList.add('hidden');
-                            return;
-                        }
-
-                        const currentSlide = this.realIndex + 1;
-                        fractionContainer.innerHTML = `${currentSlide} / ${totalSlides}`;
-
-                        this.on('slideChange', function () {
-                            const idx = this.realIndex + 1;
-                            fractionContainer.innerHTML = `${idx} / ${totalSlides}`;
-                        });
-                    },
-                    slideChange: function () {
-                        const idx = this.realIndex + 1;
-                        fractionContainer.innerHTML = `${idx} / ${totalSlides}`;
-                    }
-                },
-            });
-        });
-    }
-
-
-    // Programme Date Slider
-    document.querySelectorAll('.prgrmme_dte_sldr_wrppr').forEach(wrapper => {
-        const swiperEl = wrapper.querySelector('.prgrmme_dte_sldr');
-        const fractionContainer = wrapper.querySelector('.sldr_pgntn');
-        const prevBtn = wrapper.querySelector('.arrw_prev');
-        const nextBtn = wrapper.querySelector('.arrw_next');
-        const totalSlides = swiperEl.querySelectorAll('.swiper-slide').length;
-
-        const swiper3 = new Swiper(swiperEl, {
-            slidesPerView: 'auto',
-            loop: true,
-            centeredSlides: false,
-            spaceBetween: 0,
-            speed: 500,
-            slideToClickedSlide: true,
-            preventClicks: false,
-            preventClicksPropagation: false,
-            navigation: {
-                prevEl: prevBtn,
-                nextEl: nextBtn,
-            },
-            pagination: {
-                el: wrapper.querySelector('.sldr_prgrss_bg'),
-                type: 'progressbar',
-            },
-            on: {
-                init() {
-                    this.navigation.init();
-                    this.navigation.update();
-                    fractionContainer.textContent = `${this.realIndex + 1} / ${totalSlides}`;
-                },
-                slideChange() {
-                    fractionContainer.textContent = `${this.realIndex + 1} / ${totalSlides}`;
-                    this.navigation.update();
-                },
-                slideChangeTransitionEnd() {
-                    updateSwiperLayout(this);
-                    this.navigation.update();
-                },
-                touchEnd() {
-                    updateSwiperLayout(this);
-                    this.navigation.update();
-                }
-            }
-        });
-    });
 
     // Programme Status With Progress
     if (document.querySelector('.prgrmme_predict')) {
