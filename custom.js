@@ -1369,7 +1369,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const externalButtons = Array.from(wrapper.querySelectorAll('.fllr_slct_bttn_row .flr_swtchng_bttn'));
         panels.forEach((panel, i) => {
-            panel.style.transition = 'opacity 0.3s ease';
+            panel.style.transition = 'opacity 0.5s ease';
             if (i === 0) {
                 panel.style.display = 'block';
                 panel.style.opacity = '1';
@@ -1396,11 +1396,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (activePanel) {
                 activePanel.classList.remove('active');
-                fadeOut(activePanel, 300);
+                fadeOut(activePanel, 500);
             }
 
             targetPanel.classList.add('active');
-            fadeIn(targetPanel, 300);
+            fadeIn(targetPanel, 500);
 
             const zoneBtns = Array.from(targetPanel.querySelectorAll('.floor_zone_bttn'));
             const imgBoxes = Array.from(targetPanel.querySelectorAll('.img_indvdl_box'));
