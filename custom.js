@@ -1051,23 +1051,23 @@ document.addEventListener('DOMContentLoaded', function () {
     // Swiper Global Variable
     let swiper3 = null;
 
-    // Dynamic REM Value Calculate
-    const baseFontPercentage = 1.2;  // Base font size as percentage of viewport width
-    const minFontSize = 8;           // Absolute minimum font size (px) for very small screens
-    const maxWidth = 1920;           // Maximum width for calculation
+    // // Dynamic REM Value Calculate
+    // const baseFontPercentage = 1.2;  // Base font size as percentage of viewport width
+    // const minFontSize = 8;           // Absolute minimum font size (px) for very small screens
+    // const maxWidth = 1920;           // Maximum width for calculation
 
-    // Function to update the font size based on viewport width  
-    function updateRootFontSize() {
-        // Get current viewport width    
-        let windowWidth = Math.min(window.innerWidth, maxWidth); // Cap at maxWidth
+    // // Function to update the font size based on viewport width  
+    // function updateRootFontSize() {
+    //     // Get current viewport width    
+    //     let windowWidth = Math.min(window.innerWidth, maxWidth); // Cap at maxWidth
 
-        // Calculate font size as a percentage of viewport width    
-        const calculatedSize = (windowWidth * baseFontPercentage) / 100;
-        const fontSize = Math.max(calculatedSize, minFontSize);
+    //     // Calculate font size as a percentage of viewport width    
+    //     const calculatedSize = (windowWidth * baseFontPercentage) / 100;
+    //     const fontSize = Math.max(calculatedSize, minFontSize);
 
-        // Update the root font size dynamically
-        document.documentElement.style.fontSize = `${fontSize}px`;
-    }
+    //     // Update the root font size dynamically
+    //     document.documentElement.style.fontSize = `${fontSize}px`;
+    // }
     function updateSwiperLayout(sw) {
         if (sw && typeof sw.update === 'function') sw.update();
     }
@@ -1284,12 +1284,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    updateRootFontSize();
+    // updateRootFontSize();
     let resizeTimeout;
     window.addEventListener('resize', function () {
         cancelAnimationFrame(resizeTimeout);
         resizeTimeout = requestAnimationFrame(() => {
-            updateRootFontSize();
+            // updateRootFontSize();
             swiperEntries.forEach(({ swiper, el }) => {
                 updateSwiperGap(swiper, el);
             });
