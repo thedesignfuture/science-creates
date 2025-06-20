@@ -1313,7 +1313,6 @@ body.dark_mode [data-bg-color=grey].huse_sldr_box:not(:hover) img.mmbr_logo_img 
     color: var(--charcoal-black);
 }
 
-.flloor_tab,
 .section_box_innr_alt.cntct_box_item {
     overflow: hidden;
     -webkit-transition: max-height 0.3s ease-out;
@@ -3113,10 +3112,7 @@ body.dark_mode .cmpny_logo_inner .cmnty_logo {
 }
 
 .flloor_tab {
-    overflow: hidden;
-    -webkit-transition: max-height 0.3s ease-out;
-    -o-transition: max-height 0.3s ease-out;
-    transition: max-height 0.3s ease-out;
+ display: none;
 }
 
 .floor_pln_tab_item.active .floor_zone_txt {
