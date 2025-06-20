@@ -214,11 +214,6 @@ body.dark_mode .basic_bttn:not(.hdr_bttn):hover {
     background: rgb(255 255 255 / 27%);
 }
 
-/* body.dark_mode .basic_bttn:hover .bttn_icon {
-    -webkit-filter: none;
-    filter: none;
-  } */
-
 body.dark_mode .sctn_box_innr_alt {
     background-color: rgb(255 255 255 / 3%);
 }
@@ -4210,6 +4205,12 @@ body.dark_mode .sldr_arrw.splide__arrow .sldr_arrw_icon {
     margin-right: 0;
 }
 /* CSS 18.06.25 */
+/* CSS 20.06.25 */
+.submenu_active .menu_lnk.submenu_lnk{
+    color: rgba(35, 30, 31, 0.5);
+}
+
+/* CSS 20.06.25 */
 
 /* Responsive CSS */
 @media(max-width:1199px) {
