@@ -721,42 +721,39 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     //  Custom Menu With Submenu
-    let subMenuItem = document.querySelectorAll('[data-menu-open]');
-    let menuItem = document.querySelectorAll('[data-menu]');
-    let activeMenuItem = null;
+    const subMenuContainers = document.querySelectorAll('[data-menu-open]');
+    let activeMenuAttr = null;
 
     function toggleSubMenu(menuAttr, action) {
-        let submenu = Array.from(subMenuItem).find(item => item.getAttribute('data-menu-open') === menuAttr);
-        let menu = Array.from(menuItem).find(item => item.getAttribute('data-menu') === menuAttr);
-
+        const submenu = Array.from(subMenuContainers)
+            .find(item => item.getAttribute('data-menu-open') === menuAttr);
         if (submenu) {
             submenu.classList[action]('submenu_active');
         }
-        if (menu) {
-            menu.classList[action]('submenu_active');
-        }
+        const menuElems = document.querySelectorAll(`[data-menu="${menuAttr}"]`);
+        menuElems.forEach(menuEl => {
+            menuEl.classList[action]('submenu_active');
+        });
     }
-
-    menuItem.forEach((el) => {
-        let menuAttr = el.getAttribute('data-menu');
-
-        el.addEventListener('click', (e) => {
+    document.querySelectorAll('[data-menu]').forEach(el => {
+        el.addEventListener('click', e => {
             e.preventDefault();
-            if (activeMenuItem && activeMenuItem !== el) {
-                let prevMenuAttr = activeMenuItem.getAttribute('data-menu');
-                toggleSubMenu(prevMenuAttr, 'remove');
+            const menuAttr = el.getAttribute('data-menu');
+            if (activeMenuAttr && activeMenuAttr !== menuAttr) {
+                toggleSubMenu(activeMenuAttr, 'remove');
             }
             toggleSubMenu(menuAttr, 'toggle');
-            activeMenuItem = el;
+            const stillActive = Array.from(document.querySelectorAll(`[data-menu="${menuAttr}"]`))
+                .some(elm => elm.classList.contains('submenu_active'));
+            activeMenuAttr = stillActive ? menuAttr : null;
         });
     });
 
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', e => {
         if (!e.target.closest('.mnu_item') && !e.target.closest('.submenu_drpdwn')) {
-            if (activeMenuItem) {
-                let prevMenuAttr = activeMenuItem.getAttribute('data-menu');
-                toggleSubMenu(prevMenuAttr, 'remove');
-                activeMenuItem = null;
+            if (activeMenuAttr) {
+                toggleSubMenu(activeMenuAttr, 'remove');
+                activeMenuAttr = null;
             }
         }
     });
