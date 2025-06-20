@@ -1347,29 +1347,36 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
     })
 
-    //Floor Accordion Mode
-    function fadeOut(el, duration = 300) {
+    //Floor Tab Mode
+    function fadeOut(el, duration = 300, callback) {
+        if (!el) return;
         el.style.transition = `opacity ${duration}ms ease`;
         el.style.opacity = '0';
         setTimeout(() => {
             el.style.display = 'none';
+            if (typeof callback === 'function') callback();
         }, duration);
     }
 
     function fadeIn(el, duration = 300) {
+        if (!el) return;
         el.style.display = 'block';
         el.style.opacity = '0';
         el.style.transition = `opacity ${duration}ms ease`;
         void el.offsetWidth;
         el.style.opacity = '1';
     }
+
     document.querySelectorAll('.floor_tab_custom').forEach((wrapper) => {
         const panels = Array.from(wrapper.querySelectorAll('.flloor_tab'));
-        if (panels.length === 0) return;
+        const externalButtons = Array.from(
+            wrapper.querySelectorAll('.fllr_slct_bttn_row .flr_swtchng_bttn')
+        );
 
-        const externalButtons = Array.from(wrapper.querySelectorAll('.fllr_slct_bttn_row .flr_swtchng_bttn'));
+        if (panels.length === 0 || externalButtons.length === 0) return;
+
         panels.forEach((panel, i) => {
-            panel.style.transition = 'opacity 0.5s ease';
+            panel.style.transition = 'opacity 300ms ease';
             if (i === 0) {
                 panel.style.display = 'block';
                 panel.style.opacity = '1';
@@ -1383,6 +1390,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         externalButtons.forEach((btn, i) => {
             btn.classList.toggle('active', i === 0);
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchToPanel(i);
+            });
         });
 
         function switchToPanel(targetIdx) {
@@ -1392,35 +1403,38 @@ document.addEventListener('DOMContentLoaded', function () {
             const activePanel = wrapper.querySelector('.flloor_tab.active');
             if (targetPanel === activePanel) return;
 
-            externalButtons.forEach((b, i) => b.classList.toggle('active', i === targetIdx));
+            externalButtons.forEach((b, i) =>
+                b.classList.toggle('active', i === targetIdx)
+            );
+
+            const showTarget = () => {
+                targetPanel.classList.add('active');
+                fadeIn(targetPanel, 300);
+
+                const zoneBtns = Array.from(
+                    targetPanel.querySelectorAll('.floor_zone_bttn')
+                );
+                const imgBoxes = Array.from(
+                    targetPanel.querySelectorAll('.img_indvdl_box')
+                );
+                if (zoneBtns.length && imgBoxes.length) {
+                    zoneBtns.forEach((zb, zi) => {
+                        zb.classList.toggle('active', zi === 0);
+                        if (imgBoxes[zi]) {
+                            imgBoxes[zi].style.display = zi === 0 ? 'block' : 'none';
+                            imgBoxes[zi].style.opacity = zi === 0 ? '1' : '0';
+                        }
+                    });
+                }
+            };
 
             if (activePanel) {
                 activePanel.classList.remove('active');
-                fadeOut(activePanel, 500);
-            }
-
-            targetPanel.classList.add('active');
-            fadeIn(targetPanel, 500);
-
-            const zoneBtns = Array.from(targetPanel.querySelectorAll('.floor_zone_bttn'));
-            const imgBoxes = Array.from(targetPanel.querySelectorAll('.img_indvdl_box'));
-            if (zoneBtns.length && imgBoxes.length) {
-                zoneBtns.forEach((zb, zi) => {
-                    zb.classList.toggle('active', zi === 0);
-                    if (imgBoxes[zi]) {
-                        imgBoxes[zi].style.display = (zi === 0 ? 'block' : 'none');
-                        imgBoxes[zi].style.opacity = (zi === 0 ? '1' : '0');
-                    }
-                });
+                fadeOut(activePanel, 300, showTarget);
+            } else {
+                showTarget();
             }
         }
-
-        externalButtons.forEach((btn, idx) => {
-            btn.addEventListener('click', () => {
-                switchToPanel(idx);
-            });
-        });
-
         // Zone buttons
         panels.forEach((panel) => {
             const zoneBtns = Array.from(panel.querySelectorAll('.floor_zone_bttn'));
