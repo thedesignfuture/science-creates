@@ -4206,7 +4206,7 @@ body.dark_mode .sldr_arrw.splide__arrow .sldr_arrw_icon {
 }
 /* CSS 18.06.25 */
 /* CSS 20.06.25 */
-.submenu_active .mnu_item.active .menu_lnk.submenu_lnk{
+.submenu_active .mnu_item.submenu_active .menu_lnk.submenu_lnk{
     color: rgba(35, 30, 31, 0.5);
 }
 
