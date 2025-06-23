@@ -2189,7 +2189,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (isActive) {
                 const scrollH = selectDrop.scrollHeight;
                 const heightRem = scrollH / remVal;
-                selectDrop.style.maxHeight = `${heightRem}rem`;
+                selectDrop.style.maxHeight = `(${heightRem} + 0.5)rem`;
             } else {
                 // Close
                 selectDrop.style.maxHeight = '0rem';
