@@ -4213,6 +4213,7 @@ body.dark_mode .menu_subhdng_txt{
 body.dark_mode .flr_swtchng_bttn:not(.active){
     border-color: var(--pure-white);
     background: var(--dark-grey);
+    color: var(--pure-white);
 }
 body.dark_mode .flr_swtchng_bttn:not(.active) .bttn_icon_hldr{
        -webkit-filter: invert(1) brightness(1000%);
