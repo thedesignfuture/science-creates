@@ -4218,6 +4218,9 @@ body.dark_mode .flr_swtchng_bttn:not(.active) .bttn_icon_hldr{
        -webkit-filter: invert(1) brightness(1000%);
     filter: invert(1) brightness(1000%);
 }
+.innr_bnnr_sec_box.dirctry_sngle_bnnr{
+    background: var(--dark-grey);
+}
 /* CSS 23.06.25 */
 /* Responsive CSS */
 @media(max-width:1199px) {
