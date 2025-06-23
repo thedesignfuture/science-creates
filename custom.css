@@ -3836,7 +3836,7 @@ body.dark_mode [data-bg-color=white] .evnt_cat_bnnr_tag {
     color: var(--pure-white);
 }
 
-:not(body.dark_mode) .flr_swtchng_bttn.active .bttn_icon_hldr {
+body:not(.dark_mode) .flr_swtchng_bttn.active .bttn_icon_hldr {
     -webkit-filter: invert(1) brightness(1000%) !important;
     filter: invert(1) brightness(1000%) !important;
 }
