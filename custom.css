@@ -4218,7 +4218,7 @@ body.dark_mode .flr_swtchng_bttn:not(.active) .bttn_icon_hldr{
 .innr_bnnr_sec_box.dirctry_sngle_bnnr{
     background: var(--dark-grey);
 }
-[data-bg-color= white] .mmbrs_lft_box.lctn_box * :not(.basic_bttn){
+body.dark_mode [data-bg-color= white] .mmbrs_lft_box.lctn_box * :not(.basic_bttn){
     color: var(--pure-white);
 }
 /* CSS 23.06.25 */
