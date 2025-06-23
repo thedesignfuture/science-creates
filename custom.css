@@ -3836,7 +3836,7 @@ body.dark_mode [data-bg-color=white] .evnt_cat_bnnr_tag {
     color: var(--pure-white);
 }
 
-.flr_swtchng_bttn.active img {
+:not(body.dark_mode) .flr_swtchng_bttn.active .bttn_icon_hldr {
     -webkit-filter: invert(1) brightness(1000%) !important;
     filter: invert(1) brightness(1000%) !important;
 }
@@ -3846,7 +3846,7 @@ body.dark_mode .flr_swtchng_bttn.active {
     color: var(--charcoal-black);
 }
 
-body.dark_mode .flr_swtchng_bttn.active img {
+body.dark_mode .flr_swtchng_bttn.active .bttn_icon_hldr {
     -webkit-filter: brightness(0) saturate(100%) invert(100%) sepia(2%) saturate(9%) hue-rotate(339deg) brightness(103%) contrast(104%);
     filter: brightness(0) saturate(100%) invert(100%) sepia(2%) saturate(9%) hue-rotate(339deg) brightness(103%) contrast(104%);
 }
