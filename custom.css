@@ -3382,7 +3382,7 @@ body.dark_mode [data-bg-color='charcoal-black'] .page_lnk:hover {
 }
 
 .mmbr_sldr_tab_lstng:not(.slick-initialized) .sldr_tab_bttn {
-    width: 5.787rem
+    width:5.587rem;
 }
 
 .mmbr_sldr_tab_lstng:not(.slick-initialized) .sldr_tab_bttn.sldr_tab_bttn_alt {
