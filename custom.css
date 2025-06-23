@@ -4209,7 +4209,16 @@ body.dark_mode .menu_subhdng_txt{
     color: var(--charcoal-black)!important;
 }
 /* CSS 20.06.25 */
-
+/* CSS 23.06.25 */
+body.dark_mode .flr_swtchng_bttn:not(.active){
+    border-color: var(--pure-white);
+    background: var(--dark-grey);
+}
+body.dark_mode .flr_swtchng_bttn:not(.active) .bttn_icon_hldr{
+       -webkit-filter: invert(1) brightness(1000%);
+    filter: invert(1) brightness(1000%);
+}
+/* CSS 23.06.25 */
 /* Responsive CSS */
 @media(max-width:1199px) {
     html {
