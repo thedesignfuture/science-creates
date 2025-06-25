@@ -2524,7 +2524,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         }
-        postId.length ? initHub() : '';
+        if(postId.length) {
+            initHub();
+        }
        
     }
     if (document.getElementById('ghost-single-post')) {
