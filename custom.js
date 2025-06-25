@@ -2394,6 +2394,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if(postId.length) {
             initHub();
+            console.log('audio enabled')
+        }
+        else {
+            console.log('no');
         }
 
         function applyFilters() {
