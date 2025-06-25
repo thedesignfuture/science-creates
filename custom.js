@@ -2392,6 +2392,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
+        postId.length ? initHub() : '';
+
         function applyFilters() {
             let filtered = [...cachedPosts];
 
@@ -2570,9 +2572,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 metaTags.ogTitle?.setAttribute('content', post.title);
                 metaTags.ogDescription?.setAttribute('content', postExcerpt);
                 metaTags.ogImage?.setAttribute('content', featureImage);
-                post.html;
-                initHub();
-                return true;
+
+                return post.html;
             }
         });
     }
