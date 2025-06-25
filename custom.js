@@ -2392,7 +2392,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        postId.length ? initHub() : '';
+        if(postId.length) {
+            initHub();
+        }
 
         function applyFilters() {
             let filtered = [...cachedPosts];
