@@ -2522,6 +2522,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         }
+        if(postId.length) {
+            console.log('hubinit');
+            initHub()
+        }
+        else {
+            console.log('notInitHub' ,postId.length);
+        }
     }
     if (document.getElementById('ghost-single-post')) {
         fetchAndRenderGhostPosts({
