@@ -2570,8 +2570,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 metaTags.ogTitle?.setAttribute('content', post.title);
                 metaTags.ogDescription?.setAttribute('content', postExcerpt);
                 metaTags.ogImage?.setAttribute('content', featureImage);
+                post.html;
                 initHub();
-                return post.html;
+                return true;
             }
         });
     }
