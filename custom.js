@@ -2271,6 +2271,7 @@ document.addEventListener('DOMContentLoaded', function () {
         loadMoreId = null,
         filterContainerSelector = null,
         renderPostHTML = null,
+        isFeatured = false,
         postId = ''
     }) {
         const container = document.getElementById(targetId);
@@ -2280,6 +2281,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const searchInput = searchInputId ? document.getElementById(searchInputId) : null;
 
         const filterTagData = container.getAttribute('tag');
+        const isFeaturedPost = isFeatured ? '&filter=featured:true' : '';
         const filterTagRequest = filterTagData ? `&filter=tag:${filterTagData}` : '';
 
         let filterButtons = [];
@@ -2312,7 +2314,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         async function fetchAllPosts() {
-            const url = `${API_URL}${postId}?key=${API_KEY}&limit=100&include=tags,authors${filterTagRequest}&order=published_at desc`;
+            const url = `${API_URL}${postId}?key=${API_KEY}&limit=100&include=tags,authors${filterTagRequest}${isFeaturedPost}&order=published_at desc`;
             const response = await fetch(url, { headers: { 'Accept-Version': 'v5.0' } });
             const data = await response.json();
 
@@ -2621,6 +2623,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('ghost_box')) {
         fetchAndRenderGhostPosts({
             targetId: 'ghost_box',
+            isFeatured: true,
             initialLimit: 1,
             renderPostHTML: post => {
                 const featureImage = post.feature_image || 'https://via.placeholder.com/600x400?text=No+Image';
